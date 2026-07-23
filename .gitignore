@@ -35,8 +35,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# datos locales de importación (no subir al repo)
-/scripts/data/
+# datos locales de importación (no subir al repo).
+# Se excluye el CONTENIDO, no el directorio: git no permite reincluir un archivo
+# si su directorio padre está excluido.
+/scripts/data/*
+# Excepción: el banco de preguntas Demo es contenido del producto, no datos de
+# un cliente, y sí debe viajar en el repo.
+!/scripts/data/fichas-demo.json
 /scripts/__pycache__/
 
 # service worker generado por Serwist en el build

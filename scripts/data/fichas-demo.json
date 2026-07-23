@@ -1,0 +1,167 @@
+{
+  "_meta": {
+    "descripcion": "Banco de preguntas Demo para el motor de fichas. Una ficha nucleo organizada por PILARES comunes a los esquemas de certificacion, no una ficha por certificacion. Cada campo declara en config.esquemas a que normas sirve, para hacer visible el argumento multi-regulacion (capturas una vez, cumples muchos).",
+    "fuentes": [
+      "EUDR - Reglamento (UE) 2023/1115, enmendado dic-2025: aplica 30-dic-2026 (medianas/grandes) y 30-jun-2027 (micro/pequenas)",
+      "Reglamento organico UE 2018/848: certificacion de grupo, max 2000 miembros, <=5 ha o <=25,000 EUR por miembro, SIC documentado, 5% de reinspeccion externa",
+      "USDA NOP: 36 meses sin sustancias prohibidas antes de la cosecha, Plan Organico del Sistema",
+      "Fairtrade/FLOCERT, SPP, Rainforest Alliance SAS, SMETA/Sedex, Global G.A.P. IFA"
+    ],
+    "tipos_soportados": "text | enum | number | date | bool | image | signature | tabla",
+    "config_soportado": "condicion {campo,igual} | columnas [] | autofill | opcion_otro | esquemas []"
+  },
+  "templates": [
+    {
+      "nombre": "Ficha de Diagnostico Multi-Certificacion (Demo)",
+      "tipo_cultivo": "cafe",
+      "version": 1,
+      "activo": true,
+      "secciones": [
+        {
+          "nombre": "1. Identificacion del productor y la organizacion",
+          "orden": 1,
+          "_pilar": "Identidad y gobernanza",
+          "campos": [
+            { "nombre_interno": "productor_nombre", "etiqueta": "Nombre completo del productor", "tipo": "text", "requerido": true, "orden": 1, "config": { "esquemas": ["EUDR", "UE 2018/848", "NOP", "Fairtrade", "SPP"] } },
+            { "nombre_interno": "productor_documento", "etiqueta": "Documento de identidad (DPI / cedula / RTN)", "tipo": "text", "requerido": true, "orden": 2, "config": { "esquemas": ["EUDR", "UE 2018/848", "Fairtrade"] } },
+            { "nombre_interno": "productor_genero", "etiqueta": "Genero", "tipo": "enum", "opciones": ["Mujer", "Hombre", "Prefiere no decir"], "requerido": false, "orden": 3, "config": { "esquemas": ["Fairtrade", "SPP", "Rainforest Alliance"] } },
+            { "nombre_interno": "organizacion_nombre", "etiqueta": "Organizacion / cooperativa a la que pertenece", "tipo": "text", "requerido": true, "orden": 4, "config": { "esquemas": ["UE 2018/848", "Fairtrade", "SPP"] } },
+            { "nombre_interno": "codigo_miembro_sic", "etiqueta": "Codigo de miembro en el SIC", "tipo": "text", "requerido": true, "orden": 5, "config": { "esquemas": ["UE 2018/848", "Fairtrade"] } },
+            { "nombre_interno": "fecha_ingreso_organizacion", "etiqueta": "Fecha de ingreso a la organizacion", "tipo": "date", "requerido": false, "orden": 6, "config": { "esquemas": ["Fairtrade", "SPP"] } },
+            { "nombre_interno": "pertenece_pueblo_indigena", "etiqueta": "El productor pertenece a un pueblo indigena o comunidad local", "tipo": "bool", "requerido": false, "orden": 7, "config": { "esquemas": ["EUDR", "SMETA", "Rainforest Alliance"] } }
+          ]
+        },
+        {
+          "nombre": "2. Parcela y geolocalizacion",
+          "orden": 2,
+          "_pilar": "Geolocalizacion y delimitacion",
+          "campos": [
+            { "nombre_interno": "parcela_nombre", "etiqueta": "Nombre de la parcela", "tipo": "text", "requerido": true, "orden": 1, "config": { "esquemas": ["EUDR", "UE 2018/848", "NOP"] } },
+            { "nombre_interno": "parcela_codigo", "etiqueta": "Codigo de parcela", "tipo": "text", "requerido": true, "orden": 2, "config": { "esquemas": ["EUDR", "UE 2018/848"] } },
+            { "nombre_interno": "area_declarada_ha", "etiqueta": "Area declarada (ha)", "tipo": "number", "requerido": true, "orden": 3, "config": { "autofill": "area_ha", "esquemas": ["EUDR", "UE 2018/848", "NOP"] } },
+            { "nombre_interno": "geometria_tipo", "etiqueta": "Tipo de geometria entregada", "tipo": "enum", "opciones": ["Poligono", "Punto (parcela menor a 4 ha)"], "requerido": true, "orden": 4, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "metodo_levantamiento", "etiqueta": "Metodo de levantamiento", "tipo": "enum", "opciones": ["GPS de mano", "Aplicacion movil", "Google Earth", "QGIS", "Otro"], "requerido": true, "orden": 5, "config": { "opcion_otro": true, "esquemas": ["EUDR", "Rainforest Alliance"] } },
+            { "nombre_interno": "fecha_levantamiento", "etiqueta": "Fecha del levantamiento", "tipo": "date", "requerido": true, "orden": 6, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "colindancias", "etiqueta": "Colindancias (norte / sur / este / oeste)", "tipo": "text", "requerido": false, "orden": 7, "config": { "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "croquis_parcela", "etiqueta": "Croquis o foto de la parcela", "tipo": "image", "requerido": false, "orden": 8, "config": { "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "area_coincide_capacidad", "etiqueta": "El area declarada es coherente con la produccion reportada", "tipo": "bool", "requerido": true, "orden": 9, "config": { "esquemas": ["EUDR"] } }
+          ]
+        },
+        {
+          "nombre": "3. Uso historico del suelo y deforestacion",
+          "orden": 3,
+          "_pilar": "Cambio de cobertura (fecha de corte 31-dic-2020)",
+          "campos": [
+            { "nombre_interno": "uso_suelo_antes_2020", "etiqueta": "Uso del suelo antes del 31 de diciembre de 2020", "tipo": "enum", "opciones": ["Ya era cultivo", "Bosque", "Potrero / pastizal", "Barbecho / guamil", "Otro"], "requerido": true, "orden": 1, "config": { "opcion_otro": true, "esquemas": ["EUDR", "Rainforest Alliance"] } },
+            { "nombre_interno": "ano_establecimiento_cultivo", "etiqueta": "Ano de establecimiento del cultivo", "tipo": "number", "requerido": true, "orden": 2, "config": { "esquemas": ["EUDR", "Rainforest Alliance"] } },
+            { "nombre_interno": "hubo_cambio_cobertura", "etiqueta": "Hubo cambio de cobertura forestal desde el 31-dic-2020", "tipo": "bool", "requerido": true, "orden": 3, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "descripcion_cambio_cobertura", "etiqueta": "Describa el cambio de cobertura", "tipo": "text", "requerido": false, "orden": 4, "config": { "condicion": { "campo": "hubo_cambio_cobertura", "igual": true }, "esquemas": ["EUDR"] } },
+            { "nombre_interno": "evidencia_cambio_cobertura", "etiqueta": "Evidencia fotografica del area de cambio", "tipo": "image", "requerido": false, "orden": 5, "config": { "condicion": { "campo": "hubo_cambio_cobertura", "igual": true }, "esquemas": ["EUDR"] } },
+            { "nombre_interno": "practica_quemas", "etiqueta": "Se practican quemas en la parcela", "tipo": "bool", "requerido": true, "orden": 6, "config": { "esquemas": ["EUDR", "Rainforest Alliance", "UE 2018/848"] } },
+            { "nombre_interno": "parcela_en_area_protegida", "etiqueta": "La parcela esta dentro o colinda con un area protegida", "tipo": "enum", "opciones": ["No", "Colinda", "Dentro", "No se"], "requerido": true, "orden": 7, "config": { "esquemas": ["EUDR", "Rainforest Alliance"] } },
+            { "nombre_interno": "nombre_area_protegida", "etiqueta": "Nombre del area protegida", "tipo": "text", "requerido": false, "orden": 8, "config": { "condicion": { "campo": "parcela_en_area_protegida", "igual": "Dentro" }, "esquemas": ["EUDR"] } }
+          ]
+        },
+        {
+          "nombre": "4. Legalidad y tenencia de la tierra",
+          "orden": 4,
+          "_pilar": "Produccion conforme a la legislacion del pais (EUDR Art. 2)",
+          "campos": [
+            { "nombre_interno": "tipo_tenencia", "etiqueta": "Tipo de tenencia de la tierra", "tipo": "enum", "opciones": ["Propia con titulo", "Propia sin titulo", "Arrendada", "Ejidal / comunal", "Posesion / usufructo", "Otro"], "requerido": true, "orden": 1, "config": { "opcion_otro": true, "esquemas": ["EUDR", "Fairtrade", "SMETA"] } },
+            { "nombre_interno": "documento_tenencia", "etiqueta": "Documento que respalda la tenencia", "tipo": "image", "requerido": false, "orden": 2, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "conflicto_limites", "etiqueta": "Existe conflicto o disputa sobre los limites de la parcela", "tipo": "bool", "requerido": true, "orden": 3, "config": { "esquemas": ["EUDR", "SMETA"] } },
+            { "nombre_interno": "registro_productor_vigente", "etiqueta": "El productor cuenta con registro fiscal / de productor vigente", "tipo": "bool", "requerido": true, "orden": 4, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "permisos_ambientales", "etiqueta": "Cuenta con los permisos ambientales aplicables", "tipo": "enum", "opciones": ["Si", "No", "No aplica"], "requerido": true, "orden": 5, "config": { "esquemas": ["EUDR"] } },
+            { "nombre_interno": "consentimiento_clpi", "etiqueta": "Se obtuvo consentimiento libre, previo e informado (CLPI) cuando aplica", "tipo": "enum", "opciones": ["Si", "No", "No aplica"], "requerido": true, "orden": 6, "config": { "esquemas": ["EUDR", "SMETA", "Rainforest Alliance"] } },
+            { "nombre_interno": "denuncias_ambientales_activas", "etiqueta": "Existen denuncias ambientales activas sobre la parcela", "tipo": "bool", "requerido": true, "orden": 7, "config": { "esquemas": ["EUDR", "ProForest"] } }
+          ]
+        },
+        {
+          "nombre": "5. Manejo organico: conversion e insumos",
+          "orden": 5,
+          "_pilar": "Insumos y sustancias permitidas",
+          "campos": [
+            { "nombre_interno": "estatus_organico", "etiqueta": "Estatus organico de la parcela", "tipo": "enum", "opciones": ["Organico certificado", "En conversion ano 1", "En conversion ano 2", "En conversion ano 3", "Convencional"], "requerido": true, "orden": 1, "config": { "esquemas": ["UE 2018/848", "NOP", "JAS", "SPP"] } },
+            { "nombre_interno": "fecha_ultima_aplicacion_prohibida", "etiqueta": "Fecha de la ultima aplicacion de sustancia prohibida", "tipo": "date", "requerido": false, "orden": 2, "config": { "esquemas": ["NOP", "UE 2018/848"] } },
+            { "nombre_interno": "meses_sin_sustancias_prohibidas", "etiqueta": "Meses transcurridos sin sustancias prohibidas (NOP exige 36)", "tipo": "number", "requerido": true, "orden": 3, "config": { "esquemas": ["NOP", "UE 2018/848"] } },
+            { "nombre_interno": "insumos_aplicados", "etiqueta": "Insumos aplicados en el ciclo", "tipo": "tabla", "requerido": false, "orden": 4, "config": { "columnas": [{ "id": "insumo", "label": "Insumo", "tipo": "text" }, { "id": "tipo_insumo", "label": "Tipo", "tipo": "enum", "opciones": ["Fertilizante", "Fungicida", "Insecticida", "Herbicida", "Bioinsumo", "Enmienda"] }, { "id": "dosis", "label": "Dosis", "tipo": "text" }, { "id": "fecha_aplicacion", "label": "Fecha", "tipo": "date" }, { "id": "autorizado", "label": "Autorizado por la certificadora", "tipo": "bool" }], "esquemas": ["UE 2018/848", "NOP", "JAS", "Global G.A.P."] } },
+            { "nombre_interno": "origen_semilla_planta", "etiqueta": "Origen del material de siembra", "tipo": "enum", "opciones": ["Organico certificado", "Convencional no tratado", "Convencional tratado", "Propio / vivero de la organizacion"], "requerido": true, "orden": 5, "config": { "esquemas": ["UE 2018/848", "NOP", "JAS"] } },
+            { "nombre_interno": "riesgo_deriva_vecinos", "etiqueta": "Existe riesgo de deriva o contaminacion desde parcelas vecinas", "tipo": "bool", "requerido": true, "orden": 6, "config": { "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "zona_amortiguamiento_m", "etiqueta": "Ancho de la zona de amortiguamiento (m)", "tipo": "number", "requerido": false, "orden": 7, "config": { "condicion": { "campo": "riesgo_deriva_vecinos", "igual": true }, "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "manejo_plagas", "etiqueta": "Metodo principal de manejo de plagas", "tipo": "enum", "opciones": ["Cultural", "Biologico", "Fisico / mecanico", "Quimico permitido", "Otro"], "requerido": true, "orden": 8, "config": { "opcion_otro": true, "esquemas": ["UE 2018/848", "NOP", "Global G.A.P."] } },
+            { "nombre_interno": "bodega_insumos_separada", "etiqueta": "Los insumos se almacenan separados e identificados", "tipo": "bool", "requerido": true, "orden": 9, "config": { "esquemas": ["UE 2018/848", "NOP", "Global G.A.P."] } }
+          ]
+        },
+        {
+          "nombre": "6. Cosecha, acopio y trazabilidad",
+          "orden": 6,
+          "_pilar": "Trazabilidad y cadena de custodia",
+          "campos": [
+            { "nombre_interno": "produccion_estimada", "etiqueta": "Produccion estimada del ciclo (qq)", "tipo": "number", "requerido": true, "orden": 1, "config": { "esquemas": ["EUDR", "UE 2018/848", "Fairtrade"] } },
+            { "nombre_interno": "rendimiento_por_ha", "etiqueta": "Rendimiento por hectarea (qq/ha)", "tipo": "number", "requerido": false, "orden": 2, "config": { "esquemas": ["EUDR", "UE 2018/848"] } },
+            { "nombre_interno": "separacion_organico_convencional", "etiqueta": "Se separa el producto organico del convencional en todo momento", "tipo": "bool", "requerido": true, "orden": 3, "config": { "esquemas": ["UE 2018/848", "NOP", "JAS"] } },
+            { "nombre_interno": "lugar_beneficio", "etiqueta": "Lugar de beneficio / procesamiento", "tipo": "enum", "opciones": ["Casa del productor", "En la parcela", "Beneficio de la organizacion", "Beneficio de terceros", "Otro"], "requerido": true, "orden": 4, "config": { "opcion_otro": true, "esquemas": ["UE 2018/848", "NOP", "EUDR"] } },
+            { "nombre_interno": "transporte_identificado", "etiqueta": "El producto viaja identificado con codigo de lote", "tipo": "bool", "requerido": true, "orden": 5, "config": { "esquemas": ["EUDR", "UE 2018/848", "Fairtrade"] } },
+            { "nombre_interno": "modelo_cadena_custodia", "etiqueta": "Modelo de cadena de custodia", "tipo": "enum", "opciones": ["Segregacion", "Balance de masa", "Identidad preservada"], "requerido": true, "orden": 6, "config": { "esquemas": ["EUDR", "Rainforest Alliance", "Fairtrade"] } },
+            { "nombre_interno": "lote_codigo", "etiqueta": "Codigo de lote asignado", "tipo": "text", "requerido": false, "orden": 7, "config": { "esquemas": ["EUDR", "UE 2018/848"] } }
+          ]
+        },
+        {
+          "nombre": "7. Trabajo y derechos humanos",
+          "orden": 7,
+          "_pilar": "Derechos laborales y humanos",
+          "campos": [
+            { "nombre_interno": "usa_mano_obra_contratada", "etiqueta": "Se contrata mano de obra ajena a la familia", "tipo": "bool", "requerido": true, "orden": 1, "config": { "esquemas": ["SMETA", "Fairtrade", "Rainforest Alliance", "EUDR"] } },
+            { "nombre_interno": "trabajadores_permanentes", "etiqueta": "Numero de trabajadores permanentes", "tipo": "number", "requerido": false, "orden": 2, "config": { "condicion": { "campo": "usa_mano_obra_contratada", "igual": true }, "esquemas": ["SMETA", "Fairtrade"] } },
+            { "nombre_interno": "trabajadores_temporales", "etiqueta": "Numero de trabajadores temporales en cosecha", "tipo": "number", "requerido": false, "orden": 3, "config": { "condicion": { "campo": "usa_mano_obra_contratada", "igual": true }, "esquemas": ["SMETA", "Fairtrade"] } },
+            { "nombre_interno": "participacion_menores", "etiqueta": "Participacion de menores de edad en labores", "tipo": "enum", "opciones": ["No participan", "Labores ligeras familiares fuera del horario escolar", "Labores peligrosas o en horario escolar"], "requerido": true, "orden": 4, "config": { "esquemas": ["SMETA", "Fairtrade", "Rainforest Alliance", "EUDR"] } },
+            { "nombre_interno": "pago_minimo_legal", "etiqueta": "El pago es igual o superior al salario minimo legal", "tipo": "bool", "requerido": false, "orden": 5, "config": { "condicion": { "campo": "usa_mano_obra_contratada", "igual": true }, "esquemas": ["SMETA", "Fairtrade", "EUDR"] } },
+            { "nombre_interno": "equipo_proteccion", "etiqueta": "Se provee equipo de proteccion personal", "tipo": "bool", "requerido": false, "orden": 6, "config": { "condicion": { "campo": "usa_mano_obra_contratada", "igual": true }, "esquemas": ["SMETA", "Global G.A.P.", "Rainforest Alliance"] } },
+            { "nombre_interno": "capacitacion_seguridad", "etiqueta": "Recibio capacitacion en seguridad y manejo de insumos", "tipo": "bool", "requerido": true, "orden": 7, "config": { "esquemas": ["SMETA", "Global G.A.P.", "UE 2018/848"] } },
+            { "nombre_interno": "libertad_asociacion", "etiqueta": "Se respeta la libertad de asociacion de los trabajadores", "tipo": "enum", "opciones": ["Si", "No", "No aplica"], "requerido": false, "orden": 8, "config": { "condicion": { "campo": "usa_mano_obra_contratada", "igual": true }, "esquemas": ["SMETA", "Fairtrade"] } }
+          ]
+        },
+        {
+          "nombre": "8. Ambiente, agua y biodiversidad",
+          "orden": 8,
+          "_pilar": "Gestion ambiental",
+          "campos": [
+            { "nombre_interno": "fuente_agua", "etiqueta": "Fuente principal de agua", "tipo": "enum", "opciones": ["Manantial", "Rio o arroyo", "Pozo", "Toma municipal", "Cosecha de lluvia", "Otro"], "requerido": true, "orden": 1, "config": { "opcion_otro": true, "esquemas": ["UE 2018/848", "Global G.A.P.", "Rainforest Alliance"] } },
+            { "nombre_interno": "manejo_aguas_residuales", "etiqueta": "Manejo de aguas mieles / residuales del beneficio", "tipo": "enum", "opciones": ["Fosa de infiltracion", "Biofiltro / humedal", "Reuso como abono", "Descarga directa", "No aplica"], "requerido": true, "orden": 2, "config": { "esquemas": ["UE 2018/848", "Rainforest Alliance", "Global G.A.P."] } },
+            { "nombre_interno": "manejo_residuos_solidos", "etiqueta": "Manejo de residuos solidos y envases", "tipo": "enum", "opciones": ["Separacion y acopio", "Compostaje", "Entrega a centro autorizado", "Quema", "Sin manejo"], "requerido": true, "orden": 3, "config": { "esquemas": ["UE 2018/848", "Global G.A.P.", "Rainforest Alliance"] } },
+            { "nombre_interno": "sistema_sombra", "etiqueta": "Sistema de sombra del cultivo", "tipo": "enum", "opciones": ["Sin sombra", "Sombra ligera", "Policultivo / agroforestal", "Bajo dosel de bosque"], "requerido": true, "orden": 4, "config": { "esquemas": ["Rainforest Alliance", "UE 2018/848", "EUDR"] } },
+            { "nombre_interno": "especies_sombra", "etiqueta": "Principales especies de sombra presentes", "tipo": "text", "requerido": false, "orden": 5, "config": { "esquemas": ["Rainforest Alliance"] } },
+            { "nombre_interno": "area_conservacion_ha", "etiqueta": "Area destinada a conservacion dentro de la finca (ha)", "tipo": "number", "requerido": false, "orden": 6, "config": { "esquemas": ["Rainforest Alliance", "EUDR"] } },
+            { "nombre_interno": "practicas_conservacion_suelo", "etiqueta": "Practicas de conservacion de suelo aplicadas", "tipo": "enum", "opciones": ["Barreras vivas", "Terrazas", "Coberturas", "Curvas a nivel", "Ninguna", "Otro"], "requerido": true, "orden": 7, "config": { "opcion_otro": true, "esquemas": ["UE 2018/848", "Rainforest Alliance", "Global G.A.P."] } }
+          ]
+        },
+        {
+          "nombre": "9. Sistema Interno de Control (SIC)",
+          "orden": 9,
+          "_pilar": "SIC / ICS y gobernanza del grupo",
+          "campos": [
+            { "nombre_interno": "inspeccion_interna_realizada", "etiqueta": "Se realizo la inspeccion interna del ciclo", "tipo": "bool", "requerido": true, "orden": 1, "config": { "esquemas": ["UE 2018/848", "NOP", "Fairtrade", "Global G.A.P."] } },
+            { "nombre_interno": "fecha_inspeccion_interna", "etiqueta": "Fecha de la inspeccion interna", "tipo": "date", "requerido": false, "orden": 2, "config": { "condicion": { "campo": "inspeccion_interna_realizada", "igual": true }, "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "inspector_interno_nombre", "etiqueta": "Nombre del inspector interno", "tipo": "text", "requerido": false, "orden": 3, "config": { "condicion": { "campo": "inspeccion_interna_realizada", "igual": true }, "esquemas": ["UE 2018/848", "Fairtrade"] } },
+            { "nombre_interno": "firmo_compromiso_organico", "etiqueta": "El productor firmo el compromiso / contrato organico del grupo", "tipo": "bool", "requerido": true, "orden": 4, "config": { "esquemas": ["UE 2018/848", "NOP"] } },
+            { "nombre_interno": "capacitaciones_recibidas_ano", "etiqueta": "Numero de capacitaciones recibidas en el ano", "tipo": "number", "requerido": false, "orden": 5, "config": { "esquemas": ["UE 2018/848", "Fairtrade", "Rainforest Alliance"] } }
+          ]
+        },
+        {
+          "nombre": "10. Resultado, no conformidades y firmas",
+          "orden": 10,
+          "_pilar": "No conformidades, acciones correctivas y evidencia",
+          "campos": [
+            { "nombre_interno": "resultado_inspeccion", "etiqueta": "Resultado de la inspeccion", "tipo": "enum", "opciones": ["Aprobado", "Aprobado con condiciones", "Sancionado"], "requerido": true, "orden": 1, "config": { "esquemas": ["UE 2018/848", "NOP", "Fairtrade", "Global G.A.P."] } },
+            { "nombre_interno": "no_conformidades", "etiqueta": "No conformidades detectadas", "tipo": "tabla", "requerido": false, "orden": 2, "config": { "columnas": [{ "id": "descripcion", "label": "Descripcion", "tipo": "text" }, { "id": "severidad", "label": "Severidad", "tipo": "enum", "opciones": ["Menor", "Mayor", "Critica"] }, { "id": "plazo", "label": "Plazo de cierre", "tipo": "date" }, { "id": "cerrada", "label": "Cerrada", "tipo": "bool" }], "esquemas": ["UE 2018/848", "NOP", "SMETA", "Global G.A.P."] } },
+            { "nombre_interno": "observaciones_generales", "etiqueta": "Observaciones generales del inspector", "tipo": "text", "requerido": false, "orden": 3, "config": { "esquemas": ["Todos"] } },
+            { "nombre_interno": "foto_evidencia_general", "etiqueta": "Fotografia de evidencia general", "tipo": "image", "requerido": false, "orden": 4, "config": { "esquemas": ["EUDR", "UE 2018/848", "SMETA"] } },
+            { "nombre_interno": "fecha_ficha", "etiqueta": "Fecha de levantamiento de la ficha", "tipo": "date", "requerido": true, "orden": 5, "config": { "esquemas": ["Todos"] } },
+            { "nombre_interno": "firma_productor", "etiqueta": "Firma del productor", "tipo": "signature", "requerido": true, "orden": 6, "config": { "esquemas": ["UE 2018/848", "NOP", "Fairtrade", "SMETA"] } },
+            { "nombre_interno": "firma_inspector", "etiqueta": "Firma del inspector", "tipo": "signature", "requerido": true, "orden": 7, "config": { "esquemas": ["UE 2018/848", "NOP", "Fairtrade", "SMETA"] } }
+          ]
+        }
+      ]
+    }
+  ]
+}
