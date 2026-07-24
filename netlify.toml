@@ -1,0 +1,6 @@
+[build.environment]
+  # Estas variables NEXT_PUBLIC_* se incrustan a propósito en el bundle del
+  # cliente (Supabase anon key, config de mapa). El escáner de secretos de
+  # Netlify las marca como falso positivo porque también existen como env
+  # vars del sitio; se excluyen explícitamente de ese escaneo.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_MAPA_CENTRO,NEXT_PUBLIC_MAPBOX_TOKEN"
