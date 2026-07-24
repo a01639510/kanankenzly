@@ -17,25 +17,25 @@ export default function NoMembership() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-slate-100 p-6">
-      <div className="max-w-md rounded-xl bg-white p-8 text-center shadow-sm">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-2xl">
-          ⚠️
-        </div>
-        <h1 className="mb-2 text-lg font-semibold text-slate-800">
+    <div className="flex h-screen w-screen items-center justify-center bg-black p-6">
+      <div className="max-w-md rounded-2xl bg-surface p-8 text-center">
+        <p className="mx-auto mb-4 inline-block rounded-full border border-amber-500/30 px-4 py-1.5 font-mono text-[11px] tracking-wide text-amber-400">
+          Sin organización
+        </p>
+        <h1 className="mb-2 text-lg font-normal text-cream">
           Tu cuenta no tiene organización asignada
         </h1>
-        <p className="mb-6 text-sm text-slate-600">
+        <p className="mb-6 text-sm text-gray-400">
           Iniciaste sesión correctamente, pero no encontramos una membresía en
           ninguna organización. Ejecuta el bloque de bootstrap del SQL{' '}
-          <code className="rounded bg-slate-100 px-1">
+          <code className="rounded bg-surface2 px-1 text-gray-300">
             0002_storage_and_bootstrap.sql
           </code>{' '}
           o pide a un administrador que te agregue.
         </p>
         <button
           onClick={signOut}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black hover:bg-orange-400"
         >
           Cerrar sesión
         </button>

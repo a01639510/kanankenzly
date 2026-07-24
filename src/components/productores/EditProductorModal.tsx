@@ -83,7 +83,7 @@ export default function EditProductorModal({
         </Field>
       </div>
 
-      {error && <p className="rounded-md bg-red-50 p-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>}
 
       <ModalActions busy={busy} onClose={onClose} onSave={save} />
     </Modal>
@@ -92,7 +92,7 @@ export default function EditProductorModal({
 
 // --- shared modal bits (kept local to avoid premature abstraction) ---
 const inputCls =
-  'w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400'
+  'w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400'
 
 export function Modal({
   title,
@@ -104,12 +104,14 @@ export function Modal({
   children: React.ReactNode
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-lg bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-          <h2 className="text-base font-semibold text-slate-800">{title}</h2>
-          <button onClick={onClose} className="rounded p-1 text-slate-400 hover:bg-slate-100" aria-label="Cerrar">
-            ✕
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <h2 className="text-base font-normal text-cream">{title}</h2>
+          <button onClick={onClose} className="rounded-full p-1 text-gray-500 transition hover:text-cream" aria-label="Cerrar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
           </button>
         </div>
         <div className="space-y-3 p-4">{children}</div>
@@ -121,7 +123,7 @@ export function Modal({
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-slate-700">{label}</label>
+      <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">{label}</label>
       {children}
     </div>
   )
@@ -138,13 +140,13 @@ export function ModalActions({
 }) {
   return (
     <div className="flex justify-end gap-2 pt-1">
-      <button onClick={onClose} className="rounded-md px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100">
+      <button onClick={onClose} className="rounded-full px-3 py-1.5 text-sm text-gray-500 transition hover:text-cream">
         Cancelar
       </button>
       <button
         disabled={busy}
         onClick={onSave}
-        className="rounded-md bg-orange-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+        className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
       >
         {busy ? 'Guardando…' : 'Guardar'}
       </button>

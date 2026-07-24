@@ -17,11 +17,11 @@ export default async function ProductoresPage() {
   const productores = await getProductoresDashboard()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/productores/nuevo"
-          className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           + Nuevo productor
         </Link>

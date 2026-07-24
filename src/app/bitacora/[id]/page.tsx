@@ -26,11 +26,11 @@ export default async function BitacoraDetallePage({
   const label = `${b.parcela_nombre || cod} · ${cod} — ${b.productor_nombre}`
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href={`/bitacora/${b.id}/pdf`}
-          className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
           Ver / Descargar PDF
         </Link>

@@ -25,7 +25,7 @@ export default async function HistorialParcelaPage({
   const label = `${h.parcela_nombre || cod} · ${cod} — ${h.productor_nombre}`
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto">
         <HistorialEditor

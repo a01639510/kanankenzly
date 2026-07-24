@@ -48,17 +48,17 @@ export default function ParcelaPanel({
   }
 
   return (
-    <aside className="absolute inset-0 z-40 flex flex-col border-slate-200 bg-white md:static md:z-auto md:w-80 md:shrink-0 md:border-l">
-      <div className="flex items-start justify-between border-b border-slate-100 p-4">
+    <aside className="absolute inset-0 z-40 flex flex-col border-white/10 bg-surface md:static md:z-auto md:w-80 md:shrink-0 md:border-l">
+      <div className="flex items-start justify-between border-b border-white/10 p-4">
         <div>
-          <h2 className="text-base font-semibold text-slate-800">
+          <h2 className="text-base font-normal text-cream">
             {parcela.nombre || parcela.codigo_parcela}
           </h2>
-          <p className="text-xs text-slate-500">{parcela.codigo_parcela}</p>
+          <p className="text-xs text-gray-500">{parcela.codigo_parcela}</p>
         </div>
         <button
           onClick={onClose}
-          className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          className="rounded-full p-1 text-gray-500 hover:bg-surface2 hover:text-cream"
           aria-label="Cerrar"
         >
           ✕
@@ -78,10 +78,10 @@ export default function ParcelaPanel({
         />
         <Field label="Cultivo" value={parcela.tipo_cultivo} />
 
-        <div className="my-3 h-px bg-slate-100" />
+        <div className="my-3 h-px bg-white/5" />
 
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
+          <span className="font-mono text-[11px] tracking-wide text-gray-500">
             Estado
           </span>
           <EstadoBadge estado={parcela.estado_validacion} />
@@ -118,14 +118,14 @@ export default function ParcelaPanel({
             <Field label="Levantamiento" value={parcela.fecha_levantamiento ?? '—'} />
           </>
         ) : (
-          <p className="mt-3 rounded-md bg-slate-50 p-3 text-sm text-slate-500">
+          <p className="mt-3 rounded-lg bg-surface2 p-3 text-sm text-gray-400">
             Esta parcela aún no tiene polígono. Sube un KML/KMZ para
             georreferenciarla.
           </p>
         )}
 
         {error && (
-          <p className="mt-3 rounded-md bg-red-50 p-2 text-sm text-red-600">
+          <p className="mt-3 rounded-lg bg-red-500/10 p-2 text-sm text-red-400">
             {error}
           </p>
         )}
@@ -134,25 +134,25 @@ export default function ParcelaPanel({
           href={`/geosic/mapa/${parcela.id}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 flex items-center justify-center gap-1.5 rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          className="mt-4 flex items-center justify-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
-          🗺️ Mapa imprimible
+          Mapa imprimible
         </a>
       </div>
 
       {puedeValidar && tienePoligono && parcela.estado_validacion !== 'validado' && (
-        <div className="flex gap-2 border-t border-slate-100 p-3">
+        <div className="flex gap-2 border-t border-white/10 p-3">
           <button
             disabled={busy}
             onClick={() => validar('aprobar')}
-            className="flex-1 rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-700 disabled:opacity-50"
+            className="flex-1 rounded-full bg-green-500 px-3 py-2 text-sm font-medium text-black transition hover:bg-green-400 disabled:opacity-50"
           >
             {busy ? '…' : 'Aprobar'}
           </button>
           <button
             disabled={busy}
             onClick={() => validar('rechazar')}
-            className="flex-1 rounded-md border border-red-200 px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+            className="flex-1 rounded-full border border-red-500/40 px-3 py-2 text-sm font-medium text-red-400 transition hover:bg-red-500/10 disabled:opacity-50"
           >
             Rechazar
           </button>
@@ -160,11 +160,11 @@ export default function ParcelaPanel({
       )}
 
       {puedeValidar && parcela.estado_validacion === 'validado' && (
-        <div className="border-t border-slate-100 p-3">
+        <div className="border-t border-white/10 p-3">
           <button
             disabled={busy}
             onClick={() => validar('rechazar')}
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-50"
+            className="w-full rounded-full border border-white/10 px-3 py-2 text-sm font-medium text-gray-400 transition hover:border-orange-500/40 hover:text-cream disabled:opacity-50"
           >
             Revertir validación
           </button>
@@ -185,10 +185,10 @@ function Field({
 }) {
   return (
     <div className="flex items-center justify-between py-1.5">
-      <span className="text-xs text-slate-500">{label}</span>
+      <span className="text-xs text-gray-500">{label}</span>
       <span
         className={`text-sm font-medium ${
-          highlight === 'danger' ? 'text-red-600' : 'text-slate-800'
+          highlight === 'danger' ? 'text-red-400' : 'text-cream'
         }`}
       >
         {value}

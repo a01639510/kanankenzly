@@ -55,16 +55,16 @@ export default function FichaCaptureClient({
   if (estado.fase === 'sin_datos') {
     return (
       <Centro>
-        <p className="mb-2 font-medium text-slate-700">
+        <p className="mb-2 font-medium text-cream">
           No hay catálogos descargados en este dispositivo.
         </p>
-        <p className="mb-4 text-sm text-slate-500">
+        <p className="mb-4 text-sm text-gray-500">
           Conéctate a internet una vez para descargar productores, parcelas y
           formularios; después podrás capturar fichas sin conexión.
         </p>
         <button
           onClick={cargar}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           Reintentar
         </button>
@@ -75,10 +75,10 @@ export default function FichaCaptureClient({
   if (estado.fase === 'error') {
     return (
       <Centro>
-        <p className="mb-3 text-sm text-red-600">{estado.mensaje}</p>
+        <p className="mb-3 text-sm text-red-400">{estado.mensaje}</p>
         <button
           onClick={cargar}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           Reintentar
         </button>
@@ -89,7 +89,7 @@ export default function FichaCaptureClient({
   return (
     <>
       {estado.offline && (
-        <div className="mx-auto mt-4 max-w-3xl rounded-md bg-amber-50 px-4 py-2 text-sm text-amber-700">
+        <div className="mx-auto mt-4 max-w-3xl rounded-xl bg-amber-500/10 px-4 py-2 text-sm text-amber-400">
           Estás sin conexión. La ficha se guardará en el dispositivo y se subirá
           sola cuando vuelva la señal.
         </div>

@@ -79,7 +79,7 @@ export default function ProductoresTable({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Summary cards */}
-      <div className="flex items-stretch divide-x divide-slate-200 border-b border-slate-200 bg-white text-sm">
+      <div className="flex items-stretch divide-x divide-white/10 border-b border-white/10 bg-surface text-sm">
         <Summary label="Productores" value={totals.productores} />
         <Summary label="Parcelas" value={totals.parcelas} />
         <Summary
@@ -89,22 +89,22 @@ export default function ProductoresTable({
         <Summary
           label="Parcelas con polígono"
           value={totals.conPoligono}
-          accent="#0ea5e9"
+          accent="#38bdf8"
         />
       </div>
 
-      <div className="border-b border-slate-100 bg-white p-2">
+      <div className="border-b border-white/5 bg-surface p-2">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar productor, código, comunidad o municipio…"
-          className="w-full max-w-md rounded-md border border-slate-200 px-3 py-1.5 text-sm outline-none focus:border-orange-400"
+          className="w-full max-w-md rounded-lg border border-white/10 bg-black px-3 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
         />
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto">
         <table className="w-full min-w-[720px] border-collapse text-sm">
-          <thead className="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+          <thead className="sticky top-0 z-10 bg-surface text-left font-mono text-[11px] uppercase tracking-wide text-gray-500 border-b border-white/10">
             <tr>
               <Th onClick={() => toggleSort('nombre_completo')} active={sortKey === 'nombre_completo'} asc={asc}>
                 Productor
@@ -136,27 +136,27 @@ export default function ProductoresTable({
                 <tr
                   key={p.id}
                   onClick={() => router.push(`/productores/${p.id}`)}
-                  className="cursor-pointer border-b border-slate-50 hover:bg-slate-50"
+                  className="cursor-pointer border-b border-white/5 hover:bg-surface2"
                 >
                   <td className="px-4 py-2">
-                    <div className="font-medium text-slate-800">
+                    <div className="font-medium text-cream">
                       {p.nombre_completo}
                     </div>
-                    <div className="text-xs text-slate-400">{p.codigo}</div>
+                    <div className="text-xs text-gray-500">{p.codigo}</div>
                   </td>
-                  <td className="px-4 py-2 text-slate-600">
+                  <td className="px-4 py-2 text-gray-400">
                     {p.comunidad || '—'}
                     {p.municipio ? (
-                      <span className="text-slate-400">, {p.municipio}</span>
+                      <span className="text-gray-500">, {p.municipio}</span>
                     ) : null}
                   </td>
-                  <td className="px-4 py-2 text-slate-600">
+                  <td className="px-4 py-2 text-gray-400">
                     {CULTIVO_LABEL[p.tipo_productor]}
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-700">
+                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
                     {p.num_parcelas}
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-700">
+                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
                     {Number(p.hectareas_totales).toFixed(2)}
                   </td>
                   <td className="px-4 py-2">
@@ -166,12 +166,12 @@ export default function ProductoresTable({
                       total={p.num_parcelas}
                     />
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-slate-700">
+                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
                     {p.num_fichas}
                   </td>
-                  <td className="px-4 py-2 text-slate-600">
+                  <td className="px-4 py-2 text-gray-400">
                     {p.ultima_inspeccion ?? (
-                      <span className="text-amber-600">Sin inspección</span>
+                      <span className="text-amber-400">Sin inspección</span>
                     )}
                   </td>
                 </tr>
@@ -179,7 +179,7 @@ export default function ProductoresTable({
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
+                <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
                   Sin productores que coincidan con la búsqueda.
                 </td>
               </tr>
@@ -202,10 +202,10 @@ function Summary({
 }) {
   return (
     <div className="flex flex-1 flex-col px-4 py-2">
-      <span className="text-xs text-slate-500">{label}</span>
+      <span className="font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
       <span
-        className="text-lg font-semibold leading-tight"
-        style={{ color: accent ?? '#0f172a' }}
+        className="text-lg font-medium leading-tight"
+        style={{ color: accent ?? '#E5E2D2' }}
       >
         {value}
       </span>
@@ -229,9 +229,9 @@ function Th({
   return (
     <th
       onClick={onClick}
-      className={`cursor-pointer select-none px-4 py-2 font-medium hover:text-slate-700 ${
+      className={`cursor-pointer select-none px-4 py-2 font-medium hover:text-cream ${
         numeric ? 'text-right' : ''
-      } ${active ? 'text-orange-600' : ''}`}
+      } ${active ? 'text-orange-400' : ''}`}
     >
       {children}
       {active ? (asc ? ' ▲' : ' ▼') : ''}
@@ -250,13 +250,13 @@ function CoberturaBar({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
+      <div className="h-1.5 w-16 overflow-hidden rounded-full bg-white/5">
         <div
           className="h-full rounded-full bg-sky-500"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs tabular-nums text-slate-500">
+      <span className="text-xs tabular-nums text-gray-500">
         {con}/{total}
       </span>
     </div>

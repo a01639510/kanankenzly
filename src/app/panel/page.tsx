@@ -33,25 +33,25 @@ export default async function PanelPage() {
   const enRiesgo = s.eudr_deforestacion + s.eudr_por_clasificacion.posible_perdida
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-6xl space-y-6">
           <div>
-            <h1 className="text-lg font-semibold text-slate-800">Panel de coordinación</h1>
-            <p className="text-sm text-slate-500">Resumen operativo de {result.session.orgNombre}</p>
+            <h1 className="text-xl font-normal text-cream">Panel de coordinación</h1>
+            <p className="mt-1 text-sm text-gray-500">Resumen operativo de {result.session.orgNombre}</p>
           </div>
 
           {/* ALERTA EUDR — lo primero que debe ver el coordinador */}
           {enRiesgo > 0 && (
             <Link href="/satelite" className="block">
-              <div className="rounded-xl border border-rose-300 bg-rose-50 p-4 transition hover:border-rose-400">
-                <p className="text-sm font-semibold text-rose-800">
-                  ⚠ Parcelas con riesgo EUDR
+              <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 transition hover:border-red-500/40">
+                <p className="text-sm font-medium text-red-400">
+                  Parcelas con riesgo EUDR
                 </p>
-                <p className="mt-1 text-sm text-rose-700">
+                <p className="mt-1 text-sm text-gray-400">
                   {s.eudr_deforestacion > 0 && (
-                    <b>
+                    <b className="text-gray-300">
                       {s.eudr_deforestacion} con veredicto de deforestación
                     </b>
                   )}
@@ -75,7 +75,7 @@ export default async function PanelPage() {
           {/* Tamizado EUDR */}
           <Section title="Tamizado EUDR (alerta temprana por NDVI)" href="/satelite">
             {s.eudr_analizadas === 0 ? (
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-gray-500">
                 Aún no se ha corrido el análisis EUDR. Ábrelo en Satélite para analizar las parcelas.
               </p>
             ) : (
@@ -83,7 +83,7 @@ export default async function PanelPage() {
                 {CLASIFICACIONES.map((c) => (
                   <span
                     key={c}
-                    className="rounded-full px-3 py-1 text-sm font-medium text-white"
+                    className="rounded-full px-3 py-1 text-sm font-medium text-black"
                     style={{ backgroundColor: EUDR_COLOR[c] }}
                   >
                     {EUDR_LABEL[c]}: {s.eudr_por_clasificacion[c]}
@@ -92,27 +92,27 @@ export default async function PanelPage() {
               </div>
             )}
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Mini label="Veredicto: verificadas" value={n(s.eudr_verificadas)} color="#22c55e" />
-              <Mini label="Veredicto: deforestación" value={n(s.eudr_deforestacion)} color="#e11d48" />
+              <Mini label="Veredicto: verificadas" value={n(s.eudr_verificadas)} color="#4ade80" />
+              <Mini label="Veredicto: deforestación" value={n(s.eudr_deforestacion)} color="#fb7185" />
               <Mini
                 label="Traslape bosque 2020"
                 value={`${n(s.bosque2020_con_traslape)} / ${n(s.bosque2020_evaluadas)}`}
-                color="#ea580c"
+                color="#fb923c"
               />
-              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#0f172a" />
+              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#E5E2D2" />
             </div>
           </Section>
 
           {/* Cobertura geográfica */}
           <Section title="Cobertura geográfica (GeoSIC)" href="/geosic">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Mini label="Con polígono" value={`${s.con_poligono} · ${pctGeo}%`} color="#0ea5e9" />
-              <Mini label="Validadas" value={`${s.validadas} · ${pctVal}%`} color="#22c55e" />
-              <Mini label="Diferencia crítica" value={s.diferencia_critica} color="#ef4444" />
-              <Mini label="Sin polígono" value={s.sin_poligono} color="#64748b" />
+              <Mini label="Con polígono" value={`${s.con_poligono} · ${pctGeo}%`} color="#38bdf8" />
+              <Mini label="Validadas" value={`${s.validadas} · ${pctVal}%`} color="#4ade80" />
+              <Mini label="Diferencia crítica" value={s.diferencia_critica} color="#f87171" />
+              <Mini label="Sin polígono" value={s.sin_poligono} color="#6b7280" />
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full rounded-full bg-sky-500" style={{ width: `${pctGeo}%` }} />
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/5">
+              <div className="h-full rounded-full bg-orange-500" style={{ width: `${pctGeo}%` }} />
             </div>
           </Section>
 
@@ -124,7 +124,7 @@ export default async function PanelPage() {
                   {ESTADO_FICHA_LABEL[e]}: {s.fichas_por_estado[e]}
                 </span>
               ))}
-              {s.fichas_total === 0 && <span className="text-sm text-slate-400">Aún no hay fichas.</span>}
+              {s.fichas_total === 0 && <span className="text-sm text-gray-500">Aún no hay fichas.</span>}
             </div>
           </Section>
 
@@ -141,9 +141,9 @@ export default async function PanelPage() {
 
 function Kpi({ label, value, href }: { label: string; value: string | number; href?: string }) {
   const inner = (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 transition hover:border-orange-300">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className="mt-1 text-2xl font-semibold text-slate-800">{value}</div>
+    <div className="rounded-2xl border border-white/10 bg-surface p-4 transition hover:border-orange-500/40">
+      <div className="font-mono text-[11px] tracking-wide text-gray-500">{label}</div>
+      <div className="mt-1 text-2xl font-normal text-cream">{value}</div>
     </div>
   )
   return href ? <Link href={href}>{inner}</Link> : inner
@@ -151,10 +151,10 @@ function Kpi({ label, value, href }: { label: string; value: string | number; hr
 
 function Section({ title, href, children }: { title: string; href: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
+    <section className="rounded-2xl border border-white/10 bg-surface p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">{title}</h2>
-        <Link href={href} className="text-sm font-medium text-orange-600 hover:text-orange-700">
+        <h2 className="font-mono text-[11px] uppercase tracking-wide text-gray-500">{title}</h2>
+        <Link href={href} className="text-sm text-orange-400 hover:text-orange-300">
           Abrir →
         </Link>
       </div>
@@ -166,8 +166,8 @@ function Section({ title, href, children }: { title: string; href: string; child
 function Mini({ label, value, color }: { label: string; value: string | number; color: string }) {
   return (
     <div>
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className="text-lg font-semibold" style={{ color }}>
+      <div className="font-mono text-[11px] tracking-wide text-gray-500">{label}</div>
+      <div className="text-lg font-medium" style={{ color }}>
         {value}
       </div>
     </div>

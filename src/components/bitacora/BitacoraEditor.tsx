@@ -120,9 +120,9 @@ export default function BitacoraEditor({
   return (
     <div className="mx-auto max-w-6xl p-6">
       {/* Encabezado: parcela + año */}
-      <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-slate-200 bg-white p-4">
+      <div className="mb-4 flex flex-wrap items-end gap-4 rounded-2xl border border-white/10 bg-surface p-4">
         <div className="flex-1">
-          <label className="mb-1 block text-sm font-medium text-slate-700">
+          <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
             Parcela
           </label>
           {mode === 'nueva' ? (
@@ -132,34 +132,34 @@ export default function BitacoraEditor({
               onChange={setParcelaId}
             />
           ) : (
-            <div className="text-sm font-medium text-slate-800">
+            <div className="text-sm font-medium text-cream">
               {parcelaFija?.label}
             </div>
           )}
         </div>
         <div className="w-28">
-          <label className="mb-1 block text-sm font-medium text-slate-700">Año</label>
+          <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">Año</label>
           <input
             type="number"
             value={anio}
             onChange={(e) => setAnio(Number(e.target.value))}
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+            className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
           />
         </div>
         <button
           disabled={busy}
           onClick={guardar}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
         >
           {busy ? 'Guardando…' : 'Guardar bitácora'}
         </button>
       </div>
 
       {error && (
-        <p className="mb-3 rounded-md bg-red-50 p-2 text-sm text-red-600">{error}</p>
+        <p className="mb-3 rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>
       )}
       {guardadaOffline && (
-        <p className="mb-3 rounded-md bg-amber-50 p-2 text-sm text-amber-700">
+        <p className="mb-3 rounded-lg bg-amber-500/10 p-2 text-sm text-amber-400">
           Sin conexión: la bitácora se guardó en el dispositivo y se subirá sola
           al recuperar señal.
         </p>
@@ -180,7 +180,7 @@ export default function BitacoraEditor({
       />
 
       {/* Cosecha por especie: fecha + kg EN UVA, separado árabe/robusta */}
-      <section className="mb-4 rounded-lg border border-slate-200 bg-white p-4">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <CosechaEspecie
             titulo="Café Arábica"
@@ -204,16 +204,16 @@ export default function BitacoraEditor({
       </section>
 
       {/* Insumos */}
-      <section className="mb-4 rounded-lg border border-slate-200 bg-white p-4">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-4">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="font-mono text-[11px] uppercase tracking-wide text-gray-500">
             Sustancias para control de plagas, malezas y enfermedades
           </h2>
           <button
             onClick={() =>
               setDatos((d) => ({ ...d, insumos: [...d.insumos, emptyInsumo()] }))
             }
-            className="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50"
+            className="rounded-full border border-white/10 bg-surface px-2.5 py-1 text-xs font-medium text-cream transition hover:border-orange-500/40"
           >
             + Producto
           </button>
@@ -221,7 +221,7 @@ export default function BitacoraEditor({
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] text-xs">
             <thead>
-              <tr className="text-left text-slate-500">
+              <tr className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
                 <th className="p-1 font-medium">Nombre del producto</th>
                 <th className="p-1 font-medium">Ingrediente activo</th>
                 <th className="p-1 font-medium">Ingredientes inertes</th>
@@ -247,15 +247,15 @@ export default function BitacoraEditor({
       </section>
 
       {/* Observaciones */}
-      <section className="mb-4 rounded-lg border border-slate-200 bg-white p-4">
-        <label className="mb-1 block text-sm font-semibold uppercase tracking-wide text-slate-500">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-4">
+        <label className="mb-1 block font-mono text-[11px] uppercase tracking-wide text-gray-500">
           Observaciones
         </label>
         <textarea
           rows={3}
           value={datos.observaciones}
           onChange={(e) => setDatos((d) => ({ ...d, observaciones: e.target.value }))}
-          className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+          className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
         />
       </section>
     </div>
@@ -290,10 +290,10 @@ function ParcelaBuscador({
         onChange={(e) => { setQ(e.target.value); setAbierto(true) }}
         onFocus={() => { setQ(''); setAbierto(true) }}
         placeholder="Buscar parcela por nombre o código…"
-        className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+        className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
       />
       {abierto && (
-        <div className="absolute z-20 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-slate-200 bg-white shadow-lg">
+        <div className="absolute z-20 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-white/10 bg-surface">
           {filtradas.slice(0, 60).map((p) => {
             const cod = codigoCorto(p.codigo_parcela, p.nombre)
             return (
@@ -301,15 +301,15 @@ function ParcelaBuscador({
                 key={p.id}
                 type="button"
                 onClick={() => { onChange(p.id); setAbierto(false); setQ('') }}
-                className="block w-full px-3 py-2 text-left text-sm hover:bg-orange-50"
+                className="block w-full px-3 py-2 text-left text-sm hover:bg-surface2"
               >
-                <span className="font-medium text-slate-800">{p.nombre || cod}</span>
-                <span className="ml-2 text-xs text-slate-400">{cod}</span>
+                <span className="font-medium text-cream">{p.nombre || cod}</span>
+                <span className="ml-2 text-xs text-gray-500">{cod}</span>
               </button>
             )
           })}
           {filtradas.length === 0 && (
-            <p className="px-3 py-2 text-sm text-slate-400">Sin coincidencias</p>
+            <p className="px-3 py-2 text-sm text-gray-500">Sin coincidencias</p>
           )}
         </div>
       )}
@@ -336,36 +336,36 @@ function CosechaEspecie({
   onKg: (v: number | null) => void
 }) {
   return (
-    <div className="rounded-md border border-slate-100 p-3">
-      <p className="mb-2 text-sm font-semibold text-slate-700">{titulo}</p>
+    <div className="rounded-xl border border-white/5 p-3">
+      <p className="mb-2 text-sm font-medium text-gray-300">{titulo}</p>
       <div className="mb-2 grid grid-cols-2 gap-2">
         <label className="block">
-          <span className="mb-1 block text-xs text-slate-500">Inicio de cosecha</span>
+          <span className="mb-1 block text-xs text-gray-500">Inicio de cosecha</span>
           <input
             type="date"
             value={fecha}
             onChange={(e) => onFecha(e.target.value)}
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+            className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-xs text-slate-500">Término de cosecha</span>
+          <span className="mb-1 block text-xs text-gray-500">Término de cosecha</span>
           <input
             type="date"
             value={fechaFin}
             onChange={(e) => onFechaFin(e.target.value)}
-            className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+            className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
           />
         </label>
       </div>
       <label className="block">
-        <span className="mb-1 block text-xs text-slate-500">Cosecha en uva (kg)</span>
+        <span className="mb-1 block text-xs text-gray-500">Cosecha en uva (kg)</span>
         <input
           type="number"
           step="0.1"
           value={kg ?? ''}
           onChange={(e) => onKg(e.target.value === '' ? null : Number(e.target.value))}
-          className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+          className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
         />
       </label>
     </div>
@@ -384,9 +384,9 @@ function GridActividades({
   onActividad: (id: string, patch: Partial<BitacoraActividad>) => void
 }) {
   return (
-    <section className="mb-4 rounded-lg border border-slate-200 bg-white p-4">
+    <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-4">
       {titulo && (
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-slate-500">
+        <h2 className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
           {titulo}
         </h2>
       )}
@@ -394,50 +394,48 @@ function GridActividades({
         <table className="border-collapse text-xs">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 border border-slate-300 bg-slate-50 p-1 text-left">
+              <th className="sticky left-0 z-10 border border-white/10 bg-surface2 p-1 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
                 Actividad
               </th>
               {MESES.map((m) => (
-                <th key={m} colSpan={2} className="border border-slate-300 bg-slate-50 p-1 text-center">
+                <th key={m} colSpan={2} className="border border-white/10 bg-surface2 p-1 text-center font-mono text-[11px] uppercase tracking-wide text-gray-500">
                   {m}
                 </th>
               ))}
-              <th className="border border-slate-300 bg-slate-50 p-1 text-center">Gastos</th>
+              <th className="border border-white/10 bg-surface2 p-1 text-center font-mono text-[11px] uppercase tracking-wide text-gray-500">Gastos</th>
             </tr>
             <tr>
-              <th className="sticky left-0 z-10 border border-slate-300 bg-slate-50 p-1"></th>
+              <th className="sticky left-0 z-10 border border-white/10 bg-surface2 p-1"></th>
               {MESES.map((m) => (
                 <FragmentQuincena key={m} />
               ))}
-              <th className="border border-slate-300 bg-slate-50 p-1"></th>
+              <th className="border border-white/10 bg-surface2 p-1"></th>
             </tr>
           </thead>
           <tbody>
             {actividades.map((a) => (
               <tr key={a.id}>
-                <td className="sticky left-0 z-10 whitespace-nowrap border border-slate-300 bg-white p-1 font-medium text-slate-700">
+                <td className="sticky left-0 z-10 whitespace-nowrap border border-white/10 bg-surface p-1 font-medium text-gray-300">
                   {a.nombre}
                   {a.detalle !== undefined && (
                     <input
                       value={a.detalle}
                       onChange={(e) => onActividad(a.id, { detalle: e.target.value })}
                       placeholder="detalle…"
-                      className="ml-2 w-32 rounded border border-slate-200 px-1 py-0.5 text-xs"
+                      className="ml-2 w-32 rounded border border-white/10 bg-black px-1 py-0.5 text-xs text-cream outline-none focus:border-orange-400"
                     />
                   )}
                 </td>
                 {a.marcas.map((on, col) => (
-                  <td key={col} className="border border-slate-200 p-0 text-center">
+                  <td key={col} className="border border-white/5 p-0 text-center">
                     <button
                       onClick={() => onMarca(a.id, col)}
-                      className={`h-6 w-6 ${on ? 'bg-orange-500 text-white' : 'hover:bg-slate-100'}`}
+                      className={`h-6 w-6 ${on ? 'bg-orange-500' : 'hover:bg-surface2'}`}
                       title={`${MESES[Math.floor(col / 2)]} ${col % 2 === 0 ? '15' : '30'}`}
-                    >
-                      {on ? '✓' : ''}
-                    </button>
+                    />
                   </td>
                 ))}
-                <td className="border border-slate-300 p-0">
+                <td className="border border-white/10 p-0">
                   <input
                     type="number"
                     value={a.gastos ?? ''}
@@ -446,7 +444,7 @@ function GridActividades({
                         gastos: e.target.value === '' ? null : Number(e.target.value),
                       })
                     }
-                    className="w-20 px-1 py-0.5 text-xs outline-none"
+                    className="w-20 bg-transparent px-1 py-0.5 text-xs text-cream outline-none"
                   />
                 </td>
               </tr>
@@ -461,8 +459,8 @@ function GridActividades({
 function FragmentQuincena() {
   return (
     <>
-      <th className="border border-slate-300 bg-slate-50 p-1 text-center text-[10px] text-slate-400">15</th>
-      <th className="border border-slate-300 bg-slate-50 p-1 text-center text-[10px] text-slate-400">30</th>
+      <th className="border border-white/10 bg-surface2 p-1 text-center text-[10px] text-gray-500">15</th>
+      <th className="border border-white/10 bg-surface2 p-1 text-center text-[10px] text-gray-500">30</th>
     </>
   )
 }
@@ -479,7 +477,7 @@ function InsumoCell({
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded border border-slate-200 px-1.5 py-1 text-xs outline-none focus:border-orange-400"
+        className="w-full rounded border border-white/10 bg-black px-1.5 py-1 text-xs text-cream outline-none focus:border-orange-400"
       />
     </td>
   )

@@ -12,7 +12,7 @@ interface Props {
 export default function ParcelaList({ parcelas, selectedId, onSelect }: Props) {
   if (parcelas.length === 0) {
     return (
-      <p className="p-4 text-sm text-slate-400">Sin parcelas para mostrar.</p>
+      <p className="p-4 text-sm text-gray-500">Sin parcelas para mostrar.</p>
     )
   }
 
@@ -24,8 +24,8 @@ export default function ParcelaList({ parcelas, selectedId, onSelect }: Props) {
           <li key={p.id}>
             <button
               onClick={() => onSelect(p.id)}
-              className={`flex w-full items-start gap-2.5 border-b border-slate-50 px-3 py-2 text-left transition ${
-                active ? 'bg-orange-50' : 'hover:bg-slate-50'
+              className={`flex w-full items-start gap-2.5 border-b border-white/5 px-3 py-2 text-left transition ${
+                active ? 'bg-surface2' : 'hover:bg-surface2'
               }`}
             >
               <span
@@ -34,15 +34,15 @@ export default function ParcelaList({ parcelas, selectedId, onSelect }: Props) {
                 title={ESTADO_LABEL[p.estado_validacion]}
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-slate-800">
+                <span className="block truncate text-sm font-medium text-cream">
                   {p.nombre || p.codigo_parcela}
                 </span>
-                <span className="block truncate text-xs text-slate-500">
+                <span className="block truncate text-xs text-gray-500">
                   {p.productor_nombre}
                 </span>
               </span>
               {p.diferencia_pct !== null && (
-                <span className="mt-0.5 shrink-0 text-xs font-medium text-slate-400">
+                <span className="mt-0.5 shrink-0 text-xs font-medium text-gray-500">
                   {(p.diferencia_pct * 100).toFixed(0)}%
                 </span>
               )}

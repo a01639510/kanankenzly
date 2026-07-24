@@ -60,19 +60,19 @@ export default function OfflineClient() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 px-6 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-black px-6 text-center">
       <svg width="72" height="48" viewBox="0 0 72 48" className="mb-4" aria-hidden="true">
         <path d="M4 44 A32 32 0 0 1 68 44 Z" fill="#F8921D" />
       </svg>
 
-      <h1 className="text-lg font-semibold text-slate-800">Estás sin conexión</h1>
-      <p className="mt-2 max-w-sm text-sm text-slate-500">
+      <h1 className="text-lg font-normal text-cream">Estás sin conexión</h1>
+      <p className="mt-2 max-w-sm text-sm text-gray-400">
         No hay internet en este momento. Puedes seguir capturando: todo se guarda
         en el dispositivo y se sube solo cuando vuelva la señal.
       </p>
 
       {guardado && (
-        <p className="mt-4 w-full max-w-sm rounded-md bg-green-50 px-4 py-2.5 text-sm text-green-800">
+        <p className="mt-4 w-full max-w-sm rounded-lg bg-green-500/10 px-4 py-2.5 text-sm text-green-400">
           ✓ {guardado} quedó guardada en el dispositivo.
         </p>
       )}
@@ -80,46 +80,46 @@ export default function OfflineClient() {
       <div className="mt-6 flex w-full max-w-xs flex-col gap-2">
         <button
           onClick={() => setVista('ficha')}
-          className="rounded-md bg-orange-500 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2.5 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           Levantar ficha
         </button>
         <button
           onClick={() => setVista('bitacora')}
-          className="rounded-md border border-orange-200 bg-white px-4 py-2.5 text-sm font-medium text-orange-700 transition hover:bg-orange-50"
+          className="rounded-full border border-white/10 bg-surface px-4 py-2.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
           Nueva bitácora
         </button>
         <button
           onClick={() => setVista('historial')}
-          className="rounded-md border border-orange-200 bg-white px-4 py-2.5 text-sm font-medium text-orange-700 transition hover:bg-orange-50"
+          className="rounded-full border border-white/10 bg-surface px-4 py-2.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
           Nuevo historial
         </button>
       </div>
 
       {pendientes.length > 0 && (
-        <div className="mt-6 w-full max-w-sm rounded-lg border border-slate-200 bg-white p-3 text-left">
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="mt-6 w-full max-w-sm rounded-xl border border-white/10 bg-surface p-3 text-left">
+          <p className="mb-1.5 font-mono text-[11px] uppercase tracking-wide text-gray-500">
             {pendientes.length} por subir
           </p>
           <ul className="space-y-1">
             {pendientes.map((p, i) => (
               <li key={i} className="flex items-baseline gap-2 text-xs">
-                <span className="shrink-0 rounded bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">
+                <span className="shrink-0 rounded bg-surface2 px-1.5 py-0.5 font-medium text-gray-300">
                   {p.tipo}
                 </span>
-                <span className="truncate text-slate-700">{p.etiqueta}</span>
+                <span className="truncate text-gray-300">{p.etiqueta}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-2 text-[11px] text-slate-400">
+          <p className="mt-2 text-[11px] text-gray-500">
             Se suben solas al recuperar señal. No borres los datos del navegador.
           </p>
         </div>
       )}
 
-      <p className="mt-6 max-w-sm text-xs text-slate-400">
+      <p className="mt-6 max-w-sm text-xs text-gray-500">
         Consejo: abre la app <strong>con internet</strong> al menos una vez al día
         para descargar los datos más recientes (productores, parcelas y
         formularios).
@@ -138,15 +138,15 @@ function Marco({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
-      <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-2.5">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+      <div className="flex items-center gap-3 border-b border-white/10 bg-black px-4 py-2.5">
         <button
           onClick={onVolver}
-          className="rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-100"
+          className="rounded-full px-2 py-1 text-sm text-gray-400 hover:text-cream"
         >
           ← Atrás
         </button>
-        <span className="text-sm font-semibold text-slate-800">{titulo}</span>
+        <span className="text-sm font-medium text-cream">{titulo}</span>
       </div>
       <div className="min-h-0 flex-1 overflow-auto">{children}</div>
     </div>
@@ -174,7 +174,7 @@ function useParcelasCache() {
 
 function SinDatos() {
   return (
-    <div className="mx-auto max-w-md p-10 text-center text-sm text-slate-500">
+    <div className="mx-auto max-w-md p-10 text-center text-sm text-gray-500">
       No hay parcelas descargadas en este dispositivo. Conéctate a internet una vez
       (con tu sesión iniciada) para descargarlas y poder capturar sin señal.
     </div>
@@ -184,7 +184,7 @@ function SinDatos() {
 function BitacoraOffline({ onGuardada }: { onGuardada: () => void }) {
   const est = useParcelasCache()
   if (est.fase === 'cargando')
-    return <div className="p-10 text-center text-sm text-slate-500">Cargando parcelas…</div>
+    return <div className="p-10 text-center text-sm text-gray-500">Cargando parcelas…</div>
   if (est.fase === 'sin_datos') return <SinDatos />
   return (
     <BitacoraEditor
@@ -201,7 +201,7 @@ function HistorialOffline({ onGuardado }: { onGuardado: () => void }) {
   const [parcela, setParcela] = useState<ParcelaLite | null>(null)
 
   if (est.fase === 'cargando')
-    return <div className="p-10 text-center text-sm text-slate-500">Cargando parcelas…</div>
+    return <div className="p-10 text-center text-sm text-gray-500">Cargando parcelas…</div>
   if (est.fase === 'sin_datos') return <SinDatos />
 
   if (parcela) {
@@ -218,7 +218,7 @@ function HistorialOffline({ onGuardado }: { onGuardado: () => void }) {
 
   return (
     <div className="mx-auto max-w-md p-6">
-      <label className="mb-1 block text-sm font-medium text-slate-700">
+      <label className="mb-1 block text-sm font-medium text-gray-300">
         Elige la parcela
       </label>
       <ParcelaBuscador
@@ -229,7 +229,7 @@ function HistorialOffline({ onGuardado }: { onGuardado: () => void }) {
           if (p) setParcela(p)
         }}
       />
-      <p className="mt-2 text-xs text-slate-400">
+      <p className="mt-2 text-xs text-gray-500">
         {est.parcelas.length} parcelas descargadas en este dispositivo.
       </p>
     </div>

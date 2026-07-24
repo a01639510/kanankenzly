@@ -6,7 +6,7 @@ import type { ParcelaDetalle } from '@/lib/types'
 import { Modal, Field, ModalActions } from './EditProductorModal'
 
 const inputCls =
-  'w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400'
+  'w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400'
 
 export default function EditParcelaModal({
   parcela,
@@ -82,12 +82,12 @@ export default function EditParcelaModal({
           className={inputCls}
         />
       </Field>
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-gray-500">
         La superficie declarada es la base de comparación contra el área medida
         del polígono en GeoSIC.
       </p>
 
-      {error && <p className="rounded-md bg-red-50 p-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>}
 
       <ModalActions busy={busy} onClose={onClose} onSave={save} />
     </Modal>

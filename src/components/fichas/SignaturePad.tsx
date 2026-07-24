@@ -102,20 +102,22 @@ export default function SignaturePad({
         <button
           type="button"
           onClick={() => setModo('firma')}
-          className={`rounded px-2 py-0.5 ${modo === 'firma' ? 'bg-orange-100 text-orange-700' : 'text-slate-500 hover:bg-slate-100'}`}
+          className={`rounded-full px-2 py-0.5 transition ${modo === 'firma' ? 'bg-orange-500/10 text-orange-400' : 'text-gray-500 hover:text-cream'}`}
         >
           Firmar
         </button>
         <button
           type="button"
           onClick={() => setModo('foto')}
-          className={`rounded px-2 py-0.5 ${modo === 'foto' ? 'bg-orange-100 text-orange-700' : 'text-slate-500 hover:bg-slate-100'}`}
+          className={`rounded-full px-2 py-0.5 transition ${modo === 'foto' ? 'bg-orange-500/10 text-orange-400' : 'text-gray-500 hover:text-cream'}`}
         >
           Huella / Foto
         </button>
       </div>
 
       {modo === 'firma' ? (
+        // El canvas se deja en blanco a propósito: la firma debe verse sobre
+        // fondo claro tanto al capturarla como al imprimirse en el PDF.
         <canvas
           ref={canvasRef}
           width={400}
@@ -124,33 +126,33 @@ export default function SignaturePad({
           onPointerMove={move}
           onPointerUp={end}
           onPointerLeave={end}
-          className="w-full touch-none rounded-md border border-slate-300 bg-white"
+          className="w-full touch-none rounded-lg border border-white/10 bg-white"
         />
       ) : (
-        <div className="rounded-md border border-slate-300 bg-white p-3">
+        <div className="rounded-xl border border-white/10 bg-surface p-3">
           {value && value.startsWith('data:image') ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="Huella / foto" className="mb-2 max-h-32 rounded object-contain" />
+            <img src={value} alt="Huella / foto" className="mb-2 max-h-32 rounded-lg bg-white object-contain" />
           ) : null}
           <input
             type="file"
             accept="image/*"
             capture="environment"
             onChange={onFoto}
-            className="w-full text-xs text-slate-600 file:mr-2 file:rounded file:border-0 file:bg-orange-50 file:px-2 file:py-1 file:text-xs file:font-medium file:text-orange-700"
+            className="w-full text-xs text-gray-400 file:mr-2 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-2 file:py-1 file:text-xs file:font-medium file:text-orange-400"
           />
         </div>
       )}
 
       <div className="mt-1 flex items-center justify-between">
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-gray-500">
           {hasInk
             ? 'Captura lista'
             : modo === 'firma'
               ? 'Firma aquí con el dedo o mouse'
               : 'Toma una foto de la huella o firma en papel'}
         </span>
-        <button type="button" onClick={clear} className="text-xs text-slate-500 hover:text-red-600">
+        <button type="button" onClick={clear} className="text-xs text-gray-500 transition hover:text-red-400">
           Limpiar
         </button>
       </div>

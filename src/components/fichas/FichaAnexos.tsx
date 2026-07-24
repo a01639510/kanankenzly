@@ -84,18 +84,18 @@ export default function FichaAnexos({
   return (
     <div className="mx-auto max-w-2xl p-6">
       <div
-        className={`rounded-xl border p-6 ${
-          online ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'
+        className={`rounded-2xl border p-6 ${
+          online ? 'border-green-500/20 bg-green-500/5' : 'border-amber-500/20 bg-amber-500/5'
         }`}
       >
-        <h2 className="text-base font-semibold text-slate-800">
+        <h2 className="text-base font-normal text-cream">
           {online
             ? editada
               ? 'Cambios guardados'
               : 'Ficha guardada'
             : 'Guardada en el dispositivo'}
         </h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-gray-400">
           {online
             ? `${etiquetaProductor} — ya está en el sistema.`
             : `${etiquetaProductor} — sin señal. Se sube sola en cuanto vuelva la conexión; no cierres sesión.`}
@@ -104,7 +104,7 @@ export default function FichaAnexos({
 
       {parcela ? (
         <div className="mt-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
             Anexos de esta inspección
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -125,20 +125,20 @@ export default function FichaAnexos({
       ) : null}
 
       {pendientes.length > 0 && (
-        <div className="mt-5 rounded-lg border border-slate-200 bg-white p-4">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <div className="mt-5 rounded-xl border border-white/10 bg-surface p-4">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
             {pendientes.length} por subir
           </p>
-          <ul className="space-y-1 text-sm text-slate-600">
+          <ul className="space-y-1 text-sm text-gray-400">
             {pendientes.map((p, i) => (
               <li key={i} className="flex items-center justify-between gap-3">
                 <span className="truncate">
-                  <span className="mr-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs text-slate-500">
+                  <span className="mr-2 rounded-full bg-white/5 px-1.5 py-0.5 text-xs text-gray-400">
                     {p.tipo}
                   </span>
                   {p.etiqueta}
                 </span>
-                <span className="shrink-0 text-xs text-slate-400">
+                <span className="shrink-0 text-xs text-gray-500">
                   {new Date(p.creada_en).toLocaleTimeString('es-MX', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -153,14 +153,14 @@ export default function FichaAnexos({
       <div className="mt-6 flex flex-wrap gap-2">
         <button
           onClick={onSeguirEditando}
-          className="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          className="rounded-full border border-white/10 bg-surface px-4 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
           Seguir editando la ficha
         </button>
         {online && fichaId && (
           <Link
             href={`/fichas/${fichaId}`}
-            className="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-full border border-white/10 bg-surface px-4 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40"
           >
             Ver ficha
           </Link>
@@ -170,7 +170,7 @@ export default function FichaAnexos({
             router.push('/fichas')
             router.refresh()
           }}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           Terminar
         </button>
@@ -193,15 +193,15 @@ function BotonAnexo({
   return (
     <button
       onClick={onClick}
-      className={`rounded-lg border p-4 text-left transition hover:border-orange-400 ${
-        hecho ? 'border-green-300 bg-green-50' : 'border-slate-200 bg-white'
+      className={`rounded-xl border p-4 text-left transition hover:border-orange-400 ${
+        hecho ? 'border-green-500/20 bg-green-500/5' : 'border-white/10 bg-surface'
       }`}
     >
-      <div className="text-sm font-medium text-slate-800">
-        {hecho ? '✓ ' : '+ '}
+      <div className="flex items-center gap-2 text-sm font-medium text-cream">
+        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${hecho ? 'bg-green-400' : 'bg-gray-500'}`} />
         {titulo}
       </div>
-      <div className="mt-0.5 text-xs text-slate-500">{detalle}</div>
+      <div className="mt-0.5 text-xs text-gray-500">{detalle}</div>
     </button>
   )
 }
@@ -217,14 +217,14 @@ function Marco({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-2.5">
+      <div className="flex items-center gap-3 border-b border-white/10 bg-surface px-4 py-2.5">
         <button
           onClick={onVolver}
-          className="rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-100"
+          className="rounded-full px-2 py-1 text-sm text-gray-500 transition hover:text-cream"
         >
           ← Atrás
         </button>
-        <span className="text-sm font-semibold text-slate-800">{titulo}</span>
+        <span className="text-sm font-normal text-cream">{titulo}</span>
       </div>
       {children}
     </div>

@@ -45,50 +45,58 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-slate-100">
+    <div className="flex h-screen w-screen items-center justify-center bg-black p-4">
       <form
         onSubmit={submit}
-        className="w-full max-w-sm rounded-xl bg-white p-8 shadow-sm"
+        className="flex w-full max-w-sm flex-col gap-4 rounded-2xl bg-surface p-8"
       >
-        <div className="mb-6 flex flex-col items-center gap-3 text-center">
+        <div className="mb-2 flex flex-col items-center gap-3 text-center">
           <span
             aria-hidden="true"
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-orange-500 text-xl font-bold text-white"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500 text-lg font-medium text-black"
           >
             K
           </span>
           <div>
-            <h1 className="text-lg font-semibold text-slate-800">Kenzly EUDR</h1>
-            <p className="text-xs text-slate-500">
+            <h1 className="text-lg font-normal text-cream">Kenzly EUDR</h1>
+            <p className="mt-1 font-mono text-[11px] tracking-wide text-gray-500">
               Trazabilidad geográfica · Diligencia debida EUDR
             </p>
           </div>
         </div>
 
-        <label className="mb-1 block text-sm font-medium text-slate-700">
-          Correo
-        </label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="mb-4 w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-orange-400"
-        />
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="email" className="font-mono text-[11px] tracking-wide text-gray-500">
+            Correo
+          </label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+          />
+        </div>
 
-        <label className="mb-1 block text-sm font-medium text-slate-700">
-          Contraseña
-        </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="mb-5 w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-orange-400"
-        />
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="password" className="font-mono text-[11px] tracking-wide text-gray-500">
+            Contraseña
+          </label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+          />
+        </div>
 
         {error && (
-          <p className="mb-4 rounded-md bg-red-50 p-2 text-sm text-red-600">
+          <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">
             {error}
           </p>
         )}
@@ -96,7 +104,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={busy}
-          className="w-full rounded-md bg-orange-500 py-2 text-sm font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
+          className="mt-2 w-full rounded-full bg-orange-500 py-2.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
         >
           {busy ? 'Entrando…' : 'Entrar'}
         </button>

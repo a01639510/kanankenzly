@@ -75,30 +75,30 @@ export default function BotonActualizar({ parcelaIds, onListo }: Props) {
             ? 'No hay parcelas con polígono que medir'
             : `Consultar Sentinel-2 para ${total} parcelas`
         }
-        className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
+        className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
       >
-        {corriendo ? `Midiendo… ${pct}%` : '↻ Actualizar satélite'}
+        {corriendo ? `Midiendo… ${pct}%` : 'Actualizar satélite'}
       </button>
 
       {(corriendo || error) && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-md bg-white p-3 shadow-lg ring-1 ring-slate-200">
+        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-surface p-3">
           {error ? (
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-red-400">{error}</p>
           ) : (
             <>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface2">
                 <div
                   className="h-full rounded-full bg-orange-500 transition-all"
                   style={{ width: `${pct}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs text-slate-600">
+              <p className="mt-2 text-xs text-gray-400">
                 {hechas} de {total} parcelas
                 {fallidas > 0 && (
-                  <span className="text-slate-400"> · {fallidas} sin imagen despejada</span>
+                  <span className="text-gray-500"> · {fallidas} sin imagen despejada</span>
                 )}
               </p>
-              <p className="mt-1 text-[11px] text-slate-400">
+              <p className="mt-1 text-[11px] text-gray-500">
                 Consultando Copernicus Sentinel-2. No cierres esta pestaña.
               </p>
             </>

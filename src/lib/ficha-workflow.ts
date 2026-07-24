@@ -51,9 +51,9 @@ export function accionesPermitidas(
 
 // Color del badge por estado (para la barra de flujo).
 export const ESTADO_FICHA_BADGE: Record<EstadoFicha, string> = {
-  borrador: 'bg-slate-100 text-slate-600',
-  en_revision: 'bg-amber-100 text-amber-700',
-  aprobada: 'bg-green-100 text-green-700',
-  pdf_generado: 'bg-sky-100 text-sky-700',
-  requiere_correccion: 'bg-red-100 text-red-700',
+  borrador: 'bg-white/5 text-gray-400',
+  en_revision: 'bg-amber-500/10 text-amber-400',
+  aprobada: 'bg-green-500/10 text-green-400',
+  pdf_generado: 'bg-sky-500/10 text-sky-400',
+  requiere_correccion: 'bg-red-500/10 text-red-400',
 }

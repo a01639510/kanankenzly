@@ -82,8 +82,8 @@ export default function OfflineStatus() {
   return (
     <div className="flex items-center gap-2">
       <span
-        className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium ${
-          online ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+        className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[11px] ${
+          online ? 'bg-green-500/10 text-green-400' : 'bg-amber-500/10 text-amber-400'
         }`}
         title={online ? 'Con conexión' : 'Sin conexión — las capturas se guardan en el dispositivo'}
       >
@@ -95,7 +95,7 @@ export default function OfflineStatus() {
         <div className="relative flex items-center gap-1">
           <button
             onClick={abrirLista}
-            className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700 hover:bg-orange-200"
+            className="rounded-full bg-orange-500/10 px-2 py-0.5 text-xs font-medium text-orange-400 hover:bg-orange-500/20"
             title="Capturas guardadas en el dispositivo, pendientes de subir. Toca para ver."
           >
             {pendientes} por subir
@@ -103,36 +103,36 @@ export default function OfflineStatus() {
           <button
             onClick={sincronizar}
             disabled={!online || sincronizando}
-            className="rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-white hover:bg-orange-600 disabled:opacity-60"
+            className="rounded-full bg-orange-500 px-2 py-0.5 text-xs font-medium text-black hover:bg-orange-400 disabled:opacity-60"
             title="Subir ahora"
           >
             {sincronizando ? 'Subiendo…' : '↑'}
           </button>
 
           {verLista && (
-            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-              <p className="mb-1 px-1 text-xs font-semibold text-slate-500">
+            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-xl border border-white/10 bg-surface p-2 shadow-lg">
+              <p className="mb-1 px-1 font-mono text-[11px] tracking-wide text-gray-500">
                 Pendientes de subir ({lista.length})
               </p>
               {lista.map((it, i) => (
-                <div key={i} className="border-t border-slate-50 px-1 py-1.5 text-xs">
-                  <span className="mr-1.5 rounded bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">
+                <div key={i} className="border-t border-white/5 px-1 py-1.5 text-xs">
+                  <span className="mr-1.5 rounded bg-surface2 px-1.5 py-0.5 font-medium text-gray-300">
                     {it.tipo}
                   </span>
-                  <span className="text-slate-700">{it.etiqueta}</span>
-                  <span className="mt-0.5 block text-[10px] text-slate-400">
+                  <span className="text-cream">{it.etiqueta}</span>
+                  <span className="mt-0.5 block text-[10px] text-gray-500">
                     {new Date(it.creada_en).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
                   </span>
                 </div>
               ))}
               {lista.length === 0 && (
-                <p className="px-1 py-2 text-xs text-slate-400">Nada pendiente.</p>
+                <p className="px-1 py-2 text-xs text-gray-500">Nada pendiente.</p>
               )}
               {online && (
                 <button
                   onClick={sincronizar}
                   disabled={sincronizando}
-                  className="mt-2 w-full rounded-md bg-orange-500 px-2 py-1.5 text-xs font-medium text-white hover:bg-orange-600 disabled:opacity-60"
+                  className="mt-2 w-full rounded-lg bg-orange-500 px-2 py-1.5 text-xs font-medium text-black hover:bg-orange-400 disabled:opacity-60"
                 >
                   {sincronizando ? 'Subiendo…' : 'Subir todo ahora'}
                 </button>

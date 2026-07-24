@@ -58,25 +58,25 @@ export default function BotonBosque2020({
         onClick={analizar}
         disabled={corriendo || total === 0}
         title="Traslape con la capa de bosque 2020 de la UE (JRC) — tamizado EUDR"
-        className="rounded-md border border-green-600 bg-green-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-green-700 disabled:opacity-50"
+        className="rounded-full bg-green-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-green-400 disabled:opacity-50"
       >
-        {corriendo ? `Bosque 2020… ${pct}%` : '🌳 Bosque 2020 (UE)'}
+        {corriendo ? `Bosque 2020… ${pct}%` : 'Bosque 2020 (UE)'}
       </button>
 
       {(corriendo || error) && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-md bg-white p-3 shadow-lg ring-1 ring-slate-200">
+        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-surface p-3">
           {error ? (
-            <p className="text-sm text-red-600">{error}</p>
+            <p className="text-sm text-red-400">{error}</p>
           ) : (
             <>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                <div className="h-full rounded-full bg-green-600 transition-all" style={{ width: `${pct}%` }} />
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface2">
+                <div className="h-full rounded-full bg-green-500 transition-all" style={{ width: `${pct}%` }} />
               </div>
-              <p className="mt-2 text-xs text-slate-600">
+              <p className="mt-2 text-xs text-gray-400">
                 {hechas} de {total} parcelas
-                {riesgo > 0 && <span className="font-medium text-red-600"> · {riesgo} con traslape</span>}
+                {riesgo > 0 && <span className="font-medium text-red-400"> · {riesgo} con traslape</span>}
               </p>
-              <p className="mt-1 text-[11px] text-slate-400">
+              <p className="mt-1 text-[11px] text-gray-500">
                 Consultando capa de bosque 2020 de la UE (JRC).
               </p>
             </>

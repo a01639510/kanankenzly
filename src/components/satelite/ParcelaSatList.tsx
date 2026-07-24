@@ -13,7 +13,7 @@ interface Props {
 export default function ParcelaSatList({ parcelas, selectedId, onSelect }: Props) {
   if (parcelas.length === 0) {
     return (
-      <p className="p-4 text-sm text-slate-500">
+      <p className="p-4 text-sm text-gray-500">
         No hay parcelas que coincidan con el filtro.
       </p>
     )
@@ -27,8 +27,8 @@ export default function ParcelaSatList({ parcelas, selectedId, onSelect }: Props
           <li key={p.id}>
             <button
               onClick={() => onSelect(p.id)}
-              className={`flex w-full items-center gap-2.5 border-b border-slate-100 px-3 py-2 text-left transition hover:bg-slate-50 ${
-                selectedId === p.id ? 'bg-orange-50' : ''
+              className={`flex w-full items-center gap-2.5 border-b border-white/5 px-3 py-2 text-left transition hover:bg-surface2 ${
+                selectedId === p.id ? 'bg-surface2' : ''
               }`}
             >
               <span
@@ -37,15 +37,15 @@ export default function ParcelaSatList({ parcelas, selectedId, onSelect }: Props
                 title={ALERTA_LABEL[alerta]}
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-slate-800">
+                <span className="block truncate text-sm font-medium text-cream">
                   {p.nombre || p.codigo_parcela}
                 </span>
-                <span className="block truncate text-xs text-slate-500">
+                <span className="block truncate text-xs text-gray-500">
                   {p.productor_nombre}
                 </span>
               </span>
               <span
-                className="shrink-0 text-sm font-semibold tabular-nums"
+                className="shrink-0 text-sm font-medium tabular-nums"
                 style={{ color: colorNdvi(p.ndvi_promedio) }}
               >
                 {fmtNdvi(p.ndvi_promedio)}

@@ -17,11 +17,11 @@ export default async function HistorialPage() {
   const parcelas = await getParcelasConHistorial()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/historial/nueva"
-          className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           + Nuevo historial
         </Link>
@@ -30,15 +30,15 @@ export default async function HistorialPage() {
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-4xl">
           {parcelas.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-200 bg-white p-10 text-center">
-              <p className="text-sm text-slate-500">
+            <div className="rounded-2xl border border-dashed border-white/10 bg-surface p-10 text-center">
+              <p className="text-sm text-gray-500">
                 Aún no hay historiales. Crea el primero con “Nuevo historial”.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
               <table className="w-full min-w-[640px] text-sm">
-                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                <thead className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Parcela</th>
                     <th className="px-4 py-2.5 font-medium">Productor</th>
@@ -48,23 +48,23 @@ export default async function HistorialPage() {
                 </thead>
                 <tbody>
                   {parcelas.map((p) => (
-                    <tr key={p.parcela_id} className="border-t border-slate-50 hover:bg-slate-50">
+                    <tr key={p.parcela_id} className="border-b border-white/5 hover:bg-surface2">
                       <td className="px-4 py-2.5">
-                        <div className="font-medium text-slate-800">
+                        <div className="font-medium text-cream">
                           {p.parcela_nombre || codigoCorto(p.parcela_codigo, p.parcela_nombre)}
                         </div>
-                        <div className="text-xs text-slate-400">
+                        <div className="text-xs text-gray-500">
                           {codigoCorto(p.parcela_codigo, p.parcela_nombre)}
                         </div>
                       </td>
-                      <td className="px-4 py-2.5 text-slate-600">{p.productor_nombre}</td>
-                      <td className="px-4 py-2.5 text-slate-600">
+                      <td className="px-4 py-2.5 text-gray-400">{p.productor_nombre}</td>
+                      <td className="px-4 py-2.5 text-gray-400">
                         {p.anios.sort((a, b) => a - b).join(', ')}
                       </td>
                       <td className="px-4 py-2.5 text-right">
                         <Link
                           href={`/historial/${p.parcela_id}`}
-                          className="text-sm font-medium text-orange-600 hover:text-orange-700"
+                          className="text-sm font-medium text-orange-400 hover:text-orange-300"
                         >
                           Abrir →
                         </Link>

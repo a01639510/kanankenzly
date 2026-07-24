@@ -82,19 +82,19 @@ export default function EntregasPlantas({
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+    <section className="rounded-2xl border border-white/10 bg-surface p-5">
+      <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-gray-500">
         Plantas entregadas (Agroecología)
       </h2>
 
       {cargando ? (
-        <p className="text-sm text-slate-400">Cargando…</p>
+        <p className="text-sm text-gray-500">Cargando…</p>
       ) : entregas.length === 0 ? (
-        <p className="text-sm text-slate-400">Sin entregas registradas.</p>
+        <p className="text-sm text-gray-500">Sin entregas registradas.</p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[420px] text-sm">
-            <thead className="text-left text-xs uppercase tracking-wide text-slate-400">
+            <thead className="text-left font-mono text-[11px] uppercase tracking-wide text-gray-500 border-b border-white/10">
               <tr>
                 <th className="py-1.5 pr-3 font-medium">Año</th>
                 <th className="py-1.5 pr-3 font-medium">Especie</th>
@@ -104,20 +104,22 @@ export default function EntregasPlantas({
             </thead>
             <tbody>
               {entregas.map((e) => (
-                <tr key={e.id} className="border-t border-slate-50">
-                  <td className="py-1.5 pr-3 tabular-nums text-slate-600">{e.anio}</td>
-                  <td className="py-1.5 pr-3 text-slate-800">{e.especie}</td>
-                  <td className="py-1.5 pr-3 text-right tabular-nums text-slate-800">
+                <tr key={e.id} className="border-b border-white/5">
+                  <td className="py-1.5 pr-3 tabular-nums text-gray-400">{e.anio}</td>
+                  <td className="py-1.5 pr-3 text-cream">{e.especie}</td>
+                  <td className="py-1.5 pr-3 text-right tabular-nums text-cream">
                     {e.cantidad.toLocaleString('es-MX')}
                   </td>
                   {puedeEditar && (
                     <td className="py-1.5 text-right">
                       <button
                         onClick={() => quitar(e.id)}
-                        className="text-slate-400 hover:text-red-600"
+                        className="text-gray-500 transition hover:text-red-400"
                         title="Quitar"
                       >
-                        ✕
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                          <path d="M6 6l12 12M18 6L6 18" />
+                        </svg>
                       </button>
                     </td>
                   )}
@@ -129,29 +131,29 @@ export default function EntregasPlantas({
       )}
 
       {puedeEditar && (
-        <div className="mt-3 flex flex-wrap items-end gap-2 border-t border-slate-100 pt-3">
+        <div className="mt-3 flex flex-wrap items-end gap-2 border-t border-white/5 pt-3">
           <label className="w-20">
-            <span className="mb-1 block text-xs text-slate-500">Año</span>
-            <input type="number" value={anio} onChange={(e) => setAnio(e.target.value)} className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm outline-none focus:border-orange-400" />
+            <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">Año</span>
+            <input type="number" value={anio} onChange={(e) => setAnio(e.target.value)} className="w-full rounded-lg border border-white/10 bg-black px-2 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
           </label>
           <label className="min-w-[8rem] flex-1">
-            <span className="mb-1 block text-xs text-slate-500">Especie</span>
-            <input value={especie} onChange={(e) => setEspecie(e.target.value)} placeholder="Café Robusta, Inga…" className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm outline-none focus:border-orange-400" />
+            <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">Especie</span>
+            <input value={especie} onChange={(e) => setEspecie(e.target.value)} placeholder="Café Robusta, Inga…" className="w-full rounded-lg border border-white/10 bg-black px-2 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
           </label>
           <label className="w-28">
-            <span className="mb-1 block text-xs text-slate-500">Cantidad</span>
-            <input type="number" value={cantidad} onChange={(e) => setCantidad(e.target.value)} className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm outline-none focus:border-orange-400" />
+            <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">Cantidad</span>
+            <input type="number" value={cantidad} onChange={(e) => setCantidad(e.target.value)} className="w-full rounded-lg border border-white/10 bg-black px-2 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
           </label>
           <button
             onClick={agregar}
             disabled={busy}
-            className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+            className="rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
           >
             {busy ? '…' : 'Agregar'}
           </button>
         </div>
       )}
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
     </section>
   )
 }

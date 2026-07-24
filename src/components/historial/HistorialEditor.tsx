@@ -96,33 +96,33 @@ export default function HistorialEditor({
 
   return (
     <div className="mx-auto max-w-6xl p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface p-4">
         <div>
-          <Link href="/historial" className="text-xs text-slate-500 hover:text-slate-700">
+          <Link href="/historial" className="text-xs text-gray-500 hover:text-cream">
             ← Volver
           </Link>
-          <h1 className="text-base font-semibold text-slate-800">
+          <h1 className="text-lg font-normal text-cream">
             Historial de manejo
           </h1>
-          <p className="text-sm text-slate-500">{parcelaLabel}</p>
+          <p className="text-sm text-gray-500">{parcelaLabel}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={addAnio}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
           >
             + Año
           </button>
           <Link
             href={`/historial/${parcelaId}/pdf`}
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
           >
             Ver / PDF
           </Link>
           <button
             disabled={busy}
             onClick={guardar}
-            className="rounded-md bg-orange-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+            className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
           >
             {busy ? 'Guardando…' : 'Guardar historial'}
           </button>
@@ -130,34 +130,34 @@ export default function HistorialEditor({
       </div>
 
       {error && (
-        <p className="mb-3 rounded-md bg-red-50 p-2 text-sm text-red-600">{error}</p>
+        <p className="mb-3 rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>
       )}
       {guardadaOffline && (
-        <p className="mb-3 rounded-md bg-amber-50 p-2 text-sm text-amber-700">
+        <p className="mb-3 rounded-lg bg-amber-500/10 p-2 text-sm text-amber-400">
           Sin conexión: el historial se guardó en el dispositivo y se subirá solo
           al recuperar señal.
         </p>
       )}
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 border border-slate-300 bg-slate-50 p-2 text-left">
+              <th className="sticky left-0 z-10 border border-white/10 bg-surface2 p-2 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
                 Manejo
               </th>
               {cols.map(({ a, idx }) => (
-                <th key={idx} className="border border-slate-300 bg-slate-50 p-2 text-center">
+                <th key={idx} className="border border-white/10 bg-surface2 p-2 text-center">
                   <div className="flex items-center justify-center gap-1">
                     <input
                       type="number"
                       value={a.anio}
                       onChange={(e) => setAnioNum(idx, Number(e.target.value))}
-                      className="w-20 rounded border border-slate-200 px-1 py-0.5 text-center text-sm"
+                      className="w-20 rounded border border-white/10 bg-black px-1 py-0.5 text-center text-sm text-cream outline-none focus:border-orange-400"
                     />
                     <button
                       onClick={() => removeAnio(idx)}
-                      className="text-slate-400 hover:text-red-600"
+                      className="text-gray-500 hover:text-red-400"
                       title="Quitar año"
                     >
                       ✕
@@ -170,11 +170,11 @@ export default function HistorialEditor({
           <tbody>
             {HISTORIAL_CAMPOS.map((campo) => (
               <tr key={campo.id}>
-                <td className="sticky left-0 z-10 border border-slate-300 bg-white p-2 font-medium text-slate-700">
+                <td className="sticky left-0 z-10 border border-white/10 bg-surface p-2 font-medium text-gray-300">
                   {campo.label}
                 </td>
                 {cols.map(({ a, idx }) => (
-                  <td key={idx} className="border border-slate-200 p-1">
+                  <td key={idx} className="border border-white/5 p-1">
                     <Celda
                       campo={campo}
                       value={a.datos[campo.id] ?? null}
@@ -188,7 +188,7 @@ export default function HistorialEditor({
         </table>
       </div>
 
-      <p className="mt-3 text-xs text-slate-500">* {HISTORIAL_NOTA}</p>
+      <p className="mt-3 text-xs text-gray-500">* {HISTORIAL_NOTA}</p>
     </div>
   )
 }
@@ -202,7 +202,7 @@ function Celda({
   value: string | number | null
   onChange: (v: string | number | null) => void
 }) {
-  const cls = 'w-full min-w-[120px] rounded border border-transparent px-1.5 py-1 text-sm outline-none focus:border-orange-400'
+  const cls = 'w-full min-w-[120px] rounded border border-transparent bg-transparent px-1.5 py-1 text-sm text-cream outline-none focus:border-orange-400'
   if (campo.tipo === 'enum') {
     return (
       <select value={(value as string) ?? ''} onChange={(e) => onChange(e.target.value || null)} className={cls}>

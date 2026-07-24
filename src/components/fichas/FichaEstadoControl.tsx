@@ -9,10 +9,10 @@ import { ESTADO_FICHA_LABEL } from '@/lib/types'
 import { accionesPermitidas, ESTADO_FICHA_BADGE } from '@/lib/ficha-workflow'
 
 const TONO: Record<string, string> = {
-  primary: 'bg-orange-500 text-white hover:bg-orange-600',
-  positive: 'bg-green-600 text-white hover:bg-green-700',
-  danger: 'border border-red-200 text-red-600 hover:bg-red-50',
-  neutral: 'border border-slate-200 text-slate-600 hover:bg-slate-50',
+  primary: 'bg-orange-500 text-black hover:bg-orange-400',
+  positive: 'bg-green-500/10 text-green-400 hover:bg-green-500/20',
+  danger: 'border border-red-500/20 text-red-400 hover:bg-red-500/10',
+  neutral: 'border border-white/10 text-gray-400 hover:border-orange-500/40 hover:text-cream',
 }
 
 export default function FichaEstadoControl({
@@ -63,12 +63,12 @@ export default function FichaEstadoControl({
           key={a.to}
           disabled={busy}
           onClick={() => cambiar(a.to)}
-          className={`rounded-md px-3 py-1.5 text-sm font-medium transition disabled:opacity-50 ${TONO[a.tono]}`}
+          className={`rounded-full px-3 py-1.5 text-sm font-medium transition disabled:opacity-50 ${TONO[a.tono]}`}
         >
           {a.label}
         </button>
       ))}
-      {error && <span className="text-xs text-red-600">{error}</span>}
+      {error && <span className="text-xs text-red-400">{error}</span>}
     </div>
   )
 }

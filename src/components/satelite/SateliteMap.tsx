@@ -246,18 +246,18 @@ function LeyendaNdvi() {
   ).join(', ')
 
   return (
-    <div className="pointer-events-none absolute bottom-6 left-3 z-10 rounded-md bg-white/95 p-2.5 shadow-md ring-1 ring-slate-200 md:bottom-3">
-      <p className="mb-1.5 text-xs font-medium text-slate-600">NDVI — vigor vegetal</p>
+    <div className="pointer-events-none absolute bottom-6 left-3 z-10 rounded-xl border border-white/10 bg-surface/95 p-2.5 md:bottom-3">
+      <p className="mb-1.5 text-xs font-medium text-cream">NDVI — vigor vegetal</p>
       <div
         className="h-2.5 w-44 rounded-sm"
         style={{ background: `linear-gradient(to right, ${gradiente})` }}
       />
-      <div className="mt-1 flex justify-between text-[10px] text-slate-500">
+      <div className="mt-1 flex justify-between text-[10px] text-gray-500">
         <span>0.0 suelo</span>
         <span>0.45</span>
         <span>0.9 dosel</span>
       </div>
-      <div className="mt-1.5 flex items-center gap-1.5 border-t border-slate-100 pt-1.5 text-[10px] text-slate-500">
+      <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5 text-[10px] text-gray-500">
         <span
           className="inline-block h-2.5 w-2.5 rounded-full"
           style={{ background: ALERTA_COLOR.sin_datos }}

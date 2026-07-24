@@ -65,12 +65,12 @@ export default function GeoSICShell({
   const puedeValidar = session.rol === 'admin' || session.rol === 'coordinador'
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-slate-50">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
       {/* Top bar (shared) with the module-specific upload action */}
       <AppHeader orgNombre={session.orgNombre} rol={session.rol}>
         <button
           onClick={() => setUploadOpen(true)}
-          className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400"
         >
           + Subir KML/KMZ
         </button>
@@ -91,16 +91,16 @@ export default function GeoSICShell({
         )}
 
         <aside
-          className={`absolute inset-y-0 left-0 z-30 flex w-72 max-w-[85%] shrink-0 flex-col border-r border-slate-200 bg-white transition-transform md:static md:z-auto md:max-w-none md:translate-x-0 ${
+          className={`absolute inset-y-0 left-0 z-30 flex w-72 max-w-[85%] shrink-0 flex-col border-r border-white/10 bg-surface transition-transform md:static md:z-auto md:max-w-none md:translate-x-0 ${
             listaAbierta ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <div className="border-b border-slate-100 p-2">
+          <div className="border-b border-white/10 p-2">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar parcela o productor…"
-              className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+              className="w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
             />
           </div>
           <ParcelaList
@@ -114,7 +114,7 @@ export default function GeoSICShell({
           {/* Botón para abrir la lista — solo en celular */}
           <button
             onClick={() => setListaAbierta(true)}
-            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-md bg-white/95 px-3 py-2 text-sm font-medium text-slate-700 shadow-md ring-1 ring-slate-200 md:hidden"
+            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-2 text-sm font-medium text-cream md:hidden"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />

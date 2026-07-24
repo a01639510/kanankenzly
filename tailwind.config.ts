@@ -25,6 +25,11 @@ const config: Config = {
           800: "#8F4C0E",
           900: "#743F11",
         },
+        // Superficies del tema oscuro (inspo kananmx.netlify.app).
+        canvas: "#0a0a0a", // fondo de página
+        surface: "#121212", // tarjetas / paneles
+        surface2: "#1c1c1c", // anidado: inputs, filas, chips
+        cream: "#E5E2D2", // texto primario sobre superficies oscuras
       },
     },
   },

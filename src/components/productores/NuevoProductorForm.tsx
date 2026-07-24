@@ -96,25 +96,26 @@ export default function NuevoProductorForm() {
   }
 
   const inputCls =
-    'w-full rounded-md border border-slate-200 px-2.5 py-2 text-sm outline-none focus:border-orange-400'
+    'w-full rounded-lg border border-white/10 bg-black px-2.5 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400'
+  const labelCls = 'mb-1 block font-mono text-[11px] tracking-wide text-gray-500'
 
   return (
     <div className="mx-auto max-w-2xl p-4 sm:p-6">
-      <section className="mb-4 rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-5">
+        <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-gray-500">
           Datos del productor
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Código *</span>
+            <span className={labelCls}>Código *</span>
             <input value={codigo} onChange={(e) => setCodigo(e.target.value)} placeholder="CR015093" className={inputCls} />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Nombre completo *</span>
+            <span className={labelCls}>Nombre completo *</span>
             <input value={nombre} onChange={(e) => setNombre(e.target.value)} className={inputCls} />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Sexo</span>
+            <span className={labelCls}>Sexo</span>
             <select value={sexo} onChange={(e) => setSexo(e.target.value)} className={inputCls}>
               <option value="">—</option>
               <option value="H">Hombre</option>
@@ -122,7 +123,7 @@ export default function NuevoProductorForm() {
             </select>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Tipo de productor</span>
+            <span className={labelCls}>Tipo de productor</span>
             <select value={tipo} onChange={(e) => setTipo(e.target.value as typeof tipo)} className={inputCls}>
               <option value="cafe">Café</option>
               <option value="tropical">Tropical</option>
@@ -130,43 +131,43 @@ export default function NuevoProductorForm() {
             </select>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Comunidad</span>
+            <span className={labelCls}>Comunidad</span>
             <input value={comunidad} onChange={(e) => setComunidad(e.target.value)} className={inputCls} />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Municipio</span>
+            <span className={labelCls}>Municipio</span>
             <input value={municipio} onChange={(e) => setMunicipio(e.target.value)} className={inputCls} />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-slate-700">Año de ingreso</span>
+            <span className={labelCls}>Año de ingreso</span>
             <input type="number" value={anio} onChange={(e) => setAnio(e.target.value)} className={inputCls} />
           </label>
         </div>
 
         {/* GPS */}
-        <div className="mt-4 rounded-md border border-slate-200 bg-slate-50 p-3">
+        <div className="mt-4 rounded-xl border border-white/10 bg-surface2 p-3">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm">
-              <span className="font-medium text-slate-700">Ubicación GPS</span>
+              <span className="font-medium text-cream">Ubicación GPS</span>
               {gps ? (
-                <span className="ml-2 tabular-nums text-slate-600">
-                  {gps.lat}, {gps.lng} <span className="text-slate-400">(±{gps.prec} m)</span>
+                <span className="ml-2 tabular-nums text-gray-400">
+                  {gps.lat}, {gps.lng} <span className="text-gray-500">(±{gps.prec} m)</span>
                 </span>
               ) : (
-                <span className="ml-2 text-slate-400">sin capturar</span>
+                <span className="ml-2 text-gray-500">sin capturar</span>
               )}
             </div>
             <button
               type="button"
               onClick={capturarGps}
               disabled={gpsEstado === 'buscando'}
-              className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
+              className="rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
             >
-              {gpsEstado === 'buscando' ? 'Buscando señal…' : gps ? 'Volver a capturar' : '📍 Capturar GPS'}
+              {gpsEstado === 'buscando' ? 'Buscando señal…' : gps ? 'Volver a capturar' : 'Capturar GPS'}
             </button>
           </div>
           {gpsEstado === 'error' && (
-            <p className="mt-2 text-xs text-red-600">
+            <p className="mt-2 text-xs text-red-400">
               No se pudo obtener la ubicación. Activa el GPS y da permiso de ubicación al navegador.
             </p>
           )}
@@ -174,29 +175,29 @@ export default function NuevoProductorForm() {
       </section>
 
       {/* Parcelas iniciales */}
-      <section className="mb-4 rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-slate-500">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-5">
+        <h2 className="mb-1 font-mono text-[11px] uppercase tracking-wide text-gray-500">
           Parcelas
         </h2>
-        <p className="mb-3 text-xs text-slate-400">
+        <p className="mb-3 text-xs text-gray-500">
           El código se genera solo: {codigo.trim() ? `${codigo.trim().toUpperCase()}-A, -B…` : 'CÓDIGO-A, -B…'}
         </p>
         <div className="space-y-2">
           {parcelas.map((p, i) => (
-            <div key={i} className="flex flex-wrap items-end gap-2 rounded-md border border-slate-100 p-2">
-              <span className="w-14 shrink-0 pb-2 text-sm font-medium tabular-nums text-slate-500">
+            <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-white/10 bg-surface2 p-2">
+              <span className="w-14 shrink-0 pb-2 text-sm font-medium tabular-nums text-gray-500">
                 {codigo.trim() ? `-${LETRAS[i]}` : LETRAS[i]}
               </span>
               <label className="min-w-[10rem] flex-1">
-                <span className="mb-1 block text-xs text-slate-500">Nombre de la parcela</span>
+                <span className="mb-1 block text-xs text-gray-500">Nombre de la parcela</span>
                 <input value={p.nombre} onChange={(e) => setParcela(i, { nombre: e.target.value })} className={inputCls} />
               </label>
               <label className="w-28">
-                <span className="mb-1 block text-xs text-slate-500">Superficie (ha)</span>
+                <span className="mb-1 block text-xs text-gray-500">Superficie (ha)</span>
                 <input type="number" step="0.01" value={p.superficie_ha} onChange={(e) => setParcela(i, { superficie_ha: e.target.value })} className={inputCls} />
               </label>
               <label className="w-32">
-                <span className="mb-1 block text-xs text-slate-500">Cultivo</span>
+                <span className="mb-1 block text-xs text-gray-500">Cultivo</span>
                 <select value={p.tipo_cultivo} onChange={(e) => setParcela(i, { tipo_cultivo: e.target.value as 'cafe' | 'tropical' })} className={inputCls}>
                   <option value="cafe">Café</option>
                   <option value="tropical">Tropical</option>
@@ -205,10 +206,12 @@ export default function NuevoProductorForm() {
               <button
                 type="button"
                 onClick={() => setParcelas((arr) => (arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr))}
-                className="pb-2 text-slate-400 hover:text-red-600"
+                className="pb-2 text-gray-500 transition hover:text-red-400"
                 title="Quitar parcela"
               >
-                ✕
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
               </button>
             </div>
           ))}
@@ -216,25 +219,25 @@ export default function NuevoProductorForm() {
         <button
           type="button"
           onClick={() => setParcelas((arr) => [...arr, { nombre: '', superficie_ha: '', tipo_cultivo: 'cafe' }])}
-          className="mt-2 rounded-md border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+          className="mt-2 rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
         >
           + Agregar parcela
         </button>
       </section>
 
-      {error && <p className="mb-3 rounded-md bg-red-50 p-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mb-3 rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>}
 
       <div className="flex justify-end gap-2">
         <button
           onClick={() => router.push('/productores')}
-          className="rounded-md px-4 py-2 text-sm text-slate-600 hover:bg-slate-100"
+          className="rounded-full px-4 py-2 text-sm text-gray-500 transition hover:text-cream"
         >
           Cancelar
         </button>
         <button
           disabled={busy}
           onClick={guardar}
-          className="rounded-md bg-orange-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
+          className="rounded-full bg-orange-500 px-4 py-2 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
         >
           {busy ? 'Guardando…' : 'Dar de alta'}
         </button>

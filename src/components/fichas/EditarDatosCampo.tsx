@@ -76,16 +76,16 @@ export default function EditarDatosCampo({
     return (
       <button
         onClick={() => setAbierto(true)}
-        className="mt-2 text-xs font-medium text-orange-700 underline-offset-2 hover:underline"
+        className="mt-2 text-xs font-medium text-orange-400 underline-offset-2 hover:underline"
       >
-        ✏️ Corregir datos del productor / parcela
+        Corregir datos del productor / parcela
       </button>
     )
   }
 
   return (
-    <div className="mt-3 rounded-lg border border-orange-200 bg-white p-3">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <div className="mt-3 rounded-xl border border-orange-500/20 bg-surface p-3">
+      <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
         Corregir datos (se guarda aunque no haya señal)
       </p>
 
@@ -96,7 +96,7 @@ export default function EditarDatosCampo({
       </div>
 
       {parc.map((p, i) => (
-        <div key={p.id} className="mt-2 grid gap-2 border-t border-slate-100 pt-2 sm:grid-cols-[1fr_8rem]">
+        <div key={p.id} className="mt-2 grid gap-2 border-t border-white/5 pt-2 sm:grid-cols-[1fr_8rem]">
           <Campo
             label={`Parcela ${p.label} — nombre`}
             value={p.nombre}
@@ -111,20 +111,20 @@ export default function EditarDatosCampo({
         </div>
       ))}
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-      {msg && <p className="mt-2 text-sm text-green-700">{msg}</p>}
+      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
+      {msg && <p className="mt-2 text-sm text-green-400">{msg}</p>}
 
       <div className="mt-3 flex gap-2">
         <button
           onClick={guardar}
           disabled={busy}
-          className="rounded-md bg-orange-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+          className="rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
         >
           {busy ? 'Guardando…' : 'Guardar cambios'}
         </button>
         <button
           onClick={() => setAbierto(false)}
-          className="rounded-md px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"
+          className="rounded-full px-3 py-1.5 text-sm text-gray-500 transition hover:text-cream"
         >
           Cerrar
         </button>
@@ -146,12 +146,12 @@ function Campo({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs text-slate-500">{label}</span>
+      <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm outline-none focus:border-orange-400"
+        className="w-full rounded-lg border border-white/10 bg-black px-2 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
       />
     </label>
   )

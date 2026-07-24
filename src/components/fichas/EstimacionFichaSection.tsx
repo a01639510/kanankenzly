@@ -127,7 +127,7 @@ export default function EstimacionFichaSection({
             key={m}
             type="button"
             onClick={() => { setMetodo(m); setTimeout(() => guardar({ est_metodo: m }), 0) }}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium ${metodo === m ? 'bg-orange-500 text-white' : 'bg-white text-slate-600 ring-1 ring-slate-300'}`}
+            className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${metodo === m ? 'bg-orange-500 text-black' : 'border border-white/10 bg-surface text-gray-400 hover:border-orange-500/40'}`}
           >
             {m}
           </button>
@@ -136,24 +136,24 @@ export default function EstimacionFichaSection({
 
       {!esCacao ? (
         <>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-gray-500">
             Cuenta los cerezos por bandola (10 bandolas en cada una de 10 plantas). El promedio se calcula solo.
           </p>
-          <div className="overflow-x-auto rounded-md border border-slate-200">
+          <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="text-center text-xs">
-              <thead className="bg-slate-50 text-slate-500">
+              <thead className="bg-surface2 text-gray-500">
                 <tr>
                   <th className="whitespace-nowrap px-1.5 py-1 font-medium">Planta \ Bandola</th>
                   {Array.from({ length: N_BANDOLAS }, (_, i) => (
                     <th key={i} className="px-1 py-1 font-medium">{i + 1}</th>
                   ))}
-                  <th className="px-1.5 py-1 font-medium text-orange-600">Σ/10</th>
+                  <th className="px-1.5 py-1 font-medium text-orange-400">Σ/10</th>
                 </tr>
               </thead>
               <tbody>
                 {grid.map((fila, pi) => (
-                  <tr key={pi} className="border-t border-slate-100">
-                    <td className="px-1.5 py-1 font-medium text-slate-500">{pi + 1}</td>
+                  <tr key={pi} className="border-t border-white/5">
+                    <td className="px-1.5 py-1 font-medium text-gray-500">{pi + 1}</td>
                     {fila.map((c, bi) => (
                       <td key={bi} className="p-0.5">
                         <input
@@ -161,11 +161,11 @@ export default function EstimacionFichaSection({
                           inputMode="numeric"
                           value={c}
                           onChange={(e) => setCelda(pi, bi, e.target.value)}
-                          className="w-10 rounded border border-slate-200 px-1 py-1 text-center outline-none focus:border-orange-400"
+                          className="w-10 rounded-lg border border-white/10 bg-black px-1 py-1 text-center text-cream outline-none transition-colors focus:border-orange-400"
                         />
                       </td>
                     ))}
-                    <td className="px-1.5 py-1 font-medium tabular-nums text-slate-700">
+                    <td className="px-1.5 py-1 font-medium tabular-nums text-gray-300">
                       {promPorPlanta[pi] != null ? promPorPlanta[pi]!.toFixed(1) : '—'}
                     </td>
                   </tr>
@@ -175,24 +175,24 @@ export default function EstimacionFichaSection({
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <Campo label="Promedio cerezo/bandola (auto)">
-              <input readOnly value={promedioCafe ? promedioCafe.toFixed(2) : '—'} className="w-full rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-sm font-semibold" />
+              <input readOnly value={promedioCafe ? promedioCafe.toFixed(2) : '—'} className="w-full rounded-lg border border-white/10 bg-surface2 px-2.5 py-1.5 text-sm font-medium text-cream" />
             </Campo>
             <Campo label="N.º de plantas por hectárea">
-              <input type="number" min="0" value={plantasHa} onChange={(e) => setPlantasHa(e.target.value)} className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm" />
+              <input type="number" min="0" value={plantasHa} onChange={(e) => setPlantasHa(e.target.value)} className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
             </Campo>
             <Campo label="Superficie (ha)">
-              <input type="number" min="0" step="0.01" value={superficie} onChange={(e) => setSuperficie(e.target.value)} className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm" />
+              <input type="number" min="0" step="0.01" value={superficie} onChange={(e) => setSuperficie(e.target.value)} className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
             </Campo>
           </div>
         </>
       ) : (
         <>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-gray-500">
             Muestrea 10 árboles productivos; por cada rango de mazorcas indica cuántos árboles y las mazorcas/árbol. El promedio se calcula solo.
           </p>
-          <div className="overflow-x-auto rounded-md border border-slate-200">
+          <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-xs">
-              <thead className="bg-slate-50 text-left text-slate-500">
+              <thead className="bg-surface2 text-left text-gray-500">
                 <tr>
                   <th className="px-2 py-1 font-medium">Parámetro (mazorcas)</th>
                   <th className="px-2 py-1 font-medium">N.º árboles</th>
@@ -202,19 +202,19 @@ export default function EstimacionFichaSection({
               </thead>
               <tbody>
                 {muestras.map((m, i) => (
-                  <tr key={i} className="border-t border-slate-100">
-                    <td className="px-2 py-1 font-medium text-slate-600">{CACAO_RANGOS[i].label}</td>
+                  <tr key={i} className="border-t border-white/5">
+                    <td className="px-2 py-1 font-medium text-gray-400">{CACAO_RANGOS[i].label}</td>
                     <td className="px-2 py-1">
                       <input type="number" min="0" value={m.arboles}
                         onChange={(e) => setMuestras((ms) => ms.map((x, j) => (j === i ? { ...x, arboles: e.target.value } : x)))}
-                        className="w-20 rounded border border-slate-200 px-1.5 py-1 outline-none focus:border-orange-400" />
+                        className="w-20 rounded-lg border border-white/10 bg-black px-1.5 py-1 text-cream outline-none transition-colors focus:border-orange-400" />
                     </td>
                     <td className="px-2 py-1">
                       <input type="number" min="0" value={m.mazorcas}
                         onChange={(e) => setMuestras((ms) => ms.map((x, j) => (j === i ? { ...x, mazorcas: e.target.value } : x)))}
-                        className="w-20 rounded border border-slate-200 px-1.5 py-1 outline-none focus:border-orange-400" />
+                        className="w-20 rounded-lg border border-white/10 bg-black px-1.5 py-1 text-cream outline-none transition-colors focus:border-orange-400" />
                     </td>
-                    <td className="px-2 py-1 text-right tabular-nums text-slate-600">
+                    <td className="px-2 py-1 text-right tabular-nums text-gray-400">
                       {((+m.arboles || 0) * (+m.mazorcas || 0)) || '—'}
                     </td>
                   </tr>
@@ -224,28 +224,28 @@ export default function EstimacionFichaSection({
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Campo label="Promedio mazorcas/árbol (auto)">
-              <input readOnly value={promedioCacao ? promedioCacao.toFixed(2) : '—'} className="w-full rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-sm font-semibold" />
+              <input readOnly value={promedioCacao ? promedioCacao.toFixed(2) : '—'} className="w-full rounded-lg border border-white/10 bg-surface2 px-2.5 py-1.5 text-sm font-medium text-cream" />
             </Campo>
             <Campo label="N.º total de árboles productivos de la parcela">
-              <input type="number" min="0" value={nArboles} onChange={(e) => setNArboles(e.target.value)} className="w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm" />
+              <input type="number" min="0" value={nArboles} onChange={(e) => setNArboles(e.target.value)} className="w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400" />
             </Campo>
           </div>
         </>
       )}
 
-      <div className="rounded-md bg-slate-50 px-3 py-2 text-sm">
-        <span className="text-slate-400">Estimación calculada:</span>{' '}
-        <span className="font-semibold tabular-nums text-slate-800">
+      <div className="rounded-xl bg-surface2 px-3 py-2 text-sm">
+        <span className="text-gray-500">Estimación calculada:</span>{' '}
+        <span className="font-medium tabular-nums text-cream">
           {resultado.kg != null ? `${resultado.kg.toLocaleString('es-MX', { maximumFractionDigits: 2 })} kg` : '—'}
         </span>
         {resultado.qq != null && (
-          <span className="ml-2 text-slate-600">· {resultado.qq.toLocaleString('es-MX', { maximumFractionDigits: 2 })} qq</span>
+          <span className="ml-2 text-gray-400">· {resultado.qq.toLocaleString('es-MX', { maximumFractionDigits: 2 })} qq</span>
         )}
-        <span className="ml-3 text-xs text-slate-400">
+        <span className="ml-3 text-xs text-gray-500">
           {esCacao ? `IM ${CACAO_IM_DEFAULT}` : `factor ${resultado.factor_im} · base ${tipo === 'arabe' ? 'pergamino 57.5' : 'cereza 80'} kg/qq`}
         </span>
       </div>
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-gray-500">
         Las mediciones y el resultado se guardan en la ficha y salen en el PDF.
       </p>
     </div>
@@ -255,7 +255,7 @@ export default function EstimacionFichaSection({
 function Campo({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
       {children}
     </label>
   )

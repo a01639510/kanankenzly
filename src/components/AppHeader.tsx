@@ -49,7 +49,7 @@ export default function AppHeader({
     pathname === href || pathname.startsWith(href + '/')
 
   return (
-    <header className="relative border-b border-slate-200 bg-white">
+    <header className="relative border-b border-white/10 bg-black">
       <div className="flex items-center justify-between gap-3 px-4 py-2.5">
         <div className="flex min-w-0 flex-1 items-center gap-4">
           {/* La marca nunca se comprime ni se parte en dos líneas.
@@ -57,13 +57,13 @@ export default function AppHeader({
           <div className="flex shrink-0 items-center gap-2.5">
             <span
               aria-hidden="true"
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500 text-sm font-bold text-white"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-500 text-sm font-medium text-black"
             >
               K
             </span>
             <div className="leading-tight">
-              <p className="whitespace-nowrap text-sm font-semibold text-slate-800">Kenzly EUDR</p>
-              <p className="hidden max-w-[10rem] truncate text-xs text-slate-500 lg:block">{orgNombre}</p>
+              <p className="whitespace-nowrap text-sm font-medium text-cream">Kenzly EUDR</p>
+              <p className="hidden max-w-[10rem] truncate font-mono text-[11px] text-gray-500 lg:block">{orgNombre}</p>
             </div>
           </div>
 
@@ -74,10 +74,10 @@ export default function AppHeader({
               <Link
                 key={t.href}
                 href={t.href}
-                className={`shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition ${
+                className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition ${
                   esActiva(t.href)
-                    ? 'bg-orange-50 text-orange-700'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'bg-surface2 text-cream'
+                    : 'text-gray-500 hover:text-cream'
                 }`}
               >
                 {t.label}
@@ -93,14 +93,14 @@ export default function AppHeader({
           {children}
           <button
             onClick={signOut}
-            className="hidden rounded-md px-2.5 py-1.5 text-sm text-slate-600 transition hover:bg-slate-100 md:block"
+            className="hidden rounded-full px-2.5 py-1.5 text-sm text-gray-500 transition hover:text-cream md:block"
           >
             Salir
           </button>
           {/* Botón de menú — solo en celular */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="rounded-md p-2 text-slate-600 transition hover:bg-slate-100 md:hidden"
+            className="rounded-full p-2 text-gray-500 transition hover:text-cream md:hidden"
             aria-label="Menú"
             aria-expanded={menuOpen}
           >
@@ -113,24 +113,24 @@ export default function AppHeader({
 
       {/* Menú desplegable en celular */}
       {menuOpen && (
-        <nav className="border-t border-slate-100 bg-white px-2 pb-2 pt-1 md:hidden">
+        <nav className="border-t border-white/10 bg-black px-2 pb-2 pt-1 md:hidden">
           {tabs.map((t) => (
             <Link
               key={t.href}
               href={t.href}
               onClick={() => setMenuOpen(false)}
-              className={`block rounded-md px-3 py-2.5 text-sm font-medium transition ${
+              className={`block rounded-lg px-3 py-2.5 text-sm transition ${
                 esActiva(t.href)
-                  ? 'bg-orange-50 text-orange-700'
-                  : 'text-slate-700 hover:bg-slate-100'
+                  ? 'bg-surface2 text-cream'
+                  : 'text-gray-400 hover:text-cream'
               }`}
             >
               {t.label}
             </Link>
           ))}
-          <div className="mt-1 flex items-center justify-between border-t border-slate-100 px-3 pt-2">
+          <div className="mt-1 flex items-center justify-between border-t border-white/10 px-3 pt-2">
             <OfflineStatus />
-            <button onClick={signOut} className="text-sm font-medium text-slate-600">
+            <button onClick={signOut} className="text-sm text-gray-500">
               Salir
             </button>
           </div>

@@ -64,15 +64,15 @@ export default function KmlUploadModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-lg bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-          <h2 className="text-base font-semibold text-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface">
+        <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+          <h2 className="text-base font-normal text-cream">
             Subir polígono (KML / KMZ)
           </h2>
           <button
             onClick={onClose}
-            className="rounded p-1 text-slate-400 hover:bg-slate-100"
+            className="rounded-full p-1 text-gray-500 hover:bg-surface2 hover:text-cream"
             aria-label="Cerrar"
           >
             ✕
@@ -81,18 +81,18 @@ export default function KmlUploadModal({
 
         <div className="space-y-4 p-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
               Parcela
             </label>
             {seleccionada && (
-              <div className="mb-2 flex items-center justify-between rounded-md border border-orange-300 bg-orange-50 px-2.5 py-1.5 text-sm">
-                <span className="min-w-0 truncate text-slate-800">
+              <div className="mb-2 flex items-center justify-between rounded-lg border border-orange-500/40 bg-orange-500/10 px-2.5 py-1.5 text-sm">
+                <span className="min-w-0 truncate text-cream">
                   <span className="font-medium">{seleccionada.nombre || seleccionada.codigo_parcela}</span>
-                  <span className="text-slate-500"> · {seleccionada.productor_nombre}</span>
+                  <span className="text-gray-400"> · {seleccionada.productor_nombre}</span>
                 </span>
                 <button
                   onClick={() => setParcelaId('')}
-                  className="ml-2 shrink-0 text-xs text-slate-500 hover:text-red-600"
+                  className="ml-2 shrink-0 text-xs text-gray-500 hover:text-red-400"
                 >
                   cambiar
                 </button>
@@ -104,24 +104,24 @@ export default function KmlUploadModal({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Buscar por parcela, código o productor…"
-                  className="mb-2 w-full rounded-md border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-orange-400"
+                  className="mb-2 w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
                   autoFocus
                 />
-                <div className="max-h-56 overflow-y-auto rounded-md border border-slate-200">
+                <div className="max-h-56 overflow-y-auto rounded-xl border border-white/10">
                   {opciones.length === 0 ? (
-                    <p className="p-3 text-center text-sm text-slate-400">Sin coincidencias.</p>
+                    <p className="p-3 text-center text-sm text-gray-500">Sin coincidencias.</p>
                   ) : (
                     opciones.map((p) => (
                       <button
                         key={p.id}
                         onClick={() => setParcelaId(p.id)}
-                        className="flex w-full items-center justify-between gap-2 border-b border-slate-50 px-2.5 py-2 text-left text-sm hover:bg-orange-50"
+                        className="flex w-full items-center justify-between gap-2 border-b border-white/5 px-2.5 py-2 text-left text-sm hover:bg-surface2"
                       >
                         <span className="min-w-0 truncate">
-                          <span className="font-medium text-slate-800">{p.nombre || p.codigo_parcela}</span>
-                          <span className="block truncate text-xs text-slate-400">{p.productor_nombre}</span>
+                          <span className="font-medium text-cream">{p.nombre || p.codigo_parcela}</span>
+                          <span className="block truncate text-xs text-gray-500">{p.productor_nombre}</span>
                         </span>
-                        <span className="shrink-0 text-xs text-slate-400">
+                        <span className="shrink-0 text-xs text-gray-500">
                           {p.poligono_id ? '● con polígono' : ''}
                         </span>
                       </button>
@@ -129,7 +129,7 @@ export default function KmlUploadModal({
                   )}
                 </div>
                 {filtradas.length > opciones.length && (
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs text-gray-500">
                     Mostrando {opciones.length} de {filtradas.length}. Escribe para acotar.
                   </p>
                 )}
@@ -138,35 +138,35 @@ export default function KmlUploadModal({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
               Archivo
             </label>
             <input
               type="file"
               accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className="w-full text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-orange-50 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-700 hover:file:bg-orange-100"
+              className="w-full text-sm text-gray-400 file:mr-3 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-400 hover:file:bg-orange-500/20"
             />
           </div>
 
           {error && (
-            <p className="rounded-md bg-red-50 p-2 text-sm text-red-600">
+            <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">
               {error}
             </p>
           )}
         </div>
 
-        <div className="flex justify-end gap-2 border-t border-slate-100 px-4 py-3">
+        <div className="flex justify-end gap-2 border-t border-white/10 px-4 py-3">
           <button
             onClick={onClose}
-            className="rounded-md px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"
+            className="rounded-full px-3 py-1.5 text-sm text-gray-400 hover:bg-surface2 hover:text-cream"
           >
             Cancelar
           </button>
           <button
             disabled={busy}
             onClick={submit}
-            className="rounded-md bg-orange-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-orange-600 disabled:opacity-50"
+            className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
           >
             {busy ? 'Procesando…' : 'Subir y procesar'}
           </button>

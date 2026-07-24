@@ -9,7 +9,7 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
       : 0
 
   return (
-    <div className="flex items-stretch divide-x divide-slate-200 overflow-x-auto border-b border-slate-200 bg-white text-sm">
+    <div className="flex items-stretch divide-x divide-white/5 overflow-x-auto border-b border-white/10 bg-surface text-sm">
       <Stat
         label="Monitoreadas"
         value={`${stats.monitoreadas} · ${pctMonitoreadas}%`}
@@ -26,7 +26,7 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
         accent={ALERTA_COLOR.estres_hidrico}
       />
       <Stat label="Críticas" value={stats.criticas} accent={ALERTA_COLOR.critico} />
-      <Stat label="Sin medición" value={stats.sin_datos} accent="#64748b" />
+      <Stat label="Sin medición" value={stats.sin_datos} accent="#94a3b8" />
       <Stat
         label="Última imagen"
         value={stats.ultima_actualizacion ?? '—'}
@@ -46,10 +46,10 @@ function Stat({
 }) {
   return (
     <div className="flex shrink-0 basis-1/3 flex-col px-3 py-2 sm:basis-1/4 md:flex-1 md:basis-0 md:px-4">
-      <span className="text-xs text-slate-500">{label}</span>
+      <span className="font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
       <span
-        className="text-lg font-semibold leading-tight"
-        style={{ color: accent ?? '#0f172a' }}
+        className={`text-lg font-medium leading-tight ${accent ? '' : 'text-cream'}`}
+        style={accent ? { color: accent } : undefined}
       >
         {value}
       </span>
