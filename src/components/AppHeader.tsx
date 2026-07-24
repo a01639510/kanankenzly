@@ -63,7 +63,7 @@ export default function AppHeader({
             </span>
             <div className="leading-tight">
               <p className="whitespace-nowrap text-sm font-medium text-cream">Kenzly EUDR</p>
-              <p className="hidden max-w-[10rem] truncate font-mono text-[11px] text-gray-500 lg:block">{orgNombre}</p>
+              <p className="hidden max-w-[10rem] truncate font-mono text-[11px] text-meta lg:block">{orgNombre}</p>
             </div>
           </div>
 
@@ -77,7 +77,7 @@ export default function AppHeader({
                 className={`shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition ${
                   esActiva(t.href)
                     ? 'bg-surface2 text-cream'
-                    : 'text-gray-500 hover:text-cream'
+                    : 'text-cream/60 hover:text-cream'
                 }`}
               >
                 {t.label}
@@ -93,14 +93,14 @@ export default function AppHeader({
           {children}
           <button
             onClick={signOut}
-            className="hidden rounded-full px-2.5 py-1.5 text-sm text-gray-500 transition hover:text-cream md:block"
+            className="hidden rounded-full px-2.5 py-1.5 text-sm text-cream/60 transition hover:text-cream md:block"
           >
             Salir
           </button>
           {/* Botón de menú — solo en celular */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="rounded-full p-2 text-gray-500 transition hover:text-cream md:hidden"
+            className="rounded-full p-2 text-cream/60 transition hover:text-cream md:hidden"
             aria-label="Menú"
             aria-expanded={menuOpen}
           >
@@ -122,7 +122,7 @@ export default function AppHeader({
               className={`block rounded-lg px-3 py-2.5 text-sm transition ${
                 esActiva(t.href)
                   ? 'bg-surface2 text-cream'
-                  : 'text-gray-400 hover:text-cream'
+                  : 'text-cream/60 hover:text-cream'
               }`}
             >
               {t.label}
@@ -130,7 +130,7 @@ export default function AppHeader({
           ))}
           <div className="mt-1 flex items-center justify-between border-t border-white/10 px-3 pt-2">
             <OfflineStatus />
-            <button onClick={signOut} className="text-sm text-gray-500">
+            <button onClick={signOut} className="text-sm text-cream/60">
               Salir
             </button>
           </div>

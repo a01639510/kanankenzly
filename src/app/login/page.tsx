@@ -59,14 +59,15 @@ function LoginForm() {
           </span>
           <div>
             <h1 className="text-lg font-normal text-cream">Kenzly EUDR</h1>
-            <p className="mt-1 font-mono text-[11px] tracking-wide text-gray-500">
-              Trazabilidad geográfica · Diligencia debida EUDR
+            <p className="mt-1 text-sm text-cream/70">
+              Trazabilidad geográfica ·{' '}
+              <em className="font-serif italic">Diligencia debida EUDR</em>
             </p>
           </div>
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="font-mono text-[11px] tracking-wide text-gray-500">
+          <label htmlFor="email" className="font-mono text-[11px] tracking-wide text-meta">
             Correo
           </label>
           <input
@@ -81,7 +82,7 @@ function LoginForm() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="font-mono text-[11px] tracking-wide text-gray-500">
+          <label htmlFor="password" className="font-mono text-[11px] tracking-wide text-meta">
             Contraseña
           </label>
           <input
@@ -104,9 +105,14 @@ function LoginForm() {
         <button
           type="submit"
           disabled={busy}
-          className="mt-2 w-full rounded-full bg-orange-500 py-2.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
+          className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-cream py-2.5 pl-4 pr-1.5 text-sm font-medium text-black transition hover:bg-white disabled:opacity-50"
         >
           {busy ? 'Entrando…' : 'Entrar'}
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black text-cream">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
         </button>
       </form>
     </div>

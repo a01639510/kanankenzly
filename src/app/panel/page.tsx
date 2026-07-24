@@ -38,8 +38,10 @@ export default async function PanelPage() {
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-6xl space-y-6">
           <div>
-            <h1 className="text-xl font-normal text-cream">Panel de coordinación</h1>
-            <p className="mt-1 text-sm text-gray-500">Resumen operativo de {result.session.orgNombre}</p>
+            <h1 className="text-xl font-normal text-cream">
+              Panel de <em className="font-serif italic">coordinación</em>
+            </h1>
+            <p className="mt-1 text-sm text-cream/70">Resumen operativo de {result.session.orgNombre}</p>
           </div>
 
           {/* ALERTA EUDR — lo primero que debe ver el coordinador */}
@@ -49,9 +51,9 @@ export default async function PanelPage() {
                 <p className="text-sm font-medium text-red-400">
                   Parcelas con riesgo EUDR
                 </p>
-                <p className="mt-1 text-sm text-gray-400">
+                <p className="mt-1 text-sm text-cream/70">
                   {s.eudr_deforestacion > 0 && (
-                    <b className="text-gray-300">
+                    <b className="text-cream">
                       {s.eudr_deforestacion} con veredicto de deforestación
                     </b>
                   )}
@@ -75,7 +77,7 @@ export default async function PanelPage() {
           {/* Tamizado EUDR */}
           <Section title="Tamizado EUDR (alerta temprana por NDVI)" href="/satelite">
             {s.eudr_analizadas === 0 ? (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-cream/60">
                 Aún no se ha corrido el análisis EUDR. Ábrelo en Satélite para analizar las parcelas.
               </p>
             ) : (
@@ -99,7 +101,7 @@ export default async function PanelPage() {
                 value={`${n(s.bosque2020_con_traslape)} / ${n(s.bosque2020_evaluadas)}`}
                 color="#fb923c"
               />
-              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#E5E2D2" />
+              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#E1E0CC" />
             </div>
           </Section>
 
@@ -124,7 +126,7 @@ export default async function PanelPage() {
                   {ESTADO_FICHA_LABEL[e]}: {s.fichas_por_estado[e]}
                 </span>
               ))}
-              {s.fichas_total === 0 && <span className="text-sm text-gray-500">Aún no hay fichas.</span>}
+              {s.fichas_total === 0 && <span className="text-sm text-cream/60">Aún no hay fichas.</span>}
             </div>
           </Section>
 
@@ -142,7 +144,7 @@ export default async function PanelPage() {
 function Kpi({ label, value, href }: { label: string; value: string | number; href?: string }) {
   const inner = (
     <div className="rounded-2xl border border-white/10 bg-surface p-4 transition hover:border-orange-500/40">
-      <div className="font-mono text-[11px] tracking-wide text-gray-500">{label}</div>
+      <div className="font-mono text-[11px] tracking-wide text-meta">{label}</div>
       <div className="mt-1 text-2xl font-normal text-cream">{value}</div>
     </div>
   )
@@ -153,7 +155,7 @@ function Section({ title, href, children }: { title: string; href: string; child
   return (
     <section className="rounded-2xl border border-white/10 bg-surface p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-mono text-[11px] uppercase tracking-wide text-gray-500">{title}</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-wide text-meta">{title}</h2>
         <Link href={href} className="text-sm text-orange-400 hover:text-orange-300">
           Abrir →
         </Link>
@@ -166,7 +168,7 @@ function Section({ title, href, children }: { title: string; href: string; child
 function Mini({ label, value, color }: { label: string; value: string | number; color: string }) {
   return (
     <div>
-      <div className="font-mono text-[11px] tracking-wide text-gray-500">{label}</div>
+      <div className="font-mono text-[11px] tracking-wide text-meta">{label}</div>
       <div className="text-lg font-medium" style={{ color }}>
         {value}
       </div>

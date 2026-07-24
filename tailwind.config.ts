@@ -29,7 +29,14 @@ const config: Config = {
         canvas: "#0a0a0a", // fondo de página
         surface: "#121212", // tarjetas / paneles
         surface2: "#1c1c1c", // anidado: inputs, filas, chips
-        cream: "#E5E2D2", // texto primario sobre superficies oscuras
+        cream: "#E1E0CC", // beige/hueso: texto primario y fondo de botón pill
+        // Gris azulado neutro para kickers/metadata/labels (NO usar gris frío
+        // genérico ahí: el texto secundario de cuerpo usa cream con opacidad).
+        meta: "#7C8393",
+      },
+      fontFamily: {
+        sans: ["var(--font-almarai)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+        serif: ["var(--font-instrument-serif)", "Georgia", "serif"],
       },
     },
   },
