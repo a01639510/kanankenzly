@@ -19,6 +19,7 @@ const TABS: { href: string; label: string; soloAdmin?: boolean }[] = [
   { href: '/fichas', label: 'Fichas' },
   { href: '/bitacora', label: 'Bitácoras' },
   { href: '/historial', label: 'Historial' },
+  { href: '/certificaciones', label: 'Certificaciones' },
 ]
 
 export default function AppHeader({

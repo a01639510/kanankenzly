@@ -18,7 +18,7 @@ body {
 
 body {
   color: #e1e0cc;
-  background: #060606;
+  background: #0e0f10;
   /* La familia tipográfica la pone la clase `font-sans` en <body> vía
      next/font — ver src/app/layout.tsx. */
 }
@@ -28,10 +28,10 @@ body {
    sutil, para que las tarjetas de vidrio destaquen sobre el fondo en vez de
    competir con él. `fixed` en el layout raíz (ver layout.tsx). */
 .mesh-bg {
-  background-color: #060606;
+  background-color: #0e0f10;
   background-image:
-    radial-gradient(at 12% 15%, rgba(248, 146, 29, 0.1) 0, transparent 42%),
-    radial-gradient(at 85% 82%, rgba(52, 211, 153, 0.06) 0, transparent 45%);
+    radial-gradient(at 12% 15%, rgba(248, 146, 29, 0.12) 0, transparent 45%),
+    radial-gradient(at 85% 82%, rgba(52, 211, 153, 0.11) 0, transparent 48%);
 }
 
 /* Hide the Mapbox wordmark (paid plan). Remove if on the free tier. */
