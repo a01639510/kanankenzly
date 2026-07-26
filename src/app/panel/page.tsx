@@ -18,6 +18,16 @@ const CLASIFICACIONES: ClasificacionEudr[] = [
   'posible_perdida', 'vigilar', 'sin_cambio', 'sin_datos',
 ]
 
+// Color del dot de 6px que acompaña cada chip de estado (independiente de las
+// clases de fondo/texto en ESTADO_FICHA_BADGE).
+const ESTADO_FICHA_DOT: Record<EstadoFicha, string> = {
+  borrador: 'bg-white/30',
+  en_revision: 'bg-amber-400',
+  aprobada: 'bg-emerald-400',
+  pdf_generado: 'bg-sky-400',
+  requiere_correccion: 'bg-red-400',
+}
+
 export default async function PanelPage() {
   const result = await getSessionResult()
   if (result.kind === 'no-auth') redirect('/login')
@@ -33,35 +43,40 @@ export default async function PanelPage() {
   const enRiesgo = s.eudr_deforestacion + s.eudr_por_clasificacion.posible_perdida
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-graphite">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-6xl space-y-6">
           <div>
-            <h1 className="text-xl font-normal text-cream">
-              Panel de <em className="font-serif italic">coordinación</em>
-            </h1>
-            <p className="mt-1 text-sm text-cream/70">Resumen operativo de {result.session.orgNombre}</p>
+            <h1 className="text-xl font-medium text-white">Panel de coordinación</h1>
+            <p className="mt-1 text-sm text-silver">Resumen operativo de {result.session.orgNombre}</p>
           </div>
 
           {/* ALERTA EUDR — lo primero que debe ver el coordinador */}
           {enRiesgo > 0 && (
             <Link href="/satelite" className="block">
-              <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-4 transition hover:border-red-500/40">
-                <p className="text-sm font-medium text-red-400">
-                  Parcelas con riesgo EUDR
-                </p>
-                <p className="mt-1 text-sm text-cream/70">
-                  {s.eudr_deforestacion > 0 && (
-                    <b className="text-cream">
-                      {s.eudr_deforestacion} con veredicto de deforestación
-                    </b>
-                  )}
-                  {s.eudr_deforestacion > 0 && s.eudr_por_clasificacion.posible_perdida > 0 && ' · '}
-                  {s.eudr_por_clasificacion.posible_perdida > 0 &&
-                    `${s.eudr_por_clasificacion.posible_perdida} con posible pérdida de cobertura`}
-                  . Revisar en Satélite →
-                </p>
+              <div className="relative overflow-hidden rounded-[20px] border border-red-500/20 bg-gradient-to-b from-[#241819] to-[#16181D] p-4 transition hover:border-red-500/40">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 top-0 z-0 h-16 bg-[radial-gradient(ellipse_at_top,_rgba(248,113,113,0.12),_transparent_70%)]"
+                />
+                <div className="relative z-10">
+                  <p className="flex items-center gap-2 text-sm font-medium text-red-400">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-400" />
+                    Parcelas con riesgo EUDR
+                  </p>
+                  <p className="mt-1 text-sm text-silver">
+                    {s.eudr_deforestacion > 0 && (
+                      <b className="text-white">
+                        {s.eudr_deforestacion} con veredicto de deforestación
+                      </b>
+                    )}
+                    {s.eudr_deforestacion > 0 && s.eudr_por_clasificacion.posible_perdida > 0 && ' · '}
+                    {s.eudr_por_clasificacion.posible_perdida > 0 &&
+                      `${s.eudr_por_clasificacion.posible_perdida} con posible pérdida de cobertura`}
+                    . Revisar en Satélite →
+                  </p>
+                </div>
               </div>
             </Link>
           )}
@@ -77,7 +92,7 @@ export default async function PanelPage() {
           {/* Tamizado EUDR */}
           <Section title="Tamizado EUDR (alerta temprana por NDVI)" href="/satelite">
             {s.eudr_analizadas === 0 ? (
-              <p className="text-sm text-cream/60">
+              <p className="text-sm text-silver">
                 Aún no se ha corrido el análisis EUDR. Ábrelo en Satélite para analizar las parcelas.
               </p>
             ) : (
@@ -101,7 +116,7 @@ export default async function PanelPage() {
                 value={`${n(s.bosque2020_con_traslape)} / ${n(s.bosque2020_evaluadas)}`}
                 color="#fb923c"
               />
-              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#E1E0CC" />
+              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#FFFFFF" />
             </div>
           </Section>
 
@@ -122,11 +137,15 @@ export default async function PanelPage() {
           <Section title={`Fichas de inspección (${s.fichas_total})`} href="/fichas">
             <div className="flex flex-wrap gap-2">
               {estados.map((e) => (
-                <span key={e} className={`rounded-full px-3 py-1 text-sm font-medium ${ESTADO_FICHA_BADGE[e]}`}>
+                <span
+                  key={e}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${ESTADO_FICHA_BADGE[e]}`}
+                >
+                  <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${ESTADO_FICHA_DOT[e]}`} />
                   {ESTADO_FICHA_LABEL[e]}: {s.fichas_por_estado[e]}
                 </span>
               ))}
-              {s.fichas_total === 0 && <span className="text-sm text-cream/60">Aún no hay fichas.</span>}
+              {s.fichas_total === 0 && <span className="text-sm text-silver">Aún no hay fichas.</span>}
             </div>
           </Section>
 
@@ -141,35 +160,51 @@ export default async function PanelPage() {
   )
 }
 
+// Card bento: gradiente descendente sutil + micro-borde rim-light + spotlight
+// interno (glow radial arriba). El patrón se repite en Kpi y Section.
+function Bento({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D] transition hover:border-orange-500/30 ${className}`}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-14 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.06),_transparent_70%)]"
+      />
+      <div className="relative z-10">{children}</div>
+    </div>
+  )
+}
+
 function Kpi({ label, value, href }: { label: string; value: string | number; href?: string }) {
   const inner = (
-    <div className="rounded-2xl border border-white/10 bg-surface p-4 transition hover:border-orange-500/40">
-      <div className="font-mono text-[11px] tracking-wide text-meta">{label}</div>
-      <div className="mt-1 text-2xl font-normal text-cream">{value}</div>
-    </div>
+    <Bento className="p-4">
+      <div className="font-mono text-[11px] tracking-wide text-silver">{label}</div>
+      <div className="mt-1 text-2xl font-semibold text-white">{value}</div>
+    </Bento>
   )
   return href ? <Link href={href}>{inner}</Link> : inner
 }
 
 function Section({ title, href, children }: { title: string; href: string; children: React.ReactNode }) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-surface p-5">
+    <Bento className="p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-mono text-[11px] uppercase tracking-wide text-meta">{title}</h2>
+        <h2 className="font-mono text-[11px] uppercase tracking-wide text-silver">{title}</h2>
         <Link href={href} className="text-sm text-orange-400 hover:text-orange-300">
           Abrir →
         </Link>
       </div>
       {children}
-    </section>
+    </Bento>
   )
 }
 
 function Mini({ label, value, color }: { label: string; value: string | number; color: string }) {
   return (
     <div>
-      <div className="font-mono text-[11px] tracking-wide text-meta">{label}</div>
-      <div className="text-lg font-medium" style={{ color }}>
+      <div className="font-mono text-[11px] tracking-wide text-silver">{label}</div>
+      <div className="text-lg font-semibold" style={{ color }}>
         {value}
       </div>
     </div>

@@ -83,11 +83,11 @@ export default function OfflineStatus() {
     <div className="flex items-center gap-2">
       <span
         className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono text-[11px] ${
-          online ? 'bg-green-500/10 text-green-400' : 'bg-amber-500/10 text-amber-400'
+          online ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
         }`}
         title={online ? 'Con conexión' : 'Sin conexión — las capturas se guardan en el dispositivo'}
       >
-        <span className={`h-1.5 w-1.5 rounded-full ${online ? 'bg-green-500' : 'bg-amber-500'}`} />
+        <span className={`h-1.5 w-1.5 rounded-full ${online ? 'bg-emerald-400' : 'bg-red-400'}`} />
         {online ? 'En línea' : 'Offline'}
       </span>
 
@@ -110,23 +110,23 @@ export default function OfflineStatus() {
           </button>
 
           {verLista && (
-            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-xl border border-white/10 bg-surface p-2 shadow-lg">
-              <p className="mb-1 px-1 font-mono text-[11px] tracking-wide text-gray-500">
+            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-xl border border-white/[0.08] bg-graphite p-2 shadow-lg">
+              <p className="mb-1 px-1 font-mono text-[11px] tracking-wide text-silver">
                 Pendientes de subir ({lista.length})
               </p>
               {lista.map((it, i) => (
-                <div key={i} className="border-t border-white/5 px-1 py-1.5 text-xs">
-                  <span className="mr-1.5 rounded bg-surface2 px-1.5 py-0.5 font-medium text-gray-300">
+                <div key={i} className="border-t border-white/[0.06] px-1 py-1.5 text-xs">
+                  <span className="mr-1.5 rounded bg-white/5 px-1.5 py-0.5 font-medium text-silver">
                     {it.tipo}
                   </span>
-                  <span className="text-cream">{it.etiqueta}</span>
-                  <span className="mt-0.5 block text-[10px] text-gray-500">
+                  <span className="text-white">{it.etiqueta}</span>
+                  <span className="mt-0.5 block text-[10px] text-silver/70">
                     {new Date(it.creada_en).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' })}
                   </span>
                 </div>
               ))}
               {lista.length === 0 && (
-                <p className="px-1 py-2 text-xs text-gray-500">Nada pendiente.</p>
+                <p className="px-1 py-2 text-xs text-silver">Nada pendiente.</p>
               )}
               {online && (
                 <button

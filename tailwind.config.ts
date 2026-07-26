@@ -33,6 +33,10 @@ const config: Config = {
         // Gris azulado neutro para kickers/metadata/labels (NO usar gris frío
         // genérico ahí: el texto secundario de cuerpo usa cream con opacidad).
         meta: "#7C8393",
+        // "Dark Tactical Bento / Command Center": negro carbón profundo y gris
+        // plata muted, usados en login + panel (ver AppHeader/login/panel).
+        graphite: "#0D0E10",
+        silver: "#8E939D",
       },
       fontFamily: {
         sans: ["var(--font-almarai)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
