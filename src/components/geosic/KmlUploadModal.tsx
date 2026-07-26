@@ -9,13 +9,16 @@ interface Props {
   parcelas: ParcelaGeoRow[]
   onClose: () => void
   onUploaded: () => void
+  onDibujar: (parcelaId: string) => void
 }
 
 export default function KmlUploadModal({
   parcelas,
   onClose,
   onUploaded,
+  onDibujar,
 }: Props) {
+  const [modo, setModo] = useState<'archivo' | 'dibujar'>('archivo')
   const [parcelaId, setParcelaId] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
@@ -67,15 +70,32 @@ export default function KmlUploadModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D]">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-          <h2 className="text-base font-medium text-white">
-            Subir polígono (KML / KMZ)
-          </h2>
+          <h2 className="text-base font-medium text-white">Agregar polígono</h2>
           <button
             onClick={onClose}
             className="rounded-full p-1 text-silver hover:bg-white/5 hover:text-white"
             aria-label="Cerrar"
           >
             ✕
+          </button>
+        </div>
+
+        <div className="flex gap-1 px-4 pt-3">
+          <button
+            onClick={() => setModo('archivo')}
+            className={`rounded-full px-3 py-1.5 text-sm transition ${
+              modo === 'archivo' ? 'bg-white/10 text-white' : 'text-silver hover:text-white'
+            }`}
+          >
+            Subir archivo
+          </button>
+          <button
+            onClick={() => setModo('dibujar')}
+            className={`rounded-full px-3 py-1.5 text-sm transition ${
+              modo === 'dibujar' ? 'bg-white/10 text-white' : 'text-silver hover:text-white'
+            }`}
+          >
+            Dibujar en el mapa
           </button>
         </div>
 
@@ -137,17 +157,24 @@ export default function KmlUploadModal({
             )}
           </div>
 
-          <div>
-            <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
-              Archivo
-            </label>
-            <input
-              type="file"
-              accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className="w-full text-sm text-silver file:mr-3 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-400 hover:file:bg-orange-500/20"
-            />
-          </div>
+          {modo === 'archivo' ? (
+            <div>
+              <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
+                Archivo
+              </label>
+              <input
+                type="file"
+                accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz"
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                className="w-full text-sm text-silver file:mr-3 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-400 hover:file:bg-orange-500/20"
+              />
+            </div>
+          ) : (
+            <p className="rounded-lg bg-white/5 p-3 text-sm text-silver">
+              Elige la parcela y toca &quot;Dibujar en el mapa&quot;. El modal se cierra y podrás
+              marcar los vértices del polígono directamente sobre la imagen satelital.
+            </p>
+          )}
 
           {error && (
             <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">
@@ -163,13 +190,23 @@ export default function KmlUploadModal({
           >
             Cancelar
           </button>
-          <button
-            disabled={busy}
-            onClick={submit}
-            className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
-          >
-            {busy ? 'Procesando…' : 'Subir y procesar'}
-          </button>
+          {modo === 'archivo' ? (
+            <button
+              disabled={busy}
+              onClick={submit}
+              className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
+            >
+              {busy ? 'Procesando…' : 'Subir y procesar'}
+            </button>
+          ) : (
+            <button
+              disabled={!parcelaId}
+              onClick={() => onDibujar(parcelaId)}
+              className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-medium text-black transition hover:bg-orange-400 disabled:opacity-50"
+            >
+              Dibujar en el mapa →
+            </button>
+          )}
         </div>
       </div>
     </div>

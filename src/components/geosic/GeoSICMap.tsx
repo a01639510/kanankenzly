@@ -34,6 +34,37 @@ interface Props {
   polygons: GeoJSON.FeatureCollection<GeoJSON.Polygon>
   selectedId: string | null
   onSelect: (id: string) => void
+  // Modo "dibujar polígono a mano" — ver GeoSICShell/KmlUploadModal.
+  dibujoActivo?: boolean
+  onPoligonoTerminado?: (polygon: GeoJSON.Polygon) => void
+  onDibujoCancelado?: () => void
+}
+
+// Feature collection de apoyo visual para el dibujo en curso: los vértices
+// como puntos, la línea abierta entre ellos, y — desde el 3er punto — un
+// preview del polígono cerrado. Los 3 layers filtran por geometry-type sobre
+// la misma fuente.
+function buildDibujoFeatures(puntos: [number, number][]): GeoJSON.FeatureCollection {
+  const features: GeoJSON.Feature[] = puntos.map((p) => ({
+    type: 'Feature',
+    geometry: { type: 'Point', coordinates: p },
+    properties: {},
+  }))
+  if (puntos.length >= 2) {
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'LineString', coordinates: puntos },
+      properties: {},
+    })
+  }
+  if (puntos.length >= 3) {
+    features.push({
+      type: 'Feature',
+      geometry: { type: 'Polygon', coordinates: [[...puntos, puntos[0]]] },
+      properties: {},
+    })
+  }
+  return { type: 'FeatureCollection', features }
 }
 
 export default function GeoSICMap({
@@ -41,14 +72,22 @@ export default function GeoSICMap({
   polygons,
   selectedId,
   onSelect,
+  dibujoActivo = false,
+  onPoligonoTerminado,
+  onDibujoCancelado,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const loadedRef = useRef(false)
   const [legendOpen, setLegendOpen] = useState(true)
+  const [puntos, setPuntos] = useState<[number, number][]>([])
   // Keep latest onSelect without re-binding map event listeners.
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
+  // El click handler de selección (ligado una sola vez, al cargar el mapa)
+  // necesita saber en tiempo real si estamos dibujando, sin re-bindearse.
+  const dibujoActivoRef = useRef(dibujoActivo)
+  dibujoActivoRef.current = dibujoActivo
 
   // Build a point FeatureCollection for parcelas that have a centroid but
   // we still render as pins too (so a polygon's centroid shows a clickable dot).
@@ -155,10 +194,37 @@ export default function GeoSICMap({
         },
       })
 
-      // Click handlers (use ref so we never stale-close over onSelect).
+      // Fuente + capas del dibujo manual (vacías hasta que se activa el modo).
+      map.addSource('dibujo-temp', { type: 'geojson', data: buildDibujoFeatures([]) })
+      map.addLayer({
+        id: 'dibujo-fill',
+        type: 'fill',
+        source: 'dibujo-temp',
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        paint: { 'fill-color': '#F8921D', 'fill-opacity': 0.15 },
+      })
+      map.addLayer({
+        id: 'dibujo-line',
+        type: 'line',
+        source: 'dibujo-temp',
+        filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'Polygon']],
+        paint: { 'line-color': '#F8921D', 'line-width': 2, 'line-dasharray': [2, 1.2] },
+      })
+      map.addLayer({
+        id: 'dibujo-puntos',
+        type: 'circle',
+        source: 'dibujo-temp',
+        filter: ['==', ['geometry-type'], 'Point'],
+        paint: { 'circle-radius': 5, 'circle-color': '#ffffff', 'circle-stroke-width': 2, 'circle-stroke-color': '#F8921D' },
+      })
+
+      // Click handlers (use ref so we never stale-close over onSelect). En
+      // modo dibujo NO seleccionamos parcela — el clic agrega un vértice
+      // (ver el efecto de más abajo).
       const handleClick = (
         e: mapboxgl.MapMouseEvent & { features?: mapboxgl.GeoJSONFeature[] },
       ) => {
+        if (dibujoActivoRef.current) return
         const id = e.features?.[0]?.properties?.parcela_id as string | undefined
         if (id) onSelectRef.current(id)
       }
@@ -241,6 +307,47 @@ export default function GeoSICMap({
     }
   }, [selectedId, parcelas])
 
+  // --- Modo dibujo: reinicia los vértices cada vez que se activa/desactiva ---
+  useEffect(() => {
+    setPuntos([])
+  }, [dibujoActivo])
+
+  // --- Modo dibujo: un clic en el mapa agrega un vértice ---
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !loadedRef.current || !dibujoActivo) return
+
+    map.getCanvas().style.cursor = 'crosshair'
+    const onClick = (e: mapboxgl.MapMouseEvent) => {
+      setPuntos((prev) => [...prev, [e.lngLat.lng, e.lngLat.lat]])
+    }
+    map.on('click', onClick)
+    return () => {
+      map.off('click', onClick)
+      map.getCanvas().style.cursor = ''
+    }
+  }, [dibujoActivo])
+
+  // --- Modo dibujo: refleja los vértices en el preview del mapa ---
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !loadedRef.current) return
+    ;(map.getSource('dibujo-temp') as mapboxgl.GeoJSONSource | undefined)?.setData(
+      buildDibujoFeatures(puntos),
+    )
+  }, [puntos])
+
+  function finalizarDibujo() {
+    if (puntos.length < 3) return
+    onPoligonoTerminado?.({ type: 'Polygon', coordinates: [[...puntos, puntos[0]]] })
+    setPuntos([])
+  }
+
+  function cancelarDibujo() {
+    setPuntos([])
+    onDibujoCancelado?.()
+  }
+
   function zoomBy(delta: number) {
     const map = mapRef.current
     if (!map) return
@@ -259,52 +366,91 @@ export default function GeoSICMap({
     <>
       <div ref={containerRef} className="absolute inset-0" />
 
-      {/* Controles flotantes de cristal: zoom +/- y recentrar. */}
-      <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-full border border-white/10 bg-black/40 p-1 backdrop-blur-md">
-        <button
-          onClick={() => zoomBy(1)}
-          aria-label="Acercar"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
-        </button>
-        <button
-          onClick={() => zoomBy(-1)}
-          aria-label="Alejar"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14" /></svg>
-        </button>
-        <div className="h-px bg-white/10" />
-        <button
-          onClick={recentrar}
-          aria-label="Centrar en los datos"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3" /><circle cx="12" cy="12" r="3.5" /></svg>
-        </button>
-      </div>
-
-      {/* Leyenda flotante de cristal: colores de estado_validacion. */}
-      <div className="absolute bottom-3 left-3 z-10 rounded-xl border border-white/10 bg-black/40 backdrop-blur-md">
-        <button
-          onClick={() => setLegendOpen((o) => !o)}
-          className="flex w-full items-center gap-2 px-3 py-2 font-mono text-[11px] tracking-wide text-silver"
-        >
-          Estados
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${legendOpen ? 'rotate-180' : ''}`}><path d="M6 9l6 6 6-6" /></svg>
-        </button>
-        {legendOpen && (
-          <div className="flex flex-col gap-1.5 border-t border-white/10 px-3 py-2">
-            {estados.map((e) => (
-              <div key={e} className="flex items-center gap-2 text-xs text-white">
-                <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: ESTADO_COLOR[e] }} />
-                {ESTADO_LABEL[e]}
-              </div>
-            ))}
+      {!dibujoActivo && (
+        <>
+          {/* Controles flotantes de cristal: zoom +/- y recentrar. */}
+          <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-full border border-white/10 bg-black/40 p-1 backdrop-blur-md">
+            <button
+              onClick={() => zoomBy(1)}
+              aria-label="Acercar"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+            </button>
+            <button
+              onClick={() => zoomBy(-1)}
+              aria-label="Alejar"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14" /></svg>
+            </button>
+            <div className="h-px bg-white/10" />
+            <button
+              onClick={recentrar}
+              aria-label="Centrar en los datos"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3" /><circle cx="12" cy="12" r="3.5" /></svg>
+            </button>
           </div>
-        )}
-      </div>
+
+          {/* Leyenda flotante de cristal: colores de estado_validacion. */}
+          <div className="absolute bottom-3 left-3 z-10 rounded-xl border border-white/10 bg-black/40 backdrop-blur-md">
+            <button
+              onClick={() => setLegendOpen((o) => !o)}
+              className="flex w-full items-center gap-2 px-3 py-2 font-mono text-[11px] tracking-wide text-silver"
+            >
+              Estados
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${legendOpen ? 'rotate-180' : ''}`}><path d="M6 9l6 6 6-6" /></svg>
+            </button>
+            {legendOpen && (
+              <div className="flex flex-col gap-1.5 border-t border-white/10 px-3 py-2">
+                {estados.map((e) => (
+                  <div key={e} className="flex items-center gap-2 text-xs text-white">
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: ESTADO_COLOR[e] }} />
+                    {ESTADO_LABEL[e]}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Toolbar flotante del modo dibujo: instrucción + vértices + acciones. */}
+      {dibujoActivo && (
+        <div className="absolute inset-x-0 bottom-3 z-10 flex justify-center px-3">
+          <div className="flex flex-wrap items-center gap-3 rounded-full border border-orange-500/30 bg-black/70 px-4 py-2 backdrop-blur-xl">
+            <span className="font-mono text-[11px] tracking-wide text-silver">
+              {puntos.length === 0
+                ? 'Toca el mapa para marcar el primer vértice'
+                : `${puntos.length} vértice${puntos.length === 1 ? '' : 's'}`}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setPuntos((prev) => prev.slice(0, -1))}
+                disabled={puntos.length === 0}
+                className="rounded-full px-3 py-1 text-xs font-medium text-white transition hover:bg-white/10 disabled:opacity-30"
+              >
+                Deshacer punto
+              </button>
+              <button
+                onClick={cancelarDibujo}
+                className="rounded-full px-3 py-1 text-xs font-medium text-red-400 transition hover:bg-red-500/10"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={finalizarDibujo}
+                disabled={puntos.length < 3}
+                className="rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-black transition hover:bg-orange-400 disabled:opacity-30"
+              >
+                Finalizar polígono
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

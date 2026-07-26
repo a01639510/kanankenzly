@@ -104,22 +104,23 @@ function HojaDeRutaSection() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {HOJA_DE_RUTA.map((m) => (
-          <div
-            key={m.slug}
-            id={`hoja-${m.slug}`}
-            className="relative overflow-hidden rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-4"
-          >
-            <span className="inline-flex items-center rounded-full bg-white/5 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-silver">
-              Demo
-            </span>
-            <h3 className="mt-2 text-sm font-semibold text-white">{m.nombre}</h3>
-            <p className="mt-1 text-xs text-silver">{m.descripcion}</p>
-            {/* Skeleton decorativo: da la sensación de estructura sin simular datos reales. */}
-            <div className="mt-3 space-y-1.5 opacity-40">
-              <div className="h-1.5 w-4/5 rounded-full bg-white/20" />
-              <div className="h-1.5 w-3/5 rounded-full bg-white/20" />
-              <div className="h-1.5 w-2/5 rounded-full bg-white/20" />
-            </div>
+          <div key={m.slug} id={`hoja-${m.slug}`}>
+            <Link
+              href={`/certificaciones/hoja-de-ruta/${m.slug}`}
+              className="relative block overflow-hidden rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-4 transition hover:border-amber-500/40 hover:bg-white/[0.04]"
+            >
+              <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wide text-amber-400">
+                Demo
+              </span>
+              <h3 className="mt-2 text-sm font-semibold text-white">{m.nombre}</h3>
+              <p className="mt-1 text-xs text-silver">{m.descripcion}</p>
+              {/* Skeleton decorativo: da la sensación de estructura sin simular datos reales. */}
+              <div className="mt-3 space-y-1.5 opacity-40">
+                <div className="h-1.5 w-4/5 rounded-full bg-white/20" />
+                <div className="h-1.5 w-3/5 rounded-full bg-white/20" />
+                <div className="h-1.5 w-2/5 rounded-full bg-white/20" />
+              </div>
+            </Link>
           </div>
         ))}
       </div>

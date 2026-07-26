@@ -33,6 +33,11 @@ export default function GeoSICShell({
   const [query, setQuery] = useState('')
   const [listaAbierta, setListaAbierta] = useState(false) // drawer de lista en celular
 
+  // Dibujar polígono a mano: parcela objetivo (null = no estamos dibujando).
+  const [dibujoParaId, setDibujoParaId] = useState<string | null>(null)
+  const [guardandoDibujo, setGuardandoDibujo] = useState(false)
+  const [errorDibujo, setErrorDibujo] = useState<string | null>(null)
+
   // Al elegir una parcela en celular, cerramos el cajón de la lista para ver
   // el mapa y el panel de detalle.
   function elegirParcela(id: string | null) {
@@ -69,6 +74,32 @@ export default function GeoSICShell({
   }
 
   const puedeValidar = session.rol === 'admin' || session.rol === 'coordinador'
+  const dibujando = dibujoParaId !== null
+  const parcelaDibujo = parcelas.find((p) => p.id === dibujoParaId) ?? null
+
+  // Guarda el polígono dibujado a mano — mismo endpoint que el KML, solo que
+  // manda el GeoJSON directo (ver /api/geosic/upload: acepta `file` o `geojson`).
+  async function guardarDibujo(polygon: GeoJSON.Polygon) {
+    if (!dibujoParaId) return
+    setGuardandoDibujo(true)
+    setErrorDibujo(null)
+    try {
+      const fd = new FormData()
+      fd.append('parcela_id', dibujoParaId)
+      fd.append('geojson', JSON.stringify(polygon))
+      const res = await fetch('/api/geosic/upload', { method: 'POST', body: fd })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error ?? `Error ${res.status}`)
+      }
+      setDibujoParaId(null)
+      refresh()
+    } catch (e) {
+      setErrorDibujo(e instanceof Error ? e.message : 'Error al guardar el polígono')
+    } finally {
+      setGuardandoDibujo(false)
+    }
+  }
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden">
@@ -90,69 +121,89 @@ export default function GeoSICShell({
           polygons={polygons}
           selectedId={selectedId}
           onSelect={elegirParcela}
+          dibujoActivo={dibujando}
+          onPoligonoTerminado={guardarDibujo}
+          onDibujoCancelado={() => setDibujoParaId(null)}
         />
 
-        {/* Stats flotantes — esquina superior izquierda, solo escritorio
-            (en celular ocuparían el ancho que necesita la lista). */}
-        <div className="pointer-events-none absolute left-3 right-3 top-3 z-20 hidden md:block">
-          <div className="pointer-events-auto inline-flex max-w-full">
-            <GeoStatsBar stats={stats} />
+        {/* Mientras se dibuja, ocultamos lista/panel/stats para que el mapa
+            quede despejado — solo un aviso arriba con la parcela objetivo. */}
+        {dibujando ? (
+          <div className="pointer-events-none absolute left-3 right-3 top-3 z-20 flex justify-center">
+            <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-orange-500/30 bg-black/70 px-4 py-2 backdrop-blur-xl">
+              <span className="h-1.5 w-1.5 rounded-full bg-orange-400" />
+              <span className="text-sm text-white">
+                Dibujando para <b>{parcelaDibujo?.nombre || parcelaDibujo?.codigo_parcela}</b>
+              </span>
+              {guardandoDibujo && <span className="text-xs text-silver">Guardando…</span>}
+              {errorDibujo && <span className="text-xs text-red-400">{errorDibujo}</span>}
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            {/* Stats flotantes — esquina superior izquierda, solo escritorio
+                (en celular ocuparían el ancho que necesita la lista). */}
+            <div className="pointer-events-none absolute left-3 right-3 top-3 z-20 hidden md:block">
+              <div className="pointer-events-auto inline-flex max-w-full">
+                <GeoStatsBar stats={stats} />
+              </div>
+            </div>
 
-        {/* Fondo oscuro al abrir la lista en celular */}
-        {listaAbierta && (
-          <button
-            aria-label="Cerrar lista"
-            onClick={() => setListaAbierta(false)}
-            className="absolute inset-0 z-20 bg-black/40 md:hidden"
-          />
-        )}
+            {/* Fondo oscuro al abrir la lista en celular */}
+            {listaAbierta && (
+              <button
+                aria-label="Cerrar lista"
+                onClick={() => setListaAbierta(false)}
+                className="absolute inset-0 z-20 bg-black/40 md:hidden"
+              />
+            )}
 
-        {/* Lista flotante — drawer casi completo en celular, tarjeta acotada
-            en escritorio (deja libres las esquinas para los controles del mapa). */}
-        <aside
-          className={`absolute left-3 top-3 bottom-3 z-30 flex w-80 max-w-[85%] flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl transition-transform md:top-24 ${
-            listaAbierta ? 'translate-x-0' : '-translate-x-[120%] md:translate-x-0'
-          }`}
-        >
-          <div className="border-b border-white/10 p-2">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar parcela o productor…"
-              className="w-full rounded-lg border border-white/10 bg-black/40 px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
-            />
-          </div>
-          <ParcelaList
-            parcelas={filtered}
-            selectedId={selectedId}
-            onSelect={elegirParcela}
-            shapes={shapes}
-          />
-        </aside>
+            {/* Lista flotante — drawer casi completo en celular, tarjeta acotada
+                en escritorio (deja libres las esquinas para los controles del mapa). */}
+            <aside
+              className={`absolute left-3 top-3 bottom-3 z-30 flex w-80 max-w-[85%] flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl transition-transform md:top-24 ${
+                listaAbierta ? 'translate-x-0' : '-translate-x-[120%] md:translate-x-0'
+              }`}
+            >
+              <div className="border-b border-white/10 p-2">
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Buscar parcela o productor…"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
+                />
+              </div>
+              <ParcelaList
+                parcelas={filtered}
+                selectedId={selectedId}
+                onSelect={elegirParcela}
+                shapes={shapes}
+              />
+            </aside>
 
-        {/* Botón para abrir la lista — solo en celular, y solo si está cerrada. */}
-        {!listaAbierta && (
-          <button
-            onClick={() => setListaAbierta(true)}
-            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm font-medium text-white backdrop-blur-xl md:hidden"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M4 7h16M4 12h16M4 17h16" />
-            </svg>
-            Parcelas
-          </button>
-        )}
+            {/* Botón para abrir la lista — solo en celular, y solo si está cerrada. */}
+            {!listaAbierta && (
+              <button
+                onClick={() => setListaAbierta(true)}
+                className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm font-medium text-white backdrop-blur-xl md:hidden"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+                Parcelas
+              </button>
+            )}
 
-        {selected && (
-          <ParcelaPanel
-            parcela={selected}
-            puedeValidar={puedeValidar}
-            onClose={() => setSelectedId(null)}
-            onChanged={refresh}
-            shape={shapes.get(selected.id)}
-          />
+            {selected && (
+              <ParcelaPanel
+                parcela={selected}
+                puedeValidar={puedeValidar}
+                onClose={() => setSelectedId(null)}
+                onChanged={refresh}
+                shape={shapes.get(selected.id)}
+              />
+            )}
+          </>
         )}
       </div>
 
@@ -163,6 +214,11 @@ export default function GeoSICShell({
           onUploaded={() => {
             setUploadOpen(false)
             refresh()
+          }}
+          onDibujar={(parcelaId) => {
+            setUploadOpen(false)
+            setErrorDibujo(null)
+            setDibujoParaId(parcelaId)
           }}
         />
       )}
