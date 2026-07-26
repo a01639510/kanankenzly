@@ -17,8 +17,8 @@ export default function NoMembership() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-graphite p-6">
-      <div className="relative max-w-md overflow-hidden rounded-[24px] border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D] p-8 text-center">
+    <div className="flex h-screen w-screen items-center justify-center p-6">
+      <div className="relative max-w-md overflow-hidden rounded-[24px] border border-white/10 bg-black/60 p-8 text-center backdrop-blur-2xl">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 z-0 h-24 bg-[radial-gradient(ellipse_at_top,_rgba(251,191,36,0.1),_transparent_70%)]"

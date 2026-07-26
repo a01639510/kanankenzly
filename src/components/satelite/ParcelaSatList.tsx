@@ -13,22 +13,25 @@ interface Props {
 export default function ParcelaSatList({ parcelas, selectedId, onSelect }: Props) {
   if (parcelas.length === 0) {
     return (
-      <p className="p-4 text-sm text-gray-500">
+      <p className="p-4 text-sm text-silver">
         No hay parcelas que coincidan con el filtro.
       </p>
     )
   }
 
   return (
-    <ul className="min-h-0 flex-1 overflow-y-auto">
+    <ul className="min-h-0 flex-1 space-y-1.5 overflow-y-auto p-1.5">
       {parcelas.map((p) => {
         const alerta = p.alerta ?? 'sin_datos'
+        const active = p.id === selectedId
         return (
           <li key={p.id}>
             <button
               onClick={() => onSelect(p.id)}
-              className={`flex w-full items-center gap-2.5 border-b border-white/5 px-3 py-2 text-left transition hover:bg-surface2 ${
-                selectedId === p.id ? 'bg-surface2' : ''
+              className={`flex w-full items-center gap-2.5 rounded-2xl border p-2.5 text-left transition ${
+                active
+                  ? 'border-orange-500/40 bg-gradient-to-b from-[#1C1E24] to-[#16181D]'
+                  : 'border-white/[0.06] bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.04]'
               }`}
             >
               <span
@@ -37,10 +40,10 @@ export default function ParcelaSatList({ parcelas, selectedId, onSelect }: Props
                 title={ALERTA_LABEL[alerta]}
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-cream">
+                <span className="block truncate text-sm font-medium text-white">
                   {p.nombre || p.codigo_parcela}
                 </span>
-                <span className="block truncate text-xs text-gray-500">
+                <span className="block truncate font-mono text-[11px] text-silver">
                   {p.productor_nombre}
                 </span>
               </span>

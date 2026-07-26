@@ -12,7 +12,7 @@ const TONO: Record<string, string> = {
   primary: 'bg-orange-500 text-black hover:bg-orange-400',
   positive: 'bg-green-500/10 text-green-400 hover:bg-green-500/20',
   danger: 'border border-red-500/20 text-red-400 hover:bg-red-500/10',
-  neutral: 'border border-white/10 text-gray-400 hover:border-orange-500/40 hover:text-cream',
+  neutral: 'border border-white/10 text-silver hover:border-orange-500/40 hover:text-white',
 }
 
 export default function FichaEstadoControl({

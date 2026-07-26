@@ -38,7 +38,7 @@ export default async function NuevaBitacoraPage({
     const cod = codigoCorto(parcela.codigo_parcela, parcela.nombre)
 
     return (
-      <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+      <div className="flex h-screen w-screen flex-col overflow-hidden">
         <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
         <div className="min-h-0 flex-1 overflow-auto">
           <BitacoraEditor
@@ -58,7 +58,7 @@ export default async function NuevaBitacoraPage({
   // --- Bitácora suelta ---
   const parcelas = await getParcelasLite()
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto">
         <BitacoraEditor mode="nueva" parcelas={parcelas} anioInicial={anioActual} />

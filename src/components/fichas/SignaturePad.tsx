@@ -102,14 +102,14 @@ export default function SignaturePad({
         <button
           type="button"
           onClick={() => setModo('firma')}
-          className={`rounded-full px-2 py-0.5 transition ${modo === 'firma' ? 'bg-orange-500/10 text-orange-400' : 'text-gray-500 hover:text-cream'}`}
+          className={`rounded-full px-2 py-0.5 transition ${modo === 'firma' ? 'bg-orange-500/10 text-orange-400' : 'text-silver hover:text-white'}`}
         >
           Firmar
         </button>
         <button
           type="button"
           onClick={() => setModo('foto')}
-          className={`rounded-full px-2 py-0.5 transition ${modo === 'foto' ? 'bg-orange-500/10 text-orange-400' : 'text-gray-500 hover:text-cream'}`}
+          className={`rounded-full px-2 py-0.5 transition ${modo === 'foto' ? 'bg-orange-500/10 text-orange-400' : 'text-silver hover:text-white'}`}
         >
           Huella / Foto
         </button>
@@ -129,7 +129,7 @@ export default function SignaturePad({
           className="w-full touch-none rounded-lg border border-white/10 bg-white"
         />
       ) : (
-        <div className="rounded-xl border border-white/10 bg-surface p-3">
+        <div className="rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-xl">
           {value && value.startsWith('data:image') ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="Huella / foto" className="mb-2 max-h-32 rounded-lg bg-white object-contain" />
@@ -139,20 +139,20 @@ export default function SignaturePad({
             accept="image/*"
             capture="environment"
             onChange={onFoto}
-            className="w-full text-xs text-gray-400 file:mr-2 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-2 file:py-1 file:text-xs file:font-medium file:text-orange-400"
+            className="w-full text-xs text-silver file:mr-2 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-2 file:py-1 file:text-xs file:font-medium file:text-orange-400"
           />
         </div>
       )}
 
       <div className="mt-1 flex items-center justify-between">
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-silver">
           {hasInk
             ? 'Captura lista'
             : modo === 'firma'
               ? 'Firma aquí con el dedo o mouse'
               : 'Toma una foto de la huella o firma en papel'}
         </span>
-        <button type="button" onClick={clear} className="text-xs text-gray-500 transition hover:text-red-400">
+        <button type="button" onClick={clear} className="text-xs text-silver transition hover:text-red-400">
           Limpiar
         </button>
       </div>

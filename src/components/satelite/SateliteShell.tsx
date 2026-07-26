@@ -78,7 +78,7 @@ export default function SateliteShell({
   const puedeActualizar = session.rol === 'admin' || session.rol === 'coordinador'
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={session.orgNombre} rol={session.rol}>
         {puedeActualizar && (
           <>
@@ -98,20 +98,37 @@ export default function SateliteShell({
         )}
       </AppHeader>
 
-      <SatStatsBar stats={stats} />
+      {/* Cuerpo: el mapa ocupa TODO el espacio (borde a borde); las stats, la
+          lista y el panel de detalle flotan encima como tarjetas de cristal. */}
+      <div className="relative min-h-0 flex-1">
+        <SateliteMap
+          parcelas={parcelas}
+          polygons={polygons}
+          selectedId={selectedId}
+          onSelect={elegirParcela}
+        />
 
-      <div className="relative flex min-h-0 flex-1">
+        {/* Stats flotantes — esquina superior izquierda, solo escritorio. */}
+        <div className="pointer-events-none absolute left-3 right-3 top-3 z-20 hidden md:block">
+          <div className="pointer-events-auto inline-flex max-w-full">
+            <SatStatsBar stats={stats} />
+          </div>
+        </div>
+
+        {/* Fondo oscuro al abrir la lista en celular */}
         {listaAbierta && (
           <button
             aria-label="Cerrar lista"
             onClick={() => setListaAbierta(false)}
-            className="absolute inset-0 z-20 bg-black/30 md:hidden"
+            className="absolute inset-0 z-20 bg-black/40 md:hidden"
           />
         )}
 
+        {/* Lista flotante — drawer casi completo en celular, tarjeta acotada
+            en escritorio. */}
         <aside
-          className={`absolute inset-y-0 left-0 z-30 flex w-72 max-w-[85%] shrink-0 flex-col border-r border-white/10 bg-surface transition-transform md:static md:z-auto md:max-w-none md:translate-x-0 ${
-            listaAbierta ? 'translate-x-0' : '-translate-x-full'
+          className={`absolute left-3 top-3 bottom-3 z-30 flex w-80 max-w-[85%] flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl transition-transform md:top-24 ${
+            listaAbierta ? 'translate-x-0' : '-translate-x-[120%] md:translate-x-0'
           }`}
         >
           <div className="space-y-2 border-b border-white/10 p-2">
@@ -119,7 +136,7 @@ export default function SateliteShell({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar parcela o productor…"
-              className="w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+              className="w-full rounded-lg border border-white/10 bg-black/40 px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
             />
             <div className="flex gap-1">
               <Chip activo={filtro === 'todas'} onClick={() => setFiltro('todas')}>
@@ -140,23 +157,18 @@ export default function SateliteShell({
           />
         </aside>
 
-        <main className="relative min-w-0 flex-1">
+        {/* Botón para abrir la lista — solo en celular, y solo si está cerrada. */}
+        {!listaAbierta && (
           <button
             onClick={() => setListaAbierta(true)}
-            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-2 text-sm font-medium text-cream md:hidden"
+            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-black/60 px-3 py-2 text-sm font-medium text-white backdrop-blur-xl md:hidden"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
             Parcelas
           </button>
-          <SateliteMap
-            parcelas={parcelas}
-            polygons={polygons}
-            selectedId={selectedId}
-            onSelect={elegirParcela}
-          />
-        </main>
+        )}
 
         {selected && (
           <SatelitePanel
@@ -184,8 +196,8 @@ function Chip({
       onClick={onClick}
       className={`flex-1 whitespace-nowrap rounded-full px-2 py-1 text-xs font-medium transition ${
         activo
-          ? 'bg-surface2 text-cream'
-          : 'text-gray-500 hover:text-cream'
+          ? 'border border-white/10 bg-black text-white'
+          : 'text-silver hover:text-white'
       }`}
     >
       {children}

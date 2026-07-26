@@ -96,13 +96,13 @@ export default function NuevoProductorForm() {
   }
 
   const inputCls =
-    'w-full rounded-lg border border-white/10 bg-black px-2.5 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400'
-  const labelCls = 'mb-1 block font-mono text-[11px] tracking-wide text-gray-500'
+    'w-full rounded-lg border border-white/10 bg-black/40 px-2.5 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400'
+  const labelCls = 'mb-1 block font-mono text-[11px] tracking-wide text-silver'
 
   return (
     <div className="mx-auto max-w-2xl p-4 sm:p-6">
-      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-5">
-        <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl">
+        <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-silver">
           Datos del productor
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -145,16 +145,16 @@ export default function NuevoProductorForm() {
         </div>
 
         {/* GPS */}
-        <div className="mt-4 rounded-xl border border-white/10 bg-surface2 p-3">
+        <div className="mt-4 rounded-xl border border-white/10 bg-black/50 p-3 backdrop-blur-xl">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm">
-              <span className="font-medium text-cream">Ubicación GPS</span>
+              <span className="font-medium text-white">Ubicación GPS</span>
               {gps ? (
-                <span className="ml-2 tabular-nums text-gray-400">
-                  {gps.lat}, {gps.lng} <span className="text-gray-500">(±{gps.prec} m)</span>
+                <span className="ml-2 tabular-nums text-silver">
+                  {gps.lat}, {gps.lng} <span className="text-silver">(±{gps.prec} m)</span>
                 </span>
               ) : (
-                <span className="ml-2 text-gray-500">sin capturar</span>
+                <span className="ml-2 text-silver">sin capturar</span>
               )}
             </div>
             <button
@@ -175,29 +175,29 @@ export default function NuevoProductorForm() {
       </section>
 
       {/* Parcelas iniciales */}
-      <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-5">
-        <h2 className="mb-1 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+      <section className="mb-4 rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl">
+        <h2 className="mb-1 font-mono text-[11px] uppercase tracking-wide text-silver">
           Parcelas
         </h2>
-        <p className="mb-3 text-xs text-gray-500">
+        <p className="mb-3 text-xs text-silver">
           El código se genera solo: {codigo.trim() ? `${codigo.trim().toUpperCase()}-A, -B…` : 'CÓDIGO-A, -B…'}
         </p>
         <div className="space-y-2">
           {parcelas.map((p, i) => (
-            <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-white/10 bg-surface2 p-2">
-              <span className="w-14 shrink-0 pb-2 text-sm font-medium tabular-nums text-gray-500">
+            <div key={i} className="flex flex-wrap items-end gap-2 rounded-xl border border-white/10 bg-black/50 p-2 backdrop-blur-xl">
+              <span className="w-14 shrink-0 pb-2 text-sm font-medium tabular-nums text-silver">
                 {codigo.trim() ? `-${LETRAS[i]}` : LETRAS[i]}
               </span>
               <label className="min-w-[10rem] flex-1">
-                <span className="mb-1 block text-xs text-gray-500">Nombre de la parcela</span>
+                <span className="mb-1 block text-xs text-silver">Nombre de la parcela</span>
                 <input value={p.nombre} onChange={(e) => setParcela(i, { nombre: e.target.value })} className={inputCls} />
               </label>
               <label className="w-28">
-                <span className="mb-1 block text-xs text-gray-500">Superficie (ha)</span>
+                <span className="mb-1 block text-xs text-silver">Superficie (ha)</span>
                 <input type="number" step="0.01" value={p.superficie_ha} onChange={(e) => setParcela(i, { superficie_ha: e.target.value })} className={inputCls} />
               </label>
               <label className="w-32">
-                <span className="mb-1 block text-xs text-gray-500">Cultivo</span>
+                <span className="mb-1 block text-xs text-silver">Cultivo</span>
                 <select value={p.tipo_cultivo} onChange={(e) => setParcela(i, { tipo_cultivo: e.target.value as 'cafe' | 'tropical' })} className={inputCls}>
                   <option value="cafe">Café</option>
                   <option value="tropical">Tropical</option>
@@ -206,7 +206,7 @@ export default function NuevoProductorForm() {
               <button
                 type="button"
                 onClick={() => setParcelas((arr) => (arr.length > 1 ? arr.filter((_, idx) => idx !== i) : arr))}
-                className="pb-2 text-gray-500 transition hover:text-red-400"
+                className="pb-2 text-silver transition hover:text-red-400"
                 title="Quitar parcela"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -219,7 +219,7 @@ export default function NuevoProductorForm() {
         <button
           type="button"
           onClick={() => setParcelas((arr) => [...arr, { nombre: '', superficie_ha: '', tipo_cultivo: 'cafe' }])}
-          className="mt-2 rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
+          className="mt-2 rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-3 py-1.5 text-sm font-medium text-white transition hover:border-orange-500/40"
         >
           + Agregar parcela
         </button>
@@ -230,7 +230,7 @@ export default function NuevoProductorForm() {
       <div className="flex justify-end gap-2">
         <button
           onClick={() => router.push('/productores')}
-          className="rounded-full px-4 py-2 text-sm text-gray-500 transition hover:text-cream"
+          className="rounded-full px-4 py-2 text-sm text-silver transition hover:text-white"
         >
           Cancelar
         </button>

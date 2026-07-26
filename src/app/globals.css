@@ -19,8 +19,22 @@ body {
 body {
   color: #e1e0cc;
   background: #0a0a0a;
-  /* La familia tipográfica (Almarai) la pone la clase `font-sans` en <body>
-     vía next/font — ver src/app/layout.tsx. */
+  /* La familia tipográfica la pone la clase `font-sans` en <body> vía
+     next/font — ver src/app/layout.tsx. */
+}
+
+/* Fondo mesh-gradient del HUD: manchas radiales de marca/estado muy tenues
+   (naranja, cian, esmeralda) sobre negro carbón. `fixed` en el layout raíz
+   (ver layout.tsx) para que no se repita ni se mueva con el scroll interno
+   de cada módulo. Sigue siendo "oscuro" — son glows, no colores planos. */
+.mesh-bg {
+  background-color: #0a0a0a;
+  background-image:
+    radial-gradient(at 12% 18%, rgba(248, 146, 29, 0.14) 0, transparent 42%),
+    radial-gradient(at 88% 8%, rgba(56, 189, 248, 0.1) 0, transparent 40%),
+    radial-gradient(at 80% 78%, rgba(52, 211, 153, 0.09) 0, transparent 45%),
+    radial-gradient(at 15% 85%, rgba(167, 139, 250, 0.08) 0, transparent 42%),
+    radial-gradient(at 50% 50%, rgba(248, 146, 29, 0.05) 0, transparent 60%);
 }
 
 /* Hide the Mapbox wordmark (paid plan). Remove if on the free tier. */

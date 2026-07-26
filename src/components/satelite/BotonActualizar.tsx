@@ -81,24 +81,24 @@ export default function BotonActualizar({ parcelaIds, onListo }: Props) {
       </button>
 
       {(corriendo || error) && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-surface p-3">
+        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-black/70 backdrop-blur-xl p-3">
           {error ? (
             <p className="text-sm text-red-400">{error}</p>
           ) : (
             <>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface2">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
                 <div
                   className="h-full rounded-full bg-orange-500 transition-all"
                   style={{ width: `${pct}%` }}
                 />
               </div>
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-silver">
                 {hechas} de {total} parcelas
                 {fallidas > 0 && (
-                  <span className="text-gray-500"> · {fallidas} sin imagen despejada</span>
+                  <span className="text-silver"> · {fallidas} sin imagen despejada</span>
                 )}
               </p>
-              <p className="mt-1 text-[11px] text-gray-500">
+              <p className="mt-1 text-[11px] text-silver">
                 Consultando Copernicus Sentinel-2. No cierres esta pestaña.
               </p>
             </>

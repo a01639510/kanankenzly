@@ -92,7 +92,7 @@ export default function EditProductorModal({
 
 // --- shared modal bits (kept local to avoid premature abstraction) ---
 const inputCls =
-  'w-full rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400'
+  'w-full rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400'
 
 export function Modal({
   title,
@@ -105,10 +105,10 @@ export function Modal({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface">
+      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-          <h2 className="text-base font-normal text-cream">{title}</h2>
-          <button onClick={onClose} className="rounded-full p-1 text-gray-500 transition hover:text-cream" aria-label="Cerrar">
+          <h2 className="text-base font-medium text-white">{title}</h2>
+          <button onClick={onClose} className="rounded-full p-1 text-silver transition hover:text-white" aria-label="Cerrar">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
@@ -123,7 +123,7 @@ export function Modal({
 export function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">{label}</label>
+      <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">{label}</label>
       {children}
     </div>
   )
@@ -140,7 +140,7 @@ export function ModalActions({
 }) {
   return (
     <div className="flex justify-end gap-2 pt-1">
-      <button onClick={onClose} className="rounded-full px-3 py-1.5 text-sm text-gray-500 transition hover:text-cream">
+      <button onClick={onClose} className="rounded-full px-3 py-1.5 text-sm text-silver transition hover:text-white">
         Cancelar
       </button>
       <button

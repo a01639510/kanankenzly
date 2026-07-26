@@ -17,7 +17,7 @@ export default async function ProductoresPage() {
   const productores = await getProductoresDashboard()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/productores/nuevo"

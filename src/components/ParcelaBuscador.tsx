@@ -41,10 +41,10 @@ export default function ParcelaBuscador({
         onChange={(e) => { setQ(e.target.value); setAbierto(true) }}
         onFocus={() => { setQ(''); setAbierto(true) }}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+        className="w-full rounded-lg border border-white/10 bg-black/40 px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
       />
       {abierto && (
-        <div className="absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-white/10 bg-surface shadow-lg">
+        <div className="absolute z-30 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-white/10 bg-black/70 backdrop-blur-xl shadow-lg">
           {filtradas.slice(0, 80).map((p) => {
             const cod = codigoCorto(p.codigo_parcela, p.nombre)
             return (
@@ -52,18 +52,18 @@ export default function ParcelaBuscador({
                 key={p.id}
                 type="button"
                 onClick={() => { onChange(p.id); setAbierto(false); setQ('') }}
-                className="block w-full px-3 py-2 text-left text-sm hover:bg-surface2"
+                className="block w-full px-3 py-2 text-left text-sm hover:bg-white/5"
               >
-                <span className="font-medium text-cream">{p.nombre || cod}</span>
-                <span className="ml-2 text-xs text-gray-500">{cod}</span>
+                <span className="font-medium text-white">{p.nombre || cod}</span>
+                <span className="ml-2 text-xs text-silver">{cod}</span>
               </button>
             )
           })}
           {filtradas.length === 0 && (
-            <p className="px-3 py-2 text-sm text-gray-500">Sin coincidencias</p>
+            <p className="px-3 py-2 text-sm text-silver">Sin coincidencias</p>
           )}
           {filtradas.length > 80 && (
-            <p className="px-3 py-1.5 text-xs text-gray-500">
+            <p className="px-3 py-1.5 text-xs text-silver">
               Mostrando 80 de {filtradas.length}. Escribe para filtrar.
             </p>
           )}

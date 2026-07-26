@@ -1,6 +1,7 @@
-// Cockpit strip: fila de tiles bento con la cobertura del módulo (mapeadas,
+// Cockpit strip: grupo de tiles bento con la cobertura del módulo (mapeadas,
 // validadas, críticas, sin polígono) — el "telemetry summary" del command
-// center, siempre visible arriba del split view lista/mapa.
+// center. Flota sobre el mapa (ver GeoSICShell); cada tile es su propia
+// tarjeta de cristal, no hay fondo de barra detrás.
 import type { GeoStats } from '@/lib/types'
 
 export default function GeoStatsBar({ stats }: { stats: GeoStats }) {
@@ -12,7 +13,7 @@ export default function GeoStatsBar({ stats }: { stats: GeoStats }) {
       : 0
 
   return (
-    <div className="flex shrink-0 gap-1.5 overflow-x-auto border-b border-white/10 bg-graphite p-1.5">
+    <div className="flex gap-1.5 overflow-x-auto">
       <Stat label="Parcelas" value={stats.total} />
       <Stat
         label="Con polígono"
@@ -44,7 +45,7 @@ function Stat({
   accent?: string
 }) {
   return (
-    <div className="relative shrink-0 basis-1/3 overflow-hidden rounded-xl border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D] px-3 py-2 sm:basis-1/4 md:flex-1 md:basis-0">
+    <div className="relative shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/50 px-3 py-2 backdrop-blur-xl">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.06),_transparent_70%)]"

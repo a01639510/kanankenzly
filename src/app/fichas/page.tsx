@@ -14,7 +14,7 @@ import {
 export const dynamic = 'force-dynamic'
 
 const ESTADO_COLOR: Record<EstadoFicha, string> = {
-  borrador: 'bg-white/5 text-gray-400',
+  borrador: 'bg-white/5 text-silver',
   en_revision: 'bg-amber-500/10 text-amber-400',
   aprobada: 'bg-green-500/10 text-green-400',
   pdf_generado: 'bg-sky-500/10 text-sky-400',
@@ -29,7 +29,7 @@ export default async function FichasPage() {
   const fichas = await getFichas()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/fichas/nueva"
@@ -42,15 +42,15 @@ export default async function FichasPage() {
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-5xl">
           {fichas.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-surface p-10 text-center">
-              <p className="text-sm text-gray-500">
+            <div className="rounded-2xl border border-dashed border-white/10 bg-black/40 p-10 text-center backdrop-blur-xl">
+              <p className="text-sm text-silver">
                 Aún no hay fichas. Crea la primera con “Nueva ficha”.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl">
               <table className="w-full min-w-[640px] text-sm">
-                <thead className="text-left font-mono text-[11px] uppercase tracking-wide text-gray-500 border-b border-white/10">
+                <thead className="text-left font-mono text-[11px] uppercase tracking-wide text-silver border-b border-white/10">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Tipo</th>
                     <th className="px-4 py-2.5 font-medium">Productor</th>
@@ -65,26 +65,26 @@ export default async function FichasPage() {
                   {fichas.map((f) => (
                     <tr
                       key={f.id}
-                      className="border-b border-white/5 hover:bg-surface2"
+                      className="border-b border-white/5 hover:bg-white/5"
                     >
-                      <td className="px-4 py-2.5 font-medium text-cream">
+                      <td className="px-4 py-2.5 font-medium text-white">
                         {TIPO_FICHA_LABEL[f.tipo]}
                       </td>
                       <td className="px-4 py-2.5">
-                        <div className="text-cream">{f.productor_nombre}</div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-white">{f.productor_nombre}</div>
+                        <div className="text-xs text-silver">
                           {f.productor_codigo}
                         </div>
                       </td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-gray-400">
+                      <td className="px-4 py-2.5 text-right tabular-nums text-silver">
                         {f.num_parcelas}
                       </td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-gray-400">
+                      <td className="px-4 py-2.5 text-right tabular-nums text-silver">
                         {f.area_cultivada_ha !== null
                           ? `${Number(f.area_cultivada_ha).toFixed(2)} ha`
                           : '—'}
                       </td>
-                      <td className="px-4 py-2.5 text-gray-400">
+                      <td className="px-4 py-2.5 text-silver">
                         {f.fecha_inspeccion ?? '—'}
                       </td>
                       <td className="px-4 py-2.5">
@@ -98,7 +98,7 @@ export default async function FichasPage() {
                         {result.session.rol !== 'solo_lectura' && (
                           <Link
                             href={`/fichas/${f.id}/editar`}
-                            className="mr-3 text-sm font-medium text-gray-500 hover:text-cream"
+                            className="mr-3 text-sm font-medium text-silver hover:text-white"
                           >
                             Editar
                           </Link>

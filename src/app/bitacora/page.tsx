@@ -16,7 +16,7 @@ export default async function BitacoraPage() {
   const bitacoras = await getBitacoras()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/bitacora/nueva"
@@ -29,15 +29,15 @@ export default async function BitacoraPage() {
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-4xl">
           {bitacoras.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-surface p-10 text-center">
-              <p className="text-sm text-gray-500">
+            <div className="rounded-2xl border border-dashed border-white/10 bg-black/40 p-10 text-center backdrop-blur-xl">
+              <p className="text-sm text-silver">
                 Aún no hay bitácoras. Crea la primera con “Nueva bitácora”.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl">
               <table className="w-full min-w-[640px] text-sm">
-                <thead className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
+                <thead className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-silver">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Parcela</th>
                     <th className="px-4 py-2.5 font-medium">Productor</th>
@@ -47,15 +47,15 @@ export default async function BitacoraPage() {
                 </thead>
                 <tbody>
                   {bitacoras.map((b) => (
-                    <tr key={b.id} className="border-b border-white/5 hover:bg-surface2">
+                    <tr key={b.id} className="border-b border-white/5 hover:bg-white/5">
                       <td className="px-4 py-2.5">
-                        <div className="font-medium text-cream">
+                        <div className="font-medium text-white">
                           {b.parcela_nombre || b.parcela_codigo}
                         </div>
-                        <div className="text-xs text-gray-500">{b.parcela_codigo}</div>
+                        <div className="text-xs text-silver">{b.parcela_codigo}</div>
                       </td>
-                      <td className="px-4 py-2.5 text-gray-400">{b.productor_nombre}</td>
-                      <td className="px-4 py-2.5 text-right tabular-nums text-gray-300">
+                      <td className="px-4 py-2.5 text-silver">{b.productor_nombre}</td>
+                      <td className="px-4 py-2.5 text-right tabular-nums text-silver">
                         {b.anio}
                       </td>
                       <td className="px-4 py-2.5 text-right">

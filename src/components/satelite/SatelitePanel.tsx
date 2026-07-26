@@ -53,20 +53,20 @@ export default function SatelitePanel({
   const tieneMedicion = parcela.ndvi_promedio !== null
 
   return (
-    <aside className="absolute inset-0 z-40 flex flex-col border-white/10 bg-surface md:static md:z-auto md:w-80 md:shrink-0 md:border-l">
+    <aside className="absolute inset-3 z-40 flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl md:inset-auto md:right-3 md:top-24 md:bottom-3 md:w-96">
       <div className="flex items-start justify-between border-b border-white/10 p-4">
         <div className="min-w-0">
-          <h2 className="truncate text-base font-normal text-cream">
+          <h2 className="truncate text-base font-medium text-white">
             {parcela.nombre || parcela.codigo_parcela}
           </h2>
-          <p className="truncate text-xs text-gray-500">{parcela.productor_nombre}</p>
+          <p className="truncate font-mono text-[11px] text-silver">{parcela.productor_nombre}</p>
         </div>
         <button
           onClick={onClose}
-          className="rounded-full p-1 text-gray-500 hover:bg-surface2 hover:text-cream"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black/50 text-silver backdrop-blur hover:text-white"
           aria-label="Cerrar"
         >
-          ✕
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
         </button>
       </div>
 
@@ -88,7 +88,7 @@ export default function SatelitePanel({
               {ALERTA_LABEL[alerta]}
             </span>
           </div>
-          <p className="mt-1 text-xs text-gray-400">{ALERTA_DESCRIPCION[alerta]}</p>
+          <p className="mt-1 text-xs text-silver">{ALERTA_DESCRIPCION[alerta]}</p>
         </div>
 
         {/* EUDR: veredicto oficial (autoridad) + bosque 2020 + monitoreo NDVI */}
@@ -103,7 +103,7 @@ export default function SatelitePanel({
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-wide text-gray-500">
+                  <span className="font-mono text-[10px] tracking-wide text-silver">
                     Bosque 2020 UE (JRC)
                   </span>
                   <span
@@ -113,7 +113,7 @@ export default function SatelitePanel({
                     {eudr.bosque2020_pct.toFixed(0)}% traslape
                   </span>
                 </div>
-                <p className="mt-1 text-[11px] text-gray-500">
+                <p className="mt-1 text-[11px] text-silver">
                   {eudr.bosque2020_pct >= 5
                     ? 'La parcela cae sobre bosque 2020 → riesgo potencial EUDR (requiere evidencia).'
                     : 'No cae sobre bosque 2020.'}
@@ -129,7 +129,7 @@ export default function SatelitePanel({
                 }}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-wide text-gray-500">
+                  <span className="font-mono text-[10px] tracking-wide text-silver">
                     Estatus EUDR (oficial)
                   </span>
                   <span
@@ -140,7 +140,7 @@ export default function SatelitePanel({
                   </span>
                 </div>
                 {eudr.fuente && (
-                  <p className="mt-1 text-[11px] text-gray-500">
+                  <p className="mt-1 text-[11px] text-silver">
                     {eudr.fuente}
                     {eudr.fecha_oficial ? ` · ${eudr.fecha_oficial}` : ''}
                   </p>
@@ -151,7 +151,7 @@ export default function SatelitePanel({
             {eudr.clasificacion && eudr.clasificacion !== 'sin_datos' && (
               <div className="rounded-xl border border-white/10 p-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-wide text-gray-500">
+                  <span className="font-mono text-[10px] tracking-wide text-silver">
                     Monitoreo cobertura (NDVI 2020→hoy)
                   </span>
                   <span className="text-xs font-medium" style={{ color: EUDR_COLOR[eudr.clasificacion] }}>
@@ -159,11 +159,11 @@ export default function SatelitePanel({
                   </span>
                 </div>
                 <div className="mt-2 grid grid-cols-3 gap-2 text-center text-xs">
-                  <div><p className="text-gray-500">2020</p><p className="font-medium tabular-nums text-gray-300">{eudr.ndvi_2020?.toFixed(2) ?? '—'}</p></div>
-                  <div><p className="text-gray-500">Actual</p><p className="font-medium tabular-nums text-gray-300">{eudr.ndvi_actual?.toFixed(2) ?? '—'}</p></div>
-                  <div><p className="text-gray-500">Δ</p><p className="font-medium tabular-nums text-gray-300">{eudr.delta != null ? (eudr.delta > 0 ? '+' : '') + eudr.delta.toFixed(2) : '—'}</p></div>
+                  <div><p className="text-silver">2020</p><p className="font-medium tabular-nums text-white/80">{eudr.ndvi_2020?.toFixed(2) ?? '—'}</p></div>
+                  <div><p className="text-silver">Actual</p><p className="font-medium tabular-nums text-white/80">{eudr.ndvi_actual?.toFixed(2) ?? '—'}</p></div>
+                  <div><p className="text-silver">Δ</p><p className="font-medium tabular-nums text-white/80">{eudr.delta != null ? (eudr.delta > 0 ? '+' : '') + eudr.delta.toFixed(2) : '—'}</p></div>
                 </div>
-                <p className="mt-2 text-[10px] leading-tight text-gray-500">
+                <p className="mt-2 text-[10px] leading-tight text-silver">
                   Alerta por NDVI: detecta despejes a suelo desnudo, pero <strong>puede no ver</strong> conversión bosque→café de sombra. No sustituye el veredicto oficial.
                 </p>
               </div>
@@ -172,7 +172,7 @@ export default function SatelitePanel({
         )}
 
         {!parcela.tiene_poligono && (
-          <p className="mt-3 rounded-lg bg-surface2 p-3 text-sm text-gray-400">
+          <p className="mt-3 rounded-lg bg-black/30 p-3 text-sm text-silver">
             Esta parcela no tiene polígono. Sube su KML/KMZ en GeoSIC y el
             satélite podrá medirla.
           </p>
@@ -181,7 +181,7 @@ export default function SatelitePanel({
         {tieneMedicion && (
           <>
             <div className="mt-4 flex items-baseline justify-between">
-              <span className="font-mono text-[11px] tracking-wide text-gray-500">
+              <span className="font-mono text-[11px] tracking-wide text-silver">
                 NDVI
               </span>
               <span
@@ -210,13 +210,13 @@ export default function SatelitePanel({
 
             <div className="my-3 h-px bg-white/5" />
 
-            <p className="mb-2 font-mono text-[11px] tracking-wide text-gray-500">
+            <p className="mb-2 font-mono text-[11px] tracking-wide text-silver">
               NDVI — últimos 6 meses
             </p>
             {error ? (
               <p className="rounded-lg bg-red-500/10 p-2 text-sm text-red-400">{error}</p>
             ) : historial === null ? (
-              <p className="text-sm text-gray-500">Cargando serie…</p>
+              <p className="text-sm text-silver">Cargando serie…</p>
             ) : (
               <GraficaNdvi datos={historial} />
             )}
@@ -224,7 +224,7 @@ export default function SatelitePanel({
         )}
 
         {parcela.tiene_poligono && !tieneMedicion && (
-          <p className="mt-3 rounded-lg bg-surface2 p-3 text-sm text-gray-400">
+          <p className="mt-3 rounded-lg bg-black/30 p-3 text-sm text-silver">
             Sin medición todavía. Usa «Actualizar satélite» para traer las
             imágenes de Sentinel-2 de esta parcela.
           </p>
@@ -244,8 +244,8 @@ export default function SatelitePanel({
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between py-1.5">
-      <span className="text-xs text-gray-500">{label}</span>
-      <span className="text-sm font-medium text-cream">{value}</span>
+      <span className="text-xs text-silver">{label}</span>
+      <span className="text-sm font-medium text-white">{value}</span>
     </div>
   )
 }

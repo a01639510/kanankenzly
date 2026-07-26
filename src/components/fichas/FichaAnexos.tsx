@@ -88,14 +88,14 @@ export default function FichaAnexos({
           online ? 'border-green-500/20 bg-green-500/5' : 'border-amber-500/20 bg-amber-500/5'
         }`}
       >
-        <h2 className="text-base font-normal text-cream">
+        <h2 className="text-base font-medium text-white">
           {online
             ? editada
               ? 'Cambios guardados'
               : 'Ficha guardada'
             : 'Guardada en el dispositivo'}
         </h2>
-        <p className="mt-1 text-sm text-gray-400">
+        <p className="mt-1 text-sm text-silver">
           {online
             ? `${etiquetaProductor} — ya está en el sistema.`
             : `${etiquetaProductor} — sin señal. Se sube sola en cuanto vuelva la conexión; no cierres sesión.`}
@@ -104,7 +104,7 @@ export default function FichaAnexos({
 
       {parcela ? (
         <div className="mt-5">
-          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-silver">
             Anexos de esta inspección
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -125,20 +125,20 @@ export default function FichaAnexos({
       ) : null}
 
       {pendientes.length > 0 && (
-        <div className="mt-5 rounded-xl border border-white/10 bg-surface p-4">
-          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+        <div className="mt-5 rounded-xl border border-white/10 bg-black/40 p-4 backdrop-blur-xl">
+          <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-silver">
             {pendientes.length} por subir
           </p>
-          <ul className="space-y-1 text-sm text-gray-400">
+          <ul className="space-y-1 text-sm text-silver">
             {pendientes.map((p, i) => (
               <li key={i} className="flex items-center justify-between gap-3">
                 <span className="truncate">
-                  <span className="mr-2 rounded-full bg-white/5 px-1.5 py-0.5 text-xs text-gray-400">
+                  <span className="mr-2 rounded-full bg-white/5 px-1.5 py-0.5 text-xs text-silver">
                     {p.tipo}
                   </span>
                   {p.etiqueta}
                 </span>
-                <span className="shrink-0 text-xs text-gray-500">
+                <span className="shrink-0 text-xs text-silver">
                   {new Date(p.creada_en).toLocaleTimeString('es-MX', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -153,14 +153,14 @@ export default function FichaAnexos({
       <div className="mt-6 flex flex-wrap gap-2">
         <button
           onClick={onSeguirEditando}
-          className="rounded-full border border-white/10 bg-surface px-4 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40"
+          className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-4 py-2 text-sm font-medium text-white transition hover:border-orange-500/40"
         >
           Seguir editando la ficha
         </button>
         {online && fichaId && (
           <Link
             href={`/fichas/${fichaId}`}
-            className="rounded-full border border-white/10 bg-surface px-4 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40"
+            className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-4 py-2 text-sm font-medium text-white transition hover:border-orange-500/40"
           >
             Ver ficha
           </Link>
@@ -194,14 +194,14 @@ function BotonAnexo({
     <button
       onClick={onClick}
       className={`rounded-xl border p-4 text-left transition hover:border-orange-400 ${
-        hecho ? 'border-green-500/20 bg-green-500/5' : 'border-white/10 bg-surface'
+        hecho ? 'border-green-500/20 bg-green-500/5' : 'border-white/10 bg-black/40 backdrop-blur-xl'
       }`}
     >
-      <div className="flex items-center gap-2 text-sm font-medium text-cream">
-        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${hecho ? 'bg-green-400' : 'bg-gray-500'}`} />
+      <div className="flex items-center gap-2 text-sm font-medium text-white">
+        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${hecho ? 'bg-green-400' : 'bg-white/30'}`} />
         {titulo}
       </div>
-      <div className="mt-0.5 text-xs text-gray-500">{detalle}</div>
+      <div className="mt-0.5 text-xs text-silver">{detalle}</div>
     </button>
   )
 }
@@ -217,14 +217,14 @@ function Marco({
 }) {
   return (
     <div>
-      <div className="flex items-center gap-3 border-b border-white/10 bg-surface px-4 py-2.5">
+      <div className="flex items-center gap-3 border-b border-white/10 bg-black/40 px-4 py-2.5 backdrop-blur-xl">
         <button
           onClick={onVolver}
-          className="rounded-full px-2 py-1 text-sm text-gray-500 transition hover:text-cream"
+          className="rounded-full px-2 py-1 text-sm text-silver transition hover:text-white"
         >
           ← Atrás
         </button>
-        <span className="text-sm font-normal text-cream">{titulo}</span>
+        <span className="text-sm font-medium text-white">{titulo}</span>
       </div>
       {children}
     </div>

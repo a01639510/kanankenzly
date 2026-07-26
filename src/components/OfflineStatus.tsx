@@ -110,7 +110,7 @@ export default function OfflineStatus() {
           </button>
 
           {verLista && (
-            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-xl border border-white/[0.08] bg-graphite p-2 shadow-lg">
+            <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-72 overflow-y-auto rounded-xl border border-white/10 bg-black/70 p-2 backdrop-blur-xl shadow-lg">
               <p className="mb-1 px-1 font-mono text-[11px] tracking-wide text-silver">
                 Pendientes de subir ({lista.length})
               </p>

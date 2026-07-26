@@ -43,30 +43,30 @@ export default function ProductorDetalle({
   }
 
   return (
-    <div className="min-h-0 flex-1 overflow-auto bg-black">
+    <div className="min-h-0 flex-1 overflow-auto">
       <div className="mx-auto max-w-4xl p-6">
         <Link
           href="/productores"
-          className="mb-4 inline-block text-sm text-gray-500 hover:text-cream"
+          className="mb-4 inline-block text-sm text-silver hover:text-white"
         >
           ← Volver a productores
         </Link>
 
         {/* Productor header */}
-        <section className="mb-6 rounded-2xl border border-white/10 bg-surface p-5">
+        <section className="mb-6 rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-xl font-normal text-cream">
+              <h1 className="text-xl font-medium text-white">
                 {p.nombre_completo}
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-silver">
                 {p.codigo} · {CULTIVO_LABEL[p.tipo_productor]}
               </p>
             </div>
             {puedeEditar && (
               <button
                 onClick={() => setEditProductor(true)}
-                className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
+                className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-3 py-1.5 text-sm font-medium text-white transition hover:border-orange-500/40"
               >
                 Editar
               </button>
@@ -87,7 +87,7 @@ export default function ProductorDetalle({
         </section>
 
         {/* Parcelas */}
-        <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+        <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-silver">
           Parcelas ({data.parcelas.length})
         </h2>
         <div className="space-y-3">
@@ -100,7 +100,7 @@ export default function ProductorDetalle({
             />
           ))}
           {data.parcelas.length === 0 && (
-            <p className="rounded-xl border border-dashed border-white/10 bg-surface p-6 text-center text-sm text-gray-500">
+            <p className="rounded-xl border border-dashed border-white/10 bg-black/40 p-6 text-center text-sm text-silver backdrop-blur-xl">
               Este productor no tiene parcelas registradas.
             </p>
           )}
@@ -137,7 +137,7 @@ function ParcelaCard({
   onEdit: () => void
 }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-surface p-4">
+    <div className="rounded-xl border border-white/10 bg-black/40 p-4 backdrop-blur-xl">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-2.5">
           <span
@@ -146,10 +146,10 @@ function ParcelaCard({
             title={ESTADO_LABEL[parcela.estado_validacion]}
           />
           <div>
-            <div className="font-medium text-cream">
+            <div className="font-medium text-white">
               {parcela.nombre || parcela.codigo_parcela}
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-silver">
               {codigoCorto(parcela.codigo_parcela, parcela.nombre)}
             </div>
           </div>
@@ -157,7 +157,7 @@ function ParcelaCard({
         {puedeEditar && (
           <button
             onClick={onEdit}
-            className="rounded-full border border-white/10 bg-surface px-2.5 py-1 text-xs font-medium text-cream transition hover:border-orange-500/40"
+            className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-2.5 py-1 text-xs font-medium text-white transition hover:border-orange-500/40"
           >
             Editar
           </button>
@@ -196,7 +196,7 @@ function ParcelaCard({
       {parcela.tipo_cultivo === 'cafe' &&
         (parcela.superficie_arabica_ha !== null ||
           parcela.superficie_robusta_ha !== null) && (
-          <div className="mt-2 flex gap-4 text-xs text-gray-500">
+          <div className="mt-2 flex gap-4 text-xs text-silver">
             {parcela.superficie_arabica_ha !== null && (
               <span>Arábica: {Number(parcela.superficie_arabica_ha).toFixed(2)} ha</span>
             )}
@@ -208,7 +208,7 @@ function ParcelaCard({
       {parcela.tipo_cultivo === 'tropical' &&
         parcela.cultivos &&
         parcela.cultivos.length > 0 && (
-          <div className="mt-2 text-xs text-gray-500">
+          <div className="mt-2 text-xs text-silver">
             Cultivos:{' '}
             {parcela.cultivos
               .map((c) => c.cultivo)
@@ -223,8 +223,8 @@ function ParcelaCard({
 function Info({ label, value }: { label: string; value: string | null }) {
   return (
     <div>
-      <dt className="font-mono text-[11px] tracking-wide text-gray-500">{label}</dt>
-      <dd className="text-sm text-gray-300">{value || '—'}</dd>
+      <dt className="font-mono text-[11px] tracking-wide text-silver">{label}</dt>
+      <dd className="text-sm text-white">{value || '—'}</dd>
     </div>
   )
 }

@@ -17,7 +17,7 @@ export default async function HistorialPage() {
   const parcelas = await getParcelasConHistorial()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol}>
         <Link
           href="/historial/nueva"
@@ -30,15 +30,15 @@ export default async function HistorialPage() {
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-4xl">
           {parcelas.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-white/10 bg-surface p-10 text-center">
-              <p className="text-sm text-gray-500">
+            <div className="rounded-2xl border border-dashed border-white/10 bg-black/40 p-10 text-center backdrop-blur-xl">
+              <p className="text-sm text-silver">
                 Aún no hay historiales. Crea el primero con “Nuevo historial”.
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl">
               <table className="w-full min-w-[640px] text-sm">
-                <thead className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
+                <thead className="border-b border-white/10 text-left font-mono text-[11px] uppercase tracking-wide text-silver">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Parcela</th>
                     <th className="px-4 py-2.5 font-medium">Productor</th>
@@ -48,17 +48,17 @@ export default async function HistorialPage() {
                 </thead>
                 <tbody>
                   {parcelas.map((p) => (
-                    <tr key={p.parcela_id} className="border-b border-white/5 hover:bg-surface2">
+                    <tr key={p.parcela_id} className="border-b border-white/5 hover:bg-white/5">
                       <td className="px-4 py-2.5">
-                        <div className="font-medium text-cream">
+                        <div className="font-medium text-white">
                           {p.parcela_nombre || codigoCorto(p.parcela_codigo, p.parcela_nombre)}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-silver">
                           {codigoCorto(p.parcela_codigo, p.parcela_nombre)}
                         </div>
                       </td>
-                      <td className="px-4 py-2.5 text-gray-400">{p.productor_nombre}</td>
-                      <td className="px-4 py-2.5 text-gray-400">
+                      <td className="px-4 py-2.5 text-silver">{p.productor_nombre}</td>
+                      <td className="px-4 py-2.5 text-silver">
                         {p.anios.sort((a, b) => a - b).join(', ')}
                       </td>
                       <td className="px-4 py-2.5 text-right">

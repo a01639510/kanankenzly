@@ -45,10 +45,10 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-graphite p-4">
+    <div className="flex h-screen w-screen items-center justify-center p-4">
       <form
         onSubmit={submit}
-        className="relative w-full max-w-sm overflow-hidden rounded-[24px] border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D] p-8"
+        className="relative w-full max-w-sm overflow-hidden rounded-[24px] border border-white/10 bg-black/60 p-8 backdrop-blur-2xl"
       >
         {/* Spotlight interno: brillo radial sutil en la parte superior de la tarjeta. */}
         <div

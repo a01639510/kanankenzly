@@ -91,8 +91,9 @@ export default function SateliteMap({
         zoom: 9,
       })
       mapRef.current = map
-      map.addControl(new mapboxgl.NavigationControl(), 'top-right')
-      map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }))
+      // Sin NavigationControl nativo: usamos los botones de cristal propios
+      // (más abajo en el JSX) para que combinen con el resto del HUD.
+      map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-right')
 
       map.on('error', (e) => {
         console.error('[mapbox] error:', e.error?.message ?? e)
@@ -231,9 +232,48 @@ export default function SateliteMap({
     }
   }, [selectedId, parcelas])
 
+  function zoomBy(delta: number) {
+    const map = mapRef.current
+    if (!map) return
+    map.zoomTo(map.getZoom() + delta, { duration: 200 })
+  }
+
+  function recentrar() {
+    const map = mapRef.current
+    if (!map) return
+    fitToData(map, polygons, buildPins())
+  }
+
   return (
     <>
       <div ref={containerRef} className="absolute inset-0" />
+
+      {/* Controles flotantes de cristal: zoom +/- y recentrar. */}
+      <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-full border border-white/10 bg-black/40 p-1 backdrop-blur-md">
+        <button
+          onClick={() => zoomBy(1)}
+          aria-label="Acercar"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+        </button>
+        <button
+          onClick={() => zoomBy(-1)}
+          aria-label="Alejar"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14" /></svg>
+        </button>
+        <div className="h-px bg-white/10" />
+        <button
+          onClick={recentrar}
+          aria-label="Centrar en los datos"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3" /><circle cx="12" cy="12" r="3.5" /></svg>
+        </button>
+      </div>
+
       <LeyendaNdvi />
     </>
   )
@@ -246,18 +286,18 @@ function LeyendaNdvi() {
   ).join(', ')
 
   return (
-    <div className="pointer-events-none absolute bottom-6 left-3 z-10 rounded-xl border border-white/10 bg-surface/95 p-2.5 md:bottom-3">
-      <p className="mb-1.5 text-xs font-medium text-cream">NDVI — vigor vegetal</p>
+    <div className="pointer-events-none absolute bottom-6 left-3 z-10 rounded-xl border border-white/10 bg-black/40 backdrop-blur-md p-2.5 md:bottom-3">
+      <p className="mb-1.5 text-xs font-medium text-white">NDVI — vigor vegetal</p>
       <div
         className="h-2.5 w-44 rounded-sm"
         style={{ background: `linear-gradient(to right, ${gradiente})` }}
       />
-      <div className="mt-1 flex justify-between text-[10px] text-gray-500">
+      <div className="mt-1 flex justify-between text-[10px] text-silver">
         <span>0.0 suelo</span>
         <span>0.45</span>
         <span>0.9 dosel</span>
       </div>
-      <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5 text-[10px] text-gray-500">
+      <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5 text-[10px] text-silver">
         <span
           className="inline-block h-2.5 w-2.5 rounded-full"
           style={{ background: ALERTA_COLOR.sin_datos }}

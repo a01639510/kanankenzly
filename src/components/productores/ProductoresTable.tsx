@@ -79,7 +79,7 @@ export default function ProductoresTable({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Summary cards */}
-      <div className="flex items-stretch divide-x divide-white/10 border-b border-white/10 bg-surface text-sm">
+      <div className="flex items-stretch divide-x divide-white/10 border-b border-white/10 bg-black/40 text-sm backdrop-blur-xl">
         <Summary label="Productores" value={totals.productores} />
         <Summary label="Parcelas" value={totals.parcelas} />
         <Summary
@@ -93,18 +93,18 @@ export default function ProductoresTable({
         />
       </div>
 
-      <div className="border-b border-white/5 bg-surface p-2">
+      <div className="border-b border-white/5 bg-black/40 p-2 backdrop-blur-xl">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar productor, código, comunidad o municipio…"
-          className="w-full max-w-md rounded-lg border border-white/10 bg-black px-3 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+          className="w-full max-w-md rounded-lg border border-white/10 bg-black/40 px-3 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
         />
       </div>
 
       <div className="min-h-0 flex-1 overflow-auto">
         <table className="w-full min-w-[720px] border-collapse text-sm">
-          <thead className="sticky top-0 z-10 bg-surface text-left font-mono text-[11px] uppercase tracking-wide text-gray-500 border-b border-white/10">
+          <thead className="sticky top-0 z-10 bg-black/60 text-left font-mono text-[11px] uppercase tracking-wide text-silver border-b border-white/10 backdrop-blur-xl">
             <tr>
               <Th onClick={() => toggleSort('nombre_completo')} active={sortKey === 'nombre_completo'} asc={asc}>
                 Productor
@@ -136,27 +136,27 @@ export default function ProductoresTable({
                 <tr
                   key={p.id}
                   onClick={() => router.push(`/productores/${p.id}`)}
-                  className="cursor-pointer border-b border-white/5 hover:bg-surface2"
+                  className="cursor-pointer border-b border-white/5 hover:bg-white/5"
                 >
                   <td className="px-4 py-2">
-                    <div className="font-medium text-cream">
+                    <div className="font-medium text-white">
                       {p.nombre_completo}
                     </div>
-                    <div className="text-xs text-gray-500">{p.codigo}</div>
+                    <div className="text-xs text-silver">{p.codigo}</div>
                   </td>
-                  <td className="px-4 py-2 text-gray-400">
+                  <td className="px-4 py-2 text-silver">
                     {p.comunidad || '—'}
                     {p.municipio ? (
-                      <span className="text-gray-500">, {p.municipio}</span>
+                      <span className="text-silver">, {p.municipio}</span>
                     ) : null}
                   </td>
-                  <td className="px-4 py-2 text-gray-400">
+                  <td className="px-4 py-2 text-silver">
                     {CULTIVO_LABEL[p.tipo_productor]}
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
+                  <td className="px-4 py-2 text-right tabular-nums text-silver">
                     {p.num_parcelas}
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
+                  <td className="px-4 py-2 text-right tabular-nums text-silver">
                     {Number(p.hectareas_totales).toFixed(2)}
                   </td>
                   <td className="px-4 py-2">
@@ -166,10 +166,10 @@ export default function ProductoresTable({
                       total={p.num_parcelas}
                     />
                   </td>
-                  <td className="px-4 py-2 text-right tabular-nums text-gray-300">
+                  <td className="px-4 py-2 text-right tabular-nums text-silver">
                     {p.num_fichas}
                   </td>
-                  <td className="px-4 py-2 text-gray-400">
+                  <td className="px-4 py-2 text-silver">
                     {p.ultima_inspeccion ?? (
                       <span className="text-amber-400">Sin inspección</span>
                     )}
@@ -179,7 +179,7 @@ export default function ProductoresTable({
             })}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
+                <td colSpan={8} className="px-4 py-8 text-center text-silver">
                   Sin productores que coincidan con la búsqueda.
                 </td>
               </tr>
@@ -202,10 +202,10 @@ function Summary({
 }) {
   return (
     <div className="flex flex-1 flex-col px-4 py-2">
-      <span className="font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
+      <span className="font-mono text-[11px] tracking-wide text-silver">{label}</span>
       <span
-        className="text-lg font-medium leading-tight"
-        style={{ color: accent ?? '#E5E2D2' }}
+        className={`text-lg font-medium leading-tight ${accent ? '' : 'text-white'}`}
+        style={accent ? { color: accent } : undefined}
       >
         {value}
       </span>
@@ -229,7 +229,7 @@ function Th({
   return (
     <th
       onClick={onClick}
-      className={`cursor-pointer select-none px-4 py-2 font-medium hover:text-cream ${
+      className={`cursor-pointer select-none px-4 py-2 font-medium hover:text-white ${
         numeric ? 'text-right' : ''
       } ${active ? 'text-orange-400' : ''}`}
     >
@@ -256,7 +256,7 @@ function CoberturaBar({
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs tabular-nums text-gray-500">
+      <span className="text-xs tabular-nums text-silver">
         {con}/{total}
       </span>
     </div>

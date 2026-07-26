@@ -133,14 +133,14 @@ export default function PuntosGpsSection({
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-silver">
         Camina el lindero de la parcela y marca los puntos. Con 3 o más se arma
         el polígono al guardar la ficha. El GPS funciona sin señal.
       </p>
 
       {parcelas.length > 1 && (
         <label className="block">
-          <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
+          <span className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
             ¿Qué parcela estás recorriendo?
           </span>
           <select
@@ -149,7 +149,7 @@ export default function PuntosGpsSection({
               detenerRecorrido()
               setParcelaId(e.target.value)
             }}
-            className="w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+            className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
           >
             {parcelas.map((p) => (
               <option key={p.id} value={p.id}>
@@ -182,7 +182,7 @@ export default function PuntosGpsSection({
           <button
             type="button"
             onClick={iniciarRecorrido}
-            className="rounded-full border border-white/10 bg-surface px-4 py-2.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
+            className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-4 py-2.5 text-sm font-medium text-white transition hover:border-orange-500/40"
           >
             Iniciar recorrido
           </button>
@@ -206,19 +206,19 @@ export default function PuntosGpsSection({
       )}
 
       <div className="rounded-xl border border-white/10">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-surface2 px-3 py-2 text-sm">
-          <span className="font-medium text-cream">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 bg-black/50 px-3 py-2 text-sm backdrop-blur-xl">
+          <span className="font-medium text-white">
             {puntos.length} punto{puntos.length === 1 ? '' : 's'}
           </span>
           {puntos.length >= 3 && (
-            <span className="text-gray-400">
+            <span className="text-silver">
               {area.toFixed(3)} ha · perímetro {Math.round(perimetroM(puntos))} m
               {dif !== null && (
                 <span
                   className={
                     Math.abs(dif) > 20
                       ? 'ml-2 font-medium text-red-400'
-                      : 'ml-2 text-gray-500'
+                      : 'ml-2 text-silver'
                   }
                 >
                   ({dif > 0 ? '+' : ''}
@@ -230,26 +230,26 @@ export default function PuntosGpsSection({
         </div>
 
         {puntos.length === 0 ? (
-          <p className="px-3 py-4 text-sm text-gray-500">
+          <p className="px-3 py-4 text-sm text-silver">
             Todavía no has marcado ningún punto.
           </p>
         ) : (
           <ul className="max-h-64 divide-y divide-white/5 overflow-y-auto">
             {puntos.map((p, i) => (
               <li key={p.t} className="flex items-center justify-between gap-2 px-3 py-2 text-sm">
-                <span className="tabular-nums text-gray-300">
-                  <span className="mr-2 inline-block w-6 text-xs text-gray-500">
+                <span className="tabular-nums text-silver">
+                  <span className="mr-2 inline-block w-6 text-xs text-silver">
                     {i + 1}
                   </span>
                   {p.lat.toFixed(6)}, {p.lng.toFixed(6)}
                   {p.acc != null && (
-                    <span className="ml-2 text-xs text-gray-500">±{Math.round(p.acc)} m</span>
+                    <span className="ml-2 text-xs text-silver">±{Math.round(p.acc)} m</span>
                   )}
                 </span>
                 <button
                   type="button"
                   onClick={() => borrarPunto(i)}
-                  className="rounded-full px-2 py-0.5 text-xs text-gray-400 transition hover:bg-red-500/10 hover:text-red-400"
+                  className="rounded-full px-2 py-0.5 text-xs text-silver transition hover:bg-red-500/10 hover:text-red-400"
                 >
                   Quitar
                 </button>

@@ -25,7 +25,7 @@ export default async function ProductorDetallePage({
     result.session.rol === 'admin' || result.session.rol === 'coordinador'
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <ProductorDetalle
         data={data}

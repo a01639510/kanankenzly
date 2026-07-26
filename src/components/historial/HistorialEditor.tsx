@@ -96,26 +96,26 @@ export default function HistorialEditor({
 
   return (
     <div className="mx-auto max-w-6xl p-6">
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-surface p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/40 p-4 backdrop-blur-xl">
         <div>
-          <Link href="/historial" className="text-xs text-gray-500 hover:text-cream">
+          <Link href="/historial" className="text-xs text-silver hover:text-white">
             ← Volver
           </Link>
-          <h1 className="text-lg font-normal text-cream">
+          <h1 className="text-xl font-medium text-white">
             Historial de manejo
           </h1>
-          <p className="text-sm text-gray-500">{parcelaLabel}</p>
+          <p className="text-sm text-silver">{parcelaLabel}</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={addAnio}
-            className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
+            className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-xl transition hover:border-orange-500/40"
           >
             + Año
           </button>
           <Link
             href={`/historial/${parcelaId}/pdf`}
-            className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-medium text-cream transition hover:border-orange-500/40"
+            className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-xl transition hover:border-orange-500/40"
           >
             Ver / PDF
           </Link>
@@ -139,25 +139,25 @@ export default function HistorialEditor({
         </p>
       )}
 
-      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface">
+      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl">
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 border border-white/10 bg-surface2 p-2 text-left font-mono text-[11px] uppercase tracking-wide text-gray-500">
+              <th className="sticky left-0 z-10 border border-white/10 bg-black p-2 text-left font-mono text-[11px] uppercase tracking-wide text-silver">
                 Manejo
               </th>
               {cols.map(({ a, idx }) => (
-                <th key={idx} className="border border-white/10 bg-surface2 p-2 text-center">
+                <th key={idx} className="border border-white/10 bg-black p-2 text-center">
                   <div className="flex items-center justify-center gap-1">
                     <input
                       type="number"
                       value={a.anio}
                       onChange={(e) => setAnioNum(idx, Number(e.target.value))}
-                      className="w-20 rounded border border-white/10 bg-black px-1 py-0.5 text-center text-sm text-cream outline-none focus:border-orange-400"
+                      className="w-20 rounded border border-white/10 bg-black/40 px-1 py-0.5 text-center text-sm text-white outline-none focus:border-orange-400"
                     />
                     <button
                       onClick={() => removeAnio(idx)}
-                      className="text-gray-500 hover:text-red-400"
+                      className="text-silver hover:text-red-400"
                       title="Quitar año"
                     >
                       ✕
@@ -170,7 +170,7 @@ export default function HistorialEditor({
           <tbody>
             {HISTORIAL_CAMPOS.map((campo) => (
               <tr key={campo.id}>
-                <td className="sticky left-0 z-10 border border-white/10 bg-surface p-2 font-medium text-gray-300">
+                <td className="sticky left-0 z-10 border border-white/10 bg-black p-2 font-medium text-white">
                   {campo.label}
                 </td>
                 {cols.map(({ a, idx }) => (
@@ -188,7 +188,7 @@ export default function HistorialEditor({
         </table>
       </div>
 
-      <p className="mt-3 text-xs text-gray-500">* {HISTORIAL_NOTA}</p>
+      <p className="mt-3 text-xs text-silver">* {HISTORIAL_NOTA}</p>
     </div>
   )
 }
@@ -202,7 +202,7 @@ function Celda({
   value: string | number | null
   onChange: (v: string | number | null) => void
 }) {
-  const cls = 'w-full min-w-[120px] rounded border border-transparent bg-transparent px-1.5 py-1 text-sm text-cream outline-none focus:border-orange-400'
+  const cls = 'w-full min-w-[120px] rounded border border-transparent bg-transparent px-1.5 py-1 text-sm text-white outline-none focus:border-orange-400'
   if (campo.tipo === 'enum') {
     return (
       <select value={(value as string) ?? ''} onChange={(e) => onChange(e.target.value || null)} className={cls}>

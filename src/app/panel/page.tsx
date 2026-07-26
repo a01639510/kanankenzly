@@ -43,7 +43,7 @@ export default async function PanelPage() {
   const enRiesgo = s.eudr_deforestacion + s.eudr_por_clasificacion.posible_perdida
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-graphite">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-6xl space-y-6">
@@ -55,7 +55,7 @@ export default async function PanelPage() {
           {/* ALERTA EUDR — lo primero que debe ver el coordinador */}
           {enRiesgo > 0 && (
             <Link href="/satelite" className="block">
-              <div className="relative overflow-hidden rounded-[20px] border border-red-500/20 bg-gradient-to-b from-[#241819] to-[#16181D] p-4 transition hover:border-red-500/40">
+              <div className="relative overflow-hidden rounded-[20px] border border-red-500/20 bg-black/40 p-4 backdrop-blur-xl transition hover:border-red-500/40">
                 <div
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-x-0 top-0 z-0 h-16 bg-[radial-gradient(ellipse_at_top,_rgba(248,113,113,0.12),_transparent_70%)]"
@@ -162,7 +162,7 @@ export default async function PanelPage() {
 function Bento({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[20px] border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D] transition hover:border-orange-500/30 ${className}`}
+      className={`relative overflow-hidden rounded-[20px] border border-white/10 bg-black/40 backdrop-blur-xl transition hover:border-orange-500/30 ${className}`}
     >
       <div
         aria-hidden="true"

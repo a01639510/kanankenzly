@@ -356,10 +356,10 @@ export default function FichaWizard({
                   tipo === t ? 'border-orange-400 bg-orange-500/5' : 'border-white/10'
                 }`}
               >
-                <div className="font-medium text-cream">
+                <div className="font-medium text-white">
                   {TIPO_FICHA_LABEL[t]}
                 </div>
-                <div className="mt-1 text-xs text-gray-500">
+                <div className="mt-1 text-xs text-silver">
                   {TIPO_FICHA_CULTIVO[t] === 'cafe' ? 'Café' : 'Tropical'}
                 </div>
               </button>
@@ -375,7 +375,7 @@ export default function FichaWizard({
             value={prodQuery}
             onChange={(e) => setProdQuery(e.target.value)}
             placeholder="Buscar por nombre o código…"
-            className="mb-3 w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+            className="mb-3 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
           />
           <div className="max-h-80 overflow-y-auto rounded-lg border border-white/10">
             {productoresFiltrados.map((p) => (
@@ -386,18 +386,18 @@ export default function FichaWizard({
                   setParcelaIds([])
                   setStep(3)
                 }}
-                className={`flex w-full items-center justify-between border-b border-white/5 px-3 py-2 text-left text-sm transition hover:bg-surface2 ${
+                className={`flex w-full items-center justify-between border-b border-white/5 px-3 py-2 text-left text-sm transition hover:bg-white/5 ${
                   productorId === p.id ? 'bg-orange-500/5' : ''
                 }`}
               >
-                <span className="font-medium text-cream">
+                <span className="font-medium text-white">
                   {p.nombre_completo}
                 </span>
-                <span className="text-xs text-gray-500">{p.codigo}</span>
+                <span className="text-xs text-silver">{p.codigo}</span>
               </button>
             ))}
             {productoresFiltrados.length === 0 && (
-              <p className="p-4 text-sm text-gray-500">Sin coincidencias.</p>
+              <p className="p-4 text-sm text-silver">Sin coincidencias.</p>
             )}
           </div>
           <NavButtons onBack={() => setStep(1)} />
@@ -430,15 +430,15 @@ export default function FichaWizard({
                         className="h-4 w-4 accent-orange-500"
                       />
                       <span>
-                        <span className="block text-sm font-medium text-cream">
+                        <span className="block text-sm font-medium text-white">
                           {p.nombre || p.codigo_parcela}
                         </span>
-                        <span className="block text-xs text-gray-500">
+                        <span className="block text-xs text-silver">
                           {codigoCorto(p.codigo_parcela, p.nombre)}
                         </span>
                       </span>
                     </span>
-                    <span className="text-sm text-gray-400">
+                    <span className="text-sm text-silver">
                       {p.superficie_declarada_ha !== null
                         ? `${Number(p.superficie_declarada_ha).toFixed(2)} ha`
                         : '—'}
@@ -449,7 +449,7 @@ export default function FichaWizard({
             </div>
           )}
 
-          <div className="mt-3 text-sm text-gray-500">
+          <div className="mt-3 text-sm text-silver">
             {parcelaIds.length} parcela(s) seleccionada(s) — el área se registra
             por parcela (no se suma).
           </div>
@@ -478,7 +478,7 @@ export default function FichaWizard({
                   type="date"
                   value={fecha}
                   onChange={(e) => setFecha(e.target.value)}
-                  className="w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
                 />
               </Field>
               <Field label="Hora de inicio">
@@ -486,7 +486,7 @@ export default function FichaWizard({
                   type="time"
                   value={(respuestas.hora_inicio as string) ?? ''}
                   onChange={(e) => setCampo('hora_inicio', e.target.value || null)}
-                  className="w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
                 />
               </Field>
               <Field label="Hora de término">
@@ -494,7 +494,7 @@ export default function FichaWizard({
                   type="time"
                   value={(respuestas.hora_fin as string) ?? ''}
                   onChange={(e) => setCampo('hora_fin', e.target.value || null)}
-                  className="w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+                  className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
                 />
               </Field>
             </div>
@@ -608,7 +608,7 @@ export default function FichaWizard({
             ) : (
               <button
                 onClick={() => setStep(3)}
-                className="rounded-full px-3 py-2 text-sm text-gray-500 transition hover:text-cream"
+                className="rounded-full px-3 py-2 text-sm text-silver transition hover:text-white"
               >
                 ← Atrás
               </button>
@@ -617,7 +617,7 @@ export default function FichaWizard({
               <button
                 disabled={busy}
                 onClick={() => guardar('borrador')}
-                className="rounded-full border border-white/10 bg-surface px-4 py-2 text-sm font-medium text-cream transition hover:border-orange-500/40 disabled:opacity-50"
+                className="rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-4 py-2 text-sm font-medium text-white transition hover:border-orange-500/40 disabled:opacity-50"
               >
                 Guardar borrador
               </button>
@@ -644,7 +644,7 @@ export default function FichaWizard({
 // Marca de agua del autoguardado: el inspector necesita ver que lo suyo ya
 // está a salvo en la tablet, aunque no haya señal para subirlo.
 function AvisoAutoguardado({ en }: { en: number | null }) {
-  if (!en) return <span className="text-xs text-gray-500">Autoguardado activo</span>
+  if (!en) return <span className="text-xs text-silver">Autoguardado activo</span>
   const hora = new Date(en).toLocaleTimeString('es-MX', {
     hour: '2-digit',
     minute: '2-digit',
@@ -669,15 +669,15 @@ function DynamicField({
 }) {
   const short =
     campo.tipo === 'enum' || campo.tipo === 'number' || campo.tipo === 'date' || campo.tipo === 'time'
-  const base = `${short ? 'w-full max-w-xs' : 'w-full'} rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400`
+  const base = `${short ? 'w-full max-w-xs' : 'w-full'} rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400`
   const str = (value as string) ?? ''
   const esAutofill = !!campo.config?.autofill
 
   return (
     <div>
-      <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
+      <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
         {campo.etiqueta}
-        {esAutofill && <span className="ml-1 text-xs font-normal text-gray-500">(de la BD)</span>}
+        {esAutofill && <span className="ml-1 text-xs font-normal text-silver">(de la BD)</span>}
       </label>
       {campo.imagen_referencia_url && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -768,19 +768,19 @@ function Convertidor({
   const resultado = kg === null ? null : salida === 'kg' ? kg : kg / KG_POR_QUINTAL
 
   return (
-    <div className="mt-1.5 flex flex-wrap items-center gap-1.5 rounded-lg bg-surface2 px-2 py-1.5 text-xs text-gray-400">
-      <span className="font-medium text-cream">El productor dijo:</span>
+    <div className="mt-1.5 flex flex-wrap items-center gap-1.5 rounded-lg bg-black/50 px-2 py-1.5 text-xs text-silver backdrop-blur-xl">
+      <span className="font-medium text-white">El productor dijo:</span>
       <input
         type="number"
         value={cantidad}
         onChange={(e) => setCantidad(e.target.value)}
         placeholder="10"
-        className="w-16 rounded-lg border border-white/10 bg-black px-1.5 py-1 text-cream outline-none transition-colors focus:border-orange-400"
+        className="w-16 rounded-lg border border-white/10 bg-black/40 px-1.5 py-1 text-white outline-none transition-colors focus:border-orange-400"
       />
       <select
         value={unidad}
         onChange={(e) => setUnidad(e.target.value as typeof unidad)}
-        className="rounded-lg border border-white/10 bg-black px-1.5 py-1 text-cream outline-none transition-colors focus:border-orange-400"
+        className="rounded-lg border border-white/10 bg-black/40 px-1.5 py-1 text-white outline-none transition-colors focus:border-orange-400"
       >
         <option value="qq">quintales (57.5 kg)</option>
         <option value="t">toneladas</option>
@@ -788,8 +788,8 @@ function Convertidor({
       </select>
       {resultado !== null && (
         <>
-          <span className="tabular-nums text-gray-300">
-            = <strong className="text-cream">{resultado.toFixed(2)} {salida === 'kg' ? 'kg' : 'qq'}</strong>
+          <span className="tabular-nums text-silver">
+            = <strong className="text-white">{resultado.toFixed(2)} {salida === 'kg' ? 'kg' : 'qq'}</strong>
           </span>
           <button
             type="button"
@@ -838,7 +838,7 @@ function EnumOtro({
           value={otroTexto}
           placeholder="Especifica…"
           onChange={(e) => onChange('Otro: ' + e.target.value)}
-          className="w-full max-w-xs rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+          className="w-full max-w-xs rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
         />
       )}
     </div>
@@ -873,7 +873,7 @@ function MultiEnum({
   return (
     <div className="space-y-1">
       {opciones.map((op) => (
-        <label key={op} className="flex items-center gap-2 text-sm text-gray-300">
+        <label key={op} className="flex items-center gap-2 text-sm text-silver">
           <input
             type="checkbox"
             checked={op === 'Otro' ? otroChecked : arr.includes(op)}
@@ -890,7 +890,7 @@ function MultiEnum({
           onChange={(e) =>
             onChange([...arr.filter((v) => !v.startsWith('Otro')), 'Otro: ' + e.target.value])
           }
-          className="w-full max-w-xs rounded-lg border border-white/10 bg-black px-2.5 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+          className="w-full max-w-xs rounded-lg border border-white/10 bg-black/40 px-2.5 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
         />
       )}
     </div>
@@ -924,7 +924,7 @@ function TablaField({
   return (
     <div className="overflow-x-auto rounded-xl border border-white/10">
       <table className="w-full text-xs">
-        <thead className="bg-surface2 text-left text-gray-500">
+        <thead className="bg-black/50 text-left text-silver backdrop-blur-xl">
           <tr>
             {columnas.map((c) => (
               <th key={c.id} className="p-1.5 font-medium">
@@ -940,7 +940,7 @@ function TablaField({
               {columnas.map((c) => (
                 <td key={c.id} className="p-1">
                   {c.tipo === 'calc' ? (
-                    <span className="px-1 tabular-nums text-gray-300">
+                    <span className="px-1 tabular-nums text-silver">
                       {fila[c.id] !== undefined && fila[c.id] !== null
                         ? Number(fila[c.id]).toFixed(2)
                         : '—'}
@@ -960,7 +960,7 @@ function TablaField({
                             : e.target.value || null,
                         )
                       }
-                      className="w-full min-w-[80px] rounded-lg border border-white/10 bg-black px-1.5 py-1 text-cream outline-none transition-colors focus:border-orange-400"
+                      className="w-full min-w-[80px] rounded-lg border border-white/10 bg-black/40 px-1.5 py-1 text-white outline-none transition-colors focus:border-orange-400"
                     />
                   )}
                 </td>
@@ -969,7 +969,7 @@ function TablaField({
                 <button
                   type="button"
                   onClick={() => quitar(i)}
-                  className="text-gray-500 transition hover:text-red-400"
+                  className="text-silver transition hover:text-red-400"
                   title="Quitar fila"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="inline">
@@ -984,7 +984,7 @@ function TablaField({
       <button
         type="button"
         onClick={agregar}
-        className="m-1 rounded-full border border-white/10 bg-surface px-2.5 py-1 text-xs font-medium text-cream transition hover:border-orange-500/40"
+        className="m-1 rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-2.5 py-1 text-xs font-medium text-white transition hover:border-orange-500/40"
       >
         + Agregar fila
       </button>
@@ -1040,23 +1040,23 @@ function ProductorBanner({
     t3: 'bg-lime-500/10 text-lime-400',
     t2: 'bg-amber-500/10 text-amber-400',
     t1: 'bg-orange-500/10 text-orange-400',
-    nuevo: 'bg-white/5 text-gray-400',
+    nuevo: 'bg-white/5 text-silver',
   }
   return (
     <section className="mb-4 rounded-2xl border border-orange-500/20 bg-orange-500/5 p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-base font-normal text-cream">
+          <p className="text-base font-medium text-white">
             {productor.nombre_completo}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-silver">
             {productor.codigo}
             {(productor.comunidad || productor.municipio) &&
               ` · ${[productor.comunidad, productor.municipio].filter(Boolean).join(', ')}`}
           </p>
         </div>
         <div className="text-right">
-          <span className="mb-0.5 block font-mono text-[10px] uppercase tracking-wide text-gray-500">
+          <span className="mb-0.5 block font-mono text-[10px] uppercase tracking-wide text-silver">
             Estatus de certificación {productor.estatus_anio ? `(${productor.estatus_anio})` : new Date().getFullYear()}
           </span>
           <NivelSelector
@@ -1067,13 +1067,13 @@ function ProductorBanner({
         </div>
       </div>
       {parcelas.length > 0 && (
-        <p className="mt-2 border-t border-orange-500/10 pt-2 text-xs text-gray-500">
+        <p className="mt-2 border-t border-orange-500/10 pt-2 text-xs text-silver">
           Parcela(s): {parcelas.map((p) => codigoCorto(p.codigo_parcela, p.nombre)).join(' · ')}
         </p>
       )}
       {productor.plantas_entregadas.length > 0 && (
         <div className="mt-2 border-t border-orange-500/10 pt-2">
-          <p className="font-mono text-[10px] uppercase tracking-wide text-gray-500">
+          <p className="font-mono text-[10px] uppercase tracking-wide text-silver">
             Plantas entregadas en Agroecología (verificar en campo)
           </p>
           <div className="mt-1 flex flex-wrap gap-1.5">
@@ -1131,14 +1131,14 @@ function NivelSelector({
       <select
         value={nivel}
         onChange={(e) => cambiar(e.target.value)}
-        className={`cursor-pointer rounded-full px-2.5 py-1 text-sm font-medium outline-none ${nivel ? (colores[nivel] ?? colores.nuevo) : 'border border-white/10 bg-surface text-gray-500'}`}
+        className={`cursor-pointer rounded-full px-2.5 py-1 text-sm font-medium outline-none ${nivel ? (colores[nivel] ?? colores.nuevo) : 'border border-white/10 bg-black/40 text-silver'}`}
       >
         <option value="">Sin estatus</option>
         {NIVELES.map((n) => (
           <option key={n} value={n}>{NIVEL_CERT_LABEL[n]} — {NIVEL_CERT_NOMBRE[n]}</option>
         ))}
       </select>
-      {msg === 'guardando' && <span className="text-[10px] text-gray-500">…</span>}
+      {msg === 'guardando' && <span className="text-[10px] text-silver">…</span>}
       {msg === 'ok' && <span className="h-1.5 w-1.5 rounded-full bg-green-400" />}
       {msg === 'error' && <span className="text-[10px] text-red-400">error</span>}
     </div>
@@ -1147,8 +1147,8 @@ function NivelSelector({
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-4 rounded-2xl border border-white/10 bg-surface p-5">
-      <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+    <section className="mb-4 rounded-2xl border border-white/10 bg-black/40 p-5 backdrop-blur-xl">
+      <h2 className="mb-3 font-mono text-[11px] uppercase tracking-wide text-silver">
         {title}
       </h2>
       {children}
@@ -1159,7 +1159,7 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="font-mono text-[11px] tracking-wide text-gray-500">{label}</label>
+      <label className="font-mono text-[11px] tracking-wide text-silver">{label}</label>
       {children}
     </div>
   )
@@ -1176,7 +1176,7 @@ function NavButtons({
     <div className="mt-4 flex items-center justify-between">
       <button
         onClick={onBack}
-        className="rounded-full px-3 py-2 text-sm text-gray-500 transition hover:text-cream"
+        className="rounded-full px-3 py-2 text-sm text-silver transition hover:text-white"
       >
         ← Atrás
       </button>
@@ -1208,17 +1208,17 @@ function Steps({ step }: { step: number }) {
                   ? 'bg-orange-500 text-black'
                   : done
                     ? 'bg-orange-500/10 text-orange-400'
-                    : 'bg-white/5 text-gray-500'
+                    : 'bg-white/5 text-silver'
               }`}
             >
               {n}
             </span>
             <span
-              className={`text-sm ${active ? 'font-medium text-cream' : 'text-gray-500'}`}
+              className={`text-sm ${active ? 'font-medium text-white' : 'text-silver'}`}
             >
               {l}
             </span>
-            {n < labels.length && <span className="text-gray-600">→</span>}
+            {n < labels.length && <span className="text-silver">→</span>}
           </div>
         )
       })}

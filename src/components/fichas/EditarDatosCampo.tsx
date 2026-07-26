@@ -84,8 +84,8 @@ export default function EditarDatosCampo({
   }
 
   return (
-    <div className="mt-3 rounded-xl border border-orange-500/20 bg-surface p-3">
-      <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-gray-500">
+    <div className="mt-3 rounded-xl border border-orange-500/20 bg-black/40 p-3 backdrop-blur-xl">
+      <p className="mb-2 font-mono text-[11px] uppercase tracking-wide text-silver">
         Corregir datos (se guarda aunque no haya señal)
       </p>
 
@@ -124,7 +124,7 @@ export default function EditarDatosCampo({
         </button>
         <button
           onClick={() => setAbierto(false)}
-          className="rounded-full px-3 py-1.5 text-sm text-gray-500 transition hover:text-cream"
+          className="rounded-full px-3 py-1.5 text-sm text-silver transition hover:text-white"
         >
           Cerrar
         </button>
@@ -146,12 +146,12 @@ function Campo({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
+      <span className="mb-1 block font-mono text-[11px] tracking-wide text-silver">{label}</span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-white/10 bg-black px-2 py-1.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+        className="w-full rounded-lg border border-white/10 bg-black/40 px-2 py-1.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
       />
     </label>
   )

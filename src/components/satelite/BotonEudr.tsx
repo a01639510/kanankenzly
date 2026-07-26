@@ -58,25 +58,25 @@ export default function BotonEudr({
         onClick={analizar}
         disabled={corriendo || total === 0}
         title="Comparar cobertura 2020 vs actual por NDVI (monitoreo de despejes)"
-        className="rounded-full border border-emerald-500/40 bg-surface px-4 py-2 text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/10 disabled:opacity-50"
+        className="rounded-full border border-emerald-500/40 bg-black/40 backdrop-blur-xl px-4 py-2 text-sm font-medium text-emerald-400 transition hover:bg-emerald-500/10 disabled:opacity-50"
       >
         {corriendo ? `Analizando… ${pct}%` : 'Monitoreo cobertura'}
       </button>
 
       {(corriendo || error) && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-surface p-3">
+        <div className="absolute right-0 top-full z-50 mt-2 w-64 rounded-xl border border-white/10 bg-black/70 backdrop-blur-xl p-3">
           {error ? (
             <p className="text-sm text-red-400">{error}</p>
           ) : (
             <>
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface2">
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/5">
                 <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${pct}%` }} />
               </div>
-              <p className="mt-2 text-xs text-gray-400">
+              <p className="mt-2 text-xs text-silver">
                 {hechas} de {total} parcelas
                 {riesgo > 0 && <span className="font-medium text-red-400"> · {riesgo} posible pérdida</span>}
               </p>
-              <p className="mt-1 text-[11px] text-gray-500">
+              <p className="mt-1 text-[11px] text-silver">
                 Comparando cobertura 2020 vs actual. No cierres la pestaña.
               </p>
             </>

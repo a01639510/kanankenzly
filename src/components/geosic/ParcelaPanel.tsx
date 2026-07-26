@@ -55,9 +55,9 @@ export default function ParcelaPanel({
   const diferenciaCritica = Math.abs(diferenciaPct) > 0.15
 
   return (
-    <aside className="absolute inset-0 z-40 flex flex-col border-white/10 bg-surface md:static md:z-auto md:w-96 md:shrink-0 md:border-l">
+    <aside className="absolute inset-3 z-40 flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl md:inset-auto md:right-3 md:top-24 md:bottom-3 md:w-96">
       {/* Hero: preview de la forma del polígono a mayor escala. */}
-      <div className="relative flex h-24 shrink-0 items-center justify-center overflow-hidden border-b border-white/10 bg-gradient-to-b from-[#1C1E24] to-[#16181D]">
+      <div className="relative flex h-24 shrink-0 items-center justify-center overflow-hidden border-b border-white/10 bg-black/30">
         {shape ? (
           <svg viewBox="0 0 100 100" className="h-16 w-16" preserveAspectRatio="xMidYMid meet">
             <polygon points={shape} fill={`${estadoColor}26`} stroke={estadoColor} strokeWidth={3} strokeLinejoin="round" />

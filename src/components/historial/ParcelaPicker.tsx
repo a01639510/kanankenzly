@@ -24,31 +24,31 @@ export default function ParcelaPicker({ parcelas }: { parcelas: ParcelaLite[] })
 
   return (
     <div className="mx-auto max-w-xl p-6">
-      <h1 className="mb-3 text-lg font-normal text-cream">
+      <h1 className="mb-3 text-xl font-medium text-white">
         Elige una parcela para su historial
       </h1>
       <input
         value={q}
         onChange={(e) => setQ(e.target.value)}
         placeholder="Buscar parcela o código…"
-        className="mb-3 w-full rounded-lg border border-white/10 bg-black px-3 py-2 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+        className="mb-3 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-orange-400"
       />
-      <div className="max-h-[60vh] overflow-y-auto rounded-xl border border-white/10 bg-surface">
+      <div className="max-h-[60vh] overflow-y-auto rounded-xl border border-white/10 bg-black/40 backdrop-blur-xl">
         {lista.map((p) => {
           const cod = codigoCorto(p.codigo_parcela, p.nombre)
           return (
             <button
               key={p.id}
               onClick={() => router.push(`/historial/${p.id}`)}
-              className="flex w-full items-center justify-between border-b border-white/5 px-3 py-2 text-left text-sm hover:bg-surface2"
+              className="flex w-full items-center justify-between border-b border-white/5 px-3 py-2 text-left text-sm hover:bg-white/5"
             >
-              <span className="font-medium text-cream">{p.nombre || cod}</span>
-              <span className="text-xs text-gray-500">{cod}</span>
+              <span className="font-medium text-white">{p.nombre || cod}</span>
+              <span className="text-xs text-silver">{cod}</span>
             </button>
           )
         })}
         {lista.length === 0 && (
-          <p className="p-4 text-sm text-gray-500">Sin coincidencias.</p>
+          <p className="p-4 text-sm text-silver">Sin coincidencias.</p>
         )}
       </div>
     </div>

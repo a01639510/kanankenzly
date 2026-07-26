@@ -21,7 +21,7 @@ export default async function FichaDetallePage({
   if (!data) notFound()
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <div className="no-print">
         <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       </div>

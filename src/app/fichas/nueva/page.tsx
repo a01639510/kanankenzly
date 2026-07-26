@@ -15,7 +15,7 @@ export default async function NuevaFichaPage() {
   if (result.kind === 'no-membership') return <NoMembership />
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden">
       <AppHeader orgNombre={result.session.orgNombre} rol={result.session.rol} />
       <div className="min-h-0 flex-1 overflow-auto">
         <FichaCaptureClient />

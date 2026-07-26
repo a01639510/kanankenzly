@@ -55,10 +55,10 @@ export default function FichaCaptureClient({
   if (estado.fase === 'sin_datos') {
     return (
       <Centro>
-        <p className="mb-2 font-medium text-cream">
+        <p className="mb-2 font-medium text-white">
           No hay catálogos descargados en este dispositivo.
         </p>
-        <p className="mb-4 text-sm text-gray-500">
+        <p className="mb-4 text-sm text-silver">
           Conéctate a internet una vez para descargar productores, parcelas y
           formularios; después podrás capturar fichas sin conexión.
         </p>

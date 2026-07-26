@@ -1,4 +1,6 @@
-// Indicadores del módulo satelital, mismo formato que GeoStatsBar.
+// Indicadores del módulo satelital, mismo formato que GeoStatsBar: grupo de
+// tiles bento flotante sobre el mapa (ver SateliteShell), cada tile es su
+// propia tarjeta de cristal — ya no hay fondo de barra detrás.
 import type { SatStats } from '@/lib/satelite/indices'
 import { fmtNdvi, colorNdvi, ALERTA_COLOR } from '@/lib/satelite/indices'
 
@@ -9,7 +11,7 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
       : 0
 
   return (
-    <div className="flex items-stretch divide-x divide-white/5 overflow-x-auto border-b border-white/10 bg-surface text-sm">
+    <div className="flex gap-1.5 overflow-x-auto">
       <Stat
         label="Monitoreadas"
         value={`${stats.monitoreadas} · ${pctMonitoreadas}%`}
@@ -26,7 +28,7 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
         accent={ALERTA_COLOR.estres_hidrico}
       />
       <Stat label="Críticas" value={stats.criticas} accent={ALERTA_COLOR.critico} />
-      <Stat label="Sin medición" value={stats.sin_datos} accent="#94a3b8" />
+      <Stat label="Sin medición" value={stats.sin_datos} accent="#8E939D" />
       <Stat
         label="Última imagen"
         value={stats.ultima_actualizacion ?? '—'}
@@ -45,14 +47,20 @@ function Stat({
   accent?: string
 }) {
   return (
-    <div className="flex shrink-0 basis-1/3 flex-col px-3 py-2 sm:basis-1/4 md:flex-1 md:basis-0 md:px-4">
-      <span className="font-mono text-[11px] tracking-wide text-gray-500">{label}</span>
-      <span
-        className={`text-lg font-medium leading-tight ${accent ? '' : 'text-cream'}`}
-        style={accent ? { color: accent } : undefined}
-      >
-        {value}
-      </span>
+    <div className="relative shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black/50 px-3 py-2 backdrop-blur-xl">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.06),_transparent_70%)]"
+      />
+      <div className="relative">
+        <span className="font-mono text-[11px] tracking-wide text-silver">{label}</span>
+        <span
+          className="block text-lg font-semibold leading-tight text-white"
+          style={accent ? { color: accent } : undefined}
+        >
+          {value}
+        </span>
+      </div>
     </div>
   )
 }

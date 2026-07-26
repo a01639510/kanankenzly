@@ -16,7 +16,7 @@ export default function GraficaNdvi({ datos }: { datos: IndiceHistorial[] }) {
 
   if (puntos.length === 0) {
     return (
-      <p className="rounded-lg bg-surface2 p-3 text-sm text-gray-400">
+      <p className="rounded-lg bg-black/30 p-3 text-sm text-silver">
         Aún no hay serie histórica para esta parcela.
       </p>
     )
@@ -73,13 +73,13 @@ export default function GraficaNdvi({ datos }: { datos: IndiceHistorial[] }) {
               stroke="rgba(255,255,255,0.08)"
               strokeWidth="0.5"
             />
-            <text x={2} y={y(v) + 3} fontSize="7" fill="#6b7280">
+            <text x={2} y={y(v) + 3} fontSize="7" fill="#8E939D">
               {v.toFixed(1)}
             </text>
           </g>
         ))}
 
-        <path d={linea} fill="none" stroke="#E5E2D2" strokeWidth="1.5" />
+        <path d={linea} fill="none" stroke="#ffffff" strokeWidth="1.5" />
 
         {puntos.map((p, i) => (
           <circle
@@ -88,7 +88,7 @@ export default function GraficaNdvi({ datos }: { datos: IndiceHistorial[] }) {
             cy={y(p.ndvi_promedio!)}
             r={i === puntos.length - 1 ? 3.5 : 2.5}
             fill={colorNdvi(p.ndvi_promedio)}
-            stroke="#121212"
+            stroke="#000000"
             strokeWidth="1"
           >
             <title>{`${p.fecha_imagen}: NDVI ${p.ndvi_promedio!.toFixed(3)}`}</title>
@@ -96,7 +96,7 @@ export default function GraficaNdvi({ datos }: { datos: IndiceHistorial[] }) {
         ))}
       </svg>
 
-      <div className="flex justify-between px-1 text-[10px] text-gray-500">
+      <div className="flex justify-between px-1 text-[10px] text-silver">
         <span>{primera}</span>
         <span>{ultima}</span>
       </div>

@@ -49,7 +49,7 @@ export default function AppHeader({
     pathname === href || pathname.startsWith(href + '/')
 
   return (
-    <header className="relative border-b border-white/[0.08] bg-graphite">
+    <header className="relative border-b border-white/[0.08] bg-black/50 backdrop-blur-xl">
       <div className="flex items-center justify-between gap-3 px-4 py-2.5">
         <div className="flex min-w-0 flex-1 items-center gap-4">
           {/* La marca nunca se comprime ni se parte en dos líneas.
@@ -113,7 +113,7 @@ export default function AppHeader({
 
       {/* Menú desplegable en celular */}
       {menuOpen && (
-        <nav className="border-t border-white/[0.08] bg-graphite px-2 pb-2 pt-1 md:hidden">
+        <nav className="border-t border-white/[0.08] bg-black/70 backdrop-blur-xl px-2 pb-2 pt-1 md:hidden">
           {tabs.map((t) => (
             <Link
               key={t.href}

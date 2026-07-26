@@ -39,7 +39,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={montserrat.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {/* Mesh gradient fijo detrás de toda la app — los shells de cada
+            página van sin fondo opaco propio para que esto se vea a través. */}
+        <div aria-hidden="true" className="mesh-bg fixed inset-0 -z-10" />
+        {children}
+      </body>
     </html>
   )
 }
