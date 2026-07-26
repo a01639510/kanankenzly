@@ -7,12 +7,21 @@
 // La mayoría de los esquemas comparten la misma base de datos (geolocalización
 // de parcela, trazabilidad productor→parcela, registro de campo), así que un
 // solo cómputo de PanelStats alcanza para las 8 tarjetas.
+//
+// Cada requisito trackeable enlaza al módulo real donde se corrige (`modulo`).
+// Cada requisito `no_rastreado` que algún día podría cubrirse con una
+// herramienta propia enlaza a su tarjeta en la hoja de ruta (`hojaDeRuta`,
+// ver HOJA_DE_RUTA más abajo) — los que dependen de un tercero (organismo
+// certificador, programa externo) no enlazan a nada, son honestos "fuera de
+// este sistema, punto".
 import type { PanelStats } from '@/lib/data/panel'
 
 export type EstadoRequisito = 'cumplido' | 'parcial' | 'faltante' | 'no_rastreado'
 
 export interface Requisito {
   label: string
+  modulo?: { href: string; label: string } // dónde corregirlo HOY, si aplica
+  hojaDeRuta?: string // slug de HOJA_DE_RUTA si el hueco lo cerraría un módulo futuro
   evaluar: (s: PanelStats) => { estado: EstadoRequisito; detalle: string }
 }
 
@@ -22,6 +31,12 @@ export interface Certificacion {
   tipo: string
   alcance: string
   requisitos: Requisito[]
+}
+
+export interface ModuloFuturo {
+  slug: string
+  nombre: string
+  descripcion: string
 }
 
 const pct = (parte: number, total: number) => (total > 0 ? parte / total : 0)
@@ -49,6 +64,12 @@ const NO_RASTREADO = (detalle: string) => (): { estado: EstadoRequisito; detalle
   detalle,
 })
 
+const GEOSIC = { href: '/geosic', label: 'GeoSIC' }
+const SATELITE = { href: '/satelite', label: 'Satélite' }
+const FICHAS = { href: '/fichas', label: 'Fichas' }
+const BITACORA = { href: '/bitacora', label: 'Bitácoras' }
+const PRODUCTORES = { href: '/productores', label: 'Productores' }
+
 export const CERTIFICACIONES: Certificacion[] = [
   {
     slug: 'eudr',
@@ -58,18 +79,22 @@ export const CERTIFICACIONES: Certificacion[] = [
     requisitos: [
       {
         label: 'Geolocalización de parcelas',
+        modulo: GEOSIC,
         evaluar: (s) => porCobertura(s.con_poligono, s.parcelas, 'parcelas con polígono'),
       },
       {
         label: 'Evaluación de riesgo de deforestación',
+        modulo: SATELITE,
         evaluar: (s) => porCobertura(s.eudr_analizadas, s.parcelas, 'parcelas analizadas'),
       },
       {
         label: 'Traslape con bosque 2020 (UE) evaluado',
+        modulo: SATELITE,
         evaluar: (s) => porCobertura(s.bosque2020_evaluadas, s.parcelas, 'parcelas evaluadas'),
       },
       {
         label: 'Declaración de Diligencia Debida (DDS)',
+        hojaDeRuta: 'dds',
         evaluar: NO_RASTREADO('Se presenta en el portal EU TRACES — fuera de este sistema'),
       },
     ],
@@ -82,18 +107,22 @@ export const CERTIFICACIONES: Certificacion[] = [
     requisitos: [
       {
         label: 'Geolocalización alineada a EUDR',
+        modulo: GEOSIC,
         evaluar: (s) => porCobertura(s.con_poligono, s.parcelas, 'parcelas con polígono'),
       },
       {
         label: 'Evaluación de riesgo de deforestación',
+        modulo: SATELITE,
         evaluar: (s) => porCobertura(s.eudr_analizadas, s.parcelas, 'parcelas analizadas'),
       },
       {
         label: 'Inspección de finca',
+        modulo: FICHAS,
         evaluar: (s) => porCobertura(s.fichas_por_estado.aprobada, s.fichas_total, 'fichas aprobadas'),
       },
       {
         label: 'Sistema de gestión interna (IMS) / cert. de grupo',
+        hojaDeRuta: 'auditorias',
         evaluar: NO_RASTREADO('Gestión de grupo y auditoría RACP — fuera de este sistema'),
       },
     ],
@@ -104,17 +133,20 @@ export const CERTIFICACIONES: Certificacion[] = [
     tipo: 'Certificación 3ª parte',
     alcance: 'Global — 130+ países, todos los cultivos',
     requisitos: [
-      { label: 'Trazabilidad productor → parcela', evaluar: trazabilidadBase },
+      { label: 'Trazabilidad productor → parcela', modulo: PRODUCTORES, evaluar: trazabilidadBase },
       {
         label: 'Inspección de campo (IFA)',
+        modulo: FICHAS,
         evaluar: (s) => porCobertura(s.fichas_por_estado.aprobada, s.fichas_total, 'fichas aprobadas'),
       },
       {
         label: 'Registro de actividades y bitácora',
+        modulo: BITACORA,
         evaluar: (s) => porCobertura(s.bitacoras, s.parcelas, 'parcelas con bitácora'),
       },
       {
         label: 'Auditoría anual acreditada',
+        hojaDeRuta: 'auditorias',
         evaluar: NO_RASTREADO('Auditoría de un organismo certificador — fuera de este sistema'),
       },
     ],
@@ -127,10 +159,12 @@ export const CERTIFICACIONES: Certificacion[] = [
     requisitos: [
       {
         label: 'Geolocalización de huertas',
+        modulo: GEOSIC,
         evaluar: (s) => porCobertura(s.con_poligono, s.parcelas, 'parcelas con polígono'),
       },
       {
         label: 'Sin pérdida de cobertura detectada',
+        modulo: SATELITE,
         evaluar: (s) => {
           if (s.eudr_analizadas === 0) {
             return { estado: 'no_rastreado' as EstadoRequisito, detalle: 'Aún no hay tamizado EUDR corrido' }
@@ -142,7 +176,7 @@ export const CERTIFICACIONES: Certificacion[] = [
       },
       {
         label: 'Monitoreo Guardián Forestal',
-        evaluar: NO_RASTREADO('Programa de verificación externo — fuera de este sistema'),
+        evaluar: NO_RASTREADO('Programa de verificación de un tercero — fuera de este sistema'),
       },
     ],
   },
@@ -152,9 +186,9 @@ export const CERTIFICACIONES: Certificacion[] = [
     tipo: 'Metodología de auditoría',
     alcance: 'Global — cualquier industria',
     requisitos: [
-      { label: 'Documentación de auditoría social', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
-      { label: 'Registro de condiciones laborales', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
-      { label: 'Plan de acciones correctivas', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
+      { label: 'Documentación de auditoría social', hojaDeRuta: 'auditoria-social', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
+      { label: 'Registro de condiciones laborales', hojaDeRuta: 'auditoria-social', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
+      { label: 'Plan de acciones correctivas', hojaDeRuta: 'auditoria-social', evaluar: NO_RASTREADO('Requiere módulo de auditoría social — no implementado') },
     ],
   },
   {
@@ -165,10 +199,12 @@ export const CERTIFICACIONES: Certificacion[] = [
     requisitos: [
       {
         label: 'Registro de insumos (bitácora)',
+        modulo: BITACORA,
         evaluar: (s) => porCobertura(s.bitacoras, s.parcelas, 'parcelas con bitácora'),
       },
       {
         label: 'Inspección in situ',
+        modulo: FICHAS,
         evaluar: (s) => porCobertura(s.fichas_por_estado.aprobada, s.fichas_total, 'fichas aprobadas'),
       },
       {
@@ -183,9 +219,9 @@ export const CERTIFICACIONES: Certificacion[] = [
     tipo: 'Certificación 3ª parte',
     alcance: 'Global — café, cacao, té, azúcar, banano',
     requisitos: [
-      { label: 'Trazabilidad productor → parcela', evaluar: trazabilidadBase },
-      { label: 'Precio mínimo + prima Fairtrade', evaluar: NO_RASTREADO('Registro de pagos y prima — fuera de este sistema') },
-      { label: 'Gobernanza democrática de la cooperativa', evaluar: NO_RASTREADO('Actas y gobernanza — fuera de este sistema') },
+      { label: 'Trazabilidad productor → parcela', modulo: PRODUCTORES, evaluar: trazabilidadBase },
+      { label: 'Precio mínimo + prima Fairtrade', hojaDeRuta: 'precio-fairtrade', evaluar: NO_RASTREADO('Registro de pagos y prima — fuera de este sistema') },
+      { label: 'Gobernanza democrática de la cooperativa', hojaDeRuta: 'gobernanza', evaluar: NO_RASTREADO('Actas y gobernanza — fuera de este sistema') },
     ],
   },
   {
@@ -194,11 +230,59 @@ export const CERTIFICACIONES: Certificacion[] = [
     tipo: 'Permiso gubernamental',
     alcance: 'México — supervisión ambiental federal',
     requisitos: [
-      { label: 'Padrón de parcelas y productores', evaluar: trazabilidadBase },
-      { label: 'Manifestación de Impacto Ambiental (MIA)', evaluar: NO_RASTREADO('Trámite ante SEMARNAT — fuera de este sistema') },
-      { label: 'Licencia Ambiental Única (LAU)', evaluar: NO_RASTREADO('Trámite ante SEMARNAT — fuera de este sistema') },
-      { label: 'Cédula de Operación Anual (COA)', evaluar: NO_RASTREADO('Reporte anual ante SEMARNAT — fuera de este sistema') },
+      { label: 'Padrón de parcelas y productores', modulo: PRODUCTORES, evaluar: trazabilidadBase },
+      { label: 'Manifestación de Impacto Ambiental (MIA)', hojaDeRuta: 'tramites-semarnat', evaluar: NO_RASTREADO('Trámite ante SEMARNAT — fuera de este sistema') },
+      { label: 'Licencia Ambiental Única (LAU)', hojaDeRuta: 'tramites-semarnat', evaluar: NO_RASTREADO('Trámite ante SEMARNAT — fuera de este sistema') },
+      { label: 'Cédula de Operación Anual (COA)', hojaDeRuta: 'tramites-semarnat', evaluar: NO_RASTREADO('Reporte anual ante SEMARNAT — fuera de este sistema') },
     ],
+  },
+]
+
+// Hoja de ruta: módulos que TODAVÍA no existen. Se muestran en la UI marcados
+// como DEMO/"En construcción" — son la mitad de lo que le falta a la app para
+// cumplir su objetivo real (llevar una parcela HASTA la certificación, no solo
+// medir qué tan lejos está). Ver la nota "DEMO" en certificaciones/page.tsx:
+// esto es deliberadamente una vista previa, sin datos ni botones funcionales.
+export const HOJA_DE_RUTA: ModuloFuturo[] = [
+  {
+    slug: 'documentos',
+    nombre: 'Gestión documental y evidencias',
+    descripcion: 'Expediente por parcela/productor: subir y versionar contratos, actas, análisis de suelo, comprobantes.',
+  },
+  {
+    slug: 'dds',
+    nombre: 'Declaración de Diligencia Debida (DDS)',
+    descripcion: 'Arma y exporta la DDS lista para EU TRACES a partir de los datos de GeoSIC y el tamizado EUDR.',
+  },
+  {
+    slug: 'auditorias',
+    nombre: 'Calendario y gestión de auditorías',
+    descripcion: 'Programa auditorías por esquema, asigna responsable, sube hallazgos y da seguimiento a cierres.',
+  },
+  {
+    slug: 'auditoria-social',
+    nombre: 'Auditoría social y bienestar laboral',
+    descripcion: 'Checklist SMETA/ETI: jornales, condiciones de trabajo, menores de edad, plan de acciones correctivas.',
+  },
+  {
+    slug: 'precio-fairtrade',
+    nombre: 'Precio y prima Fairtrade',
+    descripcion: 'Registro de pagos a productores: precio mínimo, prima Fairtrade y su aplicación.',
+  },
+  {
+    slug: 'gobernanza',
+    nombre: 'Gobernanza cooperativa',
+    descripcion: 'Actas de asamblea, padrón de socios activos, estructura directiva — lo que piden Fairtrade y RA para grupo.',
+  },
+  {
+    slug: 'trazabilidad-cadena',
+    nombre: 'Trazabilidad de cadena de suministro',
+    descripcion: 'Sigue el lote más allá de la parcela: acopio, beneficio, lote de exportación — balance de masas.',
+  },
+  {
+    slug: 'tramites-semarnat',
+    nombre: 'Portal de trámites SEMARNAT',
+    descripcion: 'Seguimiento de MIA, LAU y COA por proyecto: estatus, vigencia y próximos vencimientos.',
   },
 ]
 
