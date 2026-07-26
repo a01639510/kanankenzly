@@ -81,57 +81,60 @@ export default async function PanelPage() {
             </Link>
           )}
 
-          {/* Catálogos */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {/* Catálogos — una sola fila bento con todo el conteo operativo. */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             <Kpi label="Productores" value={n(s.productores)} href="/productores" />
             <Kpi label="Parcelas" value={n(s.parcelas)} href="/productores" />
             <Kpi label="Hectáreas declaradas" value={`${n(s.hectareas, 1)} ha`} />
             <Kpi label="Con polígono" value={`${pctGeo}%`} href="/geosic" />
+            <Kpi label="Bitácoras" value={n(s.bitacoras)} href="/bitacora" />
+            <Kpi label="Historiales" value={n(s.historiales)} href="/historial" />
           </div>
 
-          {/* Tamizado EUDR */}
-          <Section title="Tamizado EUDR (alerta temprana por NDVI)" href="/satelite">
-            {s.eudr_analizadas === 0 ? (
-              <p className="text-sm text-silver">
-                Aún no se ha corrido el análisis EUDR. Ábrelo en Satélite para analizar las parcelas.
-              </p>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {CLASIFICACIONES.map((c) => (
-                  <span
-                    key={c}
-                    className="rounded-full px-3 py-1 text-sm font-medium text-black"
-                    style={{ backgroundColor: EUDR_COLOR[c] }}
-                  >
-                    {EUDR_LABEL[c]}: {s.eudr_por_clasificacion[c]}
-                  </span>
-                ))}
+          {/* Workspace: tamizado EUDR y cobertura geográfica lado a lado. */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <Section title="Tamizado EUDR (alerta temprana por NDVI)" href="/satelite">
+              {s.eudr_analizadas === 0 ? (
+                <p className="text-sm text-silver">
+                  Aún no se ha corrido el análisis EUDR. Ábrelo en Satélite para analizar las parcelas.
+                </p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {CLASIFICACIONES.map((c) => (
+                    <span
+                      key={c}
+                      className="rounded-full px-3 py-1 text-sm font-medium text-black"
+                      style={{ backgroundColor: EUDR_COLOR[c] }}
+                    >
+                      {EUDR_LABEL[c]}: {s.eudr_por_clasificacion[c]}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <Mini label="Veredicto: verificadas" value={n(s.eudr_verificadas)} color="#4ade80" />
+                <Mini label="Veredicto: deforestación" value={n(s.eudr_deforestacion)} color="#fb7185" />
+                <Mini
+                  label="Traslape bosque 2020"
+                  value={`${n(s.bosque2020_con_traslape)} / ${n(s.bosque2020_evaluadas)}`}
+                  color="#fb923c"
+                />
+                <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#FFFFFF" />
               </div>
-            )}
-            <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Mini label="Veredicto: verificadas" value={n(s.eudr_verificadas)} color="#4ade80" />
-              <Mini label="Veredicto: deforestación" value={n(s.eudr_deforestacion)} color="#fb7185" />
-              <Mini
-                label="Traslape bosque 2020"
-                value={`${n(s.bosque2020_con_traslape)} / ${n(s.bosque2020_evaluadas)}`}
-                color="#fb923c"
-              />
-              <Mini label="Parcelas analizadas" value={n(s.eudr_analizadas)} color="#FFFFFF" />
-            </div>
-          </Section>
+            </Section>
 
-          {/* Cobertura geográfica */}
-          <Section title="Cobertura geográfica (GeoSIC)" href="/geosic">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Mini label="Con polígono" value={`${s.con_poligono} · ${pctGeo}%`} color="#38bdf8" />
-              <Mini label="Validadas" value={`${s.validadas} · ${pctVal}%`} color="#4ade80" />
-              <Mini label="Diferencia crítica" value={s.diferencia_critica} color="#f87171" />
-              <Mini label="Sin polígono" value={s.sin_poligono} color="#6b7280" />
-            </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/5">
-              <div className="h-full rounded-full bg-orange-500" style={{ width: `${pctGeo}%` }} />
-            </div>
-          </Section>
+            <Section title="Cobertura geográfica (GeoSIC)" href="/geosic">
+              <div className="grid grid-cols-2 gap-4">
+                <Mini label="Con polígono" value={`${s.con_poligono} · ${pctGeo}%`} color="#38bdf8" />
+                <Mini label="Validadas" value={`${s.validadas} · ${pctVal}%`} color="#4ade80" />
+                <Mini label="Diferencia crítica" value={s.diferencia_critica} color="#f87171" />
+                <Mini label="Sin polígono" value={s.sin_poligono} color="#8E939D" />
+              </div>
+              <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/5">
+                <div className="h-full rounded-full bg-orange-500" style={{ width: `${pctGeo}%` }} />
+              </div>
+            </Section>
+          </div>
 
           {/* Fichas por estado */}
           <Section title={`Fichas de inspección (${s.fichas_total})`} href="/fichas">
@@ -148,12 +151,6 @@ export default async function PanelPage() {
               {s.fichas_total === 0 && <span className="text-sm text-silver">Aún no hay fichas.</span>}
             </div>
           </Section>
-
-          {/* Expediente técnico */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-            <Kpi label="Bitácoras" value={n(s.bitacoras)} href="/bitacora" />
-            <Kpi label="Historiales" value={n(s.historiales)} href="/historial" />
-          </div>
         </div>
       </div>
     </div>

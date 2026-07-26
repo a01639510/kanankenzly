@@ -28,6 +28,16 @@ body {
   display: none !important;
 }
 
+/* Control de escala en el estilo "dark glass" del resto del HUD (los botones
+   de zoom/recentrar son propios — ver GeoSICMap/SateliteMap — este es el único
+   control nativo de Mapbox que seguimos usando). */
+.mapboxgl-ctrl-scale {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  color: #e1e0cc !important;
+  backdrop-filter: blur(8px);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

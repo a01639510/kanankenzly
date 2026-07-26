@@ -1,23 +1,13 @@
 import type { Metadata, Viewport } from 'next'
-import { Almarai, Instrument_Serif } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import './globals.css'
 
-// Almarai: tipografía base de toda la app (nav, párrafos, botones, cifras).
-// Instrument Serif itálica: acento tipográfico incrustado en titulares
-// (clase utilitaria `font-serif italic`), inspirado en kananmx.netlify.app.
-const almarai = Almarai({
-  // Google solo cataloga Almarai bajo el subset "arabic", pero el juego de
-  // glifos incluye Latin/Latin-ext (por eso funciona para español sin problema).
-  subsets: ['arabic'],
-  weight: ['300', '400', '700', '800'],
-  variable: '--font-almarai',
-  display: 'swap',
-})
-const instrumentSerif = Instrument_Serif({
+// Montserrat: tipografía base de toda la app — geométrica, data-dense, encaja
+// con el look "command center" (nav, tarjetas bento, cifras de KPI).
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: '400',
-  style: ['italic', 'normal'],
-  variable: '--font-instrument-serif',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
   display: 'swap',
 })
 
@@ -48,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`${almarai.variable} ${instrumentSerif.variable}`}>
+    <html lang="es" className={montserrat.variable}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   )

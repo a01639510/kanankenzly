@@ -44,6 +44,11 @@ export default function GeoSICShell({
     [parcelas, selectedId],
   )
 
+  // Preview de forma por parcela: normaliza cada polígono a un viewBox 0-100
+  // (equivalente al mini-mapa/traza de las "vehicle cards" del command center).
+  // Se calcula una sola vez por carga de datos, no en cada render de fila.
+  const shapes = useMemo(() => buildShapes(polygons), [polygons])
+
   // Filter the list by free-text on parcela / productor name or code.
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -65,7 +70,7 @@ export default function GeoSICShell({
   const puedeValidar = session.rol === 'admin' || session.rol === 'coordinador'
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden bg-black">
+    <div className="flex h-screen w-screen flex-col overflow-hidden bg-graphite">
       {/* Top bar (shared) with the module-specific upload action */}
       <AppHeader orgNombre={session.orgNombre} rol={session.rol}>
         <button
@@ -91,7 +96,7 @@ export default function GeoSICShell({
         )}
 
         <aside
-          className={`absolute inset-y-0 left-0 z-30 flex w-72 max-w-[85%] shrink-0 flex-col border-r border-white/10 bg-surface transition-transform md:static md:z-auto md:max-w-none md:translate-x-0 ${
+          className={`absolute inset-y-0 left-0 z-30 flex w-80 max-w-[85%] shrink-0 flex-col border-r border-white/10 bg-surface transition-transform md:static md:z-auto md:max-w-none md:translate-x-0 ${
             listaAbierta ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
@@ -100,13 +105,14 @@ export default function GeoSICShell({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar parcela o productor…"
-              className="w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+              className="w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
             />
           </div>
           <ParcelaList
             parcelas={filtered}
             selectedId={selectedId}
             onSelect={elegirParcela}
+            shapes={shapes}
           />
         </aside>
 
@@ -114,7 +120,7 @@ export default function GeoSICShell({
           {/* Botón para abrir la lista — solo en celular */}
           <button
             onClick={() => setListaAbierta(true)}
-            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-2 text-sm font-medium text-cream md:hidden"
+            className="absolute left-3 top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-black/40 px-3 py-2 text-sm font-medium text-white backdrop-blur-md md:hidden"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />
@@ -135,6 +141,7 @@ export default function GeoSICShell({
             puedeValidar={puedeValidar}
             onClose={() => setSelectedId(null)}
             onChanged={refresh}
+            shape={shapes.get(selected.id)}
           />
         )}
       </div>
@@ -151,4 +158,37 @@ export default function GeoSICShell({
       )}
     </div>
   )
+}
+
+// Normaliza cada polígono a un viewBox 0-100 (sin proyección, solo para un
+// glyph de identificación) preservando la relación de aspecto real, con el
+// eje Y invertido porque SVG crece hacia abajo y la latitud hacia el norte.
+function buildShapes(
+  polygons: GeoJSON.FeatureCollection<GeoJSON.Polygon>,
+): Map<string, string> {
+  const shapes = new Map<string, string>()
+  for (const f of polygons.features) {
+    const ring = f.geometry.coordinates[0] as [number, number][] | undefined
+    const id = f.properties?.parcela_id as string | undefined
+    if (!id || !ring || ring.length < 3) continue
+
+    const lons = ring.map((c) => c[0])
+    const lats = ring.map((c) => c[1])
+    const minLon = Math.min(...lons)
+    const maxLon = Math.max(...lons)
+    const minLat = Math.min(...lats)
+    const maxLat = Math.max(...lats)
+    const spanLon = maxLon - minLon || 1
+    const spanLat = maxLat - minLat || 1
+
+    const points = ring
+      .map(([lon, lat]) => {
+        const x = ((lon - minLon) / spanLon) * 100
+        const y = (1 - (lat - minLat) / spanLat) * 100
+        return `${x.toFixed(1)},${y.toFixed(1)}`
+      })
+      .join(' ')
+    shapes.set(id, points)
+  }
+  return shapes
 }

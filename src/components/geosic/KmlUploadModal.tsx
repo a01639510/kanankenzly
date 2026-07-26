@@ -64,15 +64,15 @@ export default function KmlUploadModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-surface">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl border border-white/[0.08] bg-gradient-to-b from-[#1C1E24] to-[#16181D]">
         <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-          <h2 className="text-base font-normal text-cream">
+          <h2 className="text-base font-medium text-white">
             Subir polígono (KML / KMZ)
           </h2>
           <button
             onClick={onClose}
-            className="rounded-full p-1 text-gray-500 hover:bg-surface2 hover:text-cream"
+            className="rounded-full p-1 text-silver hover:bg-white/5 hover:text-white"
             aria-label="Cerrar"
           >
             ✕
@@ -81,18 +81,18 @@ export default function KmlUploadModal({
 
         <div className="space-y-4 p-4">
           <div>
-            <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
+            <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
               Parcela
             </label>
             {seleccionada && (
               <div className="mb-2 flex items-center justify-between rounded-lg border border-orange-500/40 bg-orange-500/10 px-2.5 py-1.5 text-sm">
-                <span className="min-w-0 truncate text-cream">
+                <span className="min-w-0 truncate text-white">
                   <span className="font-medium">{seleccionada.nombre || seleccionada.codigo_parcela}</span>
-                  <span className="text-gray-400"> · {seleccionada.productor_nombre}</span>
+                  <span className="text-silver"> · {seleccionada.productor_nombre}</span>
                 </span>
                 <button
                   onClick={() => setParcelaId('')}
-                  className="ml-2 shrink-0 text-xs text-gray-500 hover:text-red-400"
+                  className="ml-2 shrink-0 text-xs text-silver hover:text-red-400"
                 >
                   cambiar
                 </button>
@@ -104,24 +104,24 @@ export default function KmlUploadModal({
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Buscar por parcela, código o productor…"
-                  className="mb-2 w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-cream outline-none transition-colors focus:border-orange-400"
+                  className="mb-2 w-full rounded-lg border border-white/10 bg-black px-3.5 py-2.5 text-sm text-white outline-none transition-colors focus:border-orange-400"
                   autoFocus
                 />
                 <div className="max-h-56 overflow-y-auto rounded-xl border border-white/10">
                   {opciones.length === 0 ? (
-                    <p className="p-3 text-center text-sm text-gray-500">Sin coincidencias.</p>
+                    <p className="p-3 text-center text-sm text-silver">Sin coincidencias.</p>
                   ) : (
                     opciones.map((p) => (
                       <button
                         key={p.id}
                         onClick={() => setParcelaId(p.id)}
-                        className="flex w-full items-center justify-between gap-2 border-b border-white/5 px-2.5 py-2 text-left text-sm hover:bg-surface2"
+                        className="flex w-full items-center justify-between gap-2 border-b border-white/5 px-2.5 py-2 text-left text-sm hover:bg-white/5"
                       >
                         <span className="min-w-0 truncate">
-                          <span className="font-medium text-cream">{p.nombre || p.codigo_parcela}</span>
-                          <span className="block truncate text-xs text-gray-500">{p.productor_nombre}</span>
+                          <span className="font-medium text-white">{p.nombre || p.codigo_parcela}</span>
+                          <span className="block truncate text-xs text-silver">{p.productor_nombre}</span>
                         </span>
-                        <span className="shrink-0 text-xs text-gray-500">
+                        <span className="shrink-0 text-xs text-silver">
                           {p.poligono_id ? '● con polígono' : ''}
                         </span>
                       </button>
@@ -129,7 +129,7 @@ export default function KmlUploadModal({
                   )}
                 </div>
                 {filtradas.length > opciones.length && (
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-xs text-silver">
                     Mostrando {opciones.length} de {filtradas.length}. Escribe para acotar.
                   </p>
                 )}
@@ -138,14 +138,14 @@ export default function KmlUploadModal({
           </div>
 
           <div>
-            <label className="mb-1 block font-mono text-[11px] tracking-wide text-gray-500">
+            <label className="mb-1 block font-mono text-[11px] tracking-wide text-silver">
               Archivo
             </label>
             <input
               type="file"
               accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className="w-full text-sm text-gray-400 file:mr-3 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-400 hover:file:bg-orange-500/20"
+              className="w-full text-sm text-silver file:mr-3 file:rounded-full file:border-0 file:bg-orange-500/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-orange-400 hover:file:bg-orange-500/20"
             />
           </div>
 
@@ -159,7 +159,7 @@ export default function KmlUploadModal({
         <div className="flex justify-end gap-2 border-t border-white/10 px-4 py-3">
           <button
             onClick={onClose}
-            className="rounded-full px-3 py-1.5 text-sm text-gray-400 hover:bg-surface2 hover:text-cream"
+            className="rounded-full px-3 py-1.5 text-sm text-silver hover:bg-white/5 hover:text-white"
           >
             Cancelar
           </button>

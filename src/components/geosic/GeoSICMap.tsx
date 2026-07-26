@@ -5,12 +5,12 @@
 //   1. polygons  -> fill + outline, colored by estado_validacion
 //   2. pins      -> circle markers for parcelas WITHOUT a polygon (centroide null)
 // Selection is driven from the parent via `selectedId`; clicks call onSelect.
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import mapboxgl from 'mapbox-gl'
 // NOTE: mapbox-gl CSS is imported globally in app/globals.css (the in-component
 // import was not applied reliably, leaving the canvas at its 150px default).
 import type { ParcelaGeoRow, EstadoValidacion } from '@/lib/types'
-import { ESTADO_COLOR } from '@/lib/types'
+import { ESTADO_COLOR, ESTADO_LABEL } from '@/lib/types'
 import { CENTRO_DEFAULT } from '@/lib/geo/centro'
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
@@ -45,6 +45,7 @@ export default function GeoSICMap({
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const loadedRef = useRef(false)
+  const [legendOpen, setLegendOpen] = useState(true)
   // Keep latest onSelect without re-binding map event listeners.
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
@@ -95,8 +96,9 @@ export default function GeoSICMap({
         zoom: 9,
       })
       mapRef.current = map
-      map.addControl(new mapboxgl.NavigationControl(), 'top-right')
-      map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }))
+      // Sin NavigationControl nativo: usamos los botones de cristal propios
+      // (más abajo en el JSX) para que combinen con el resto del HUD.
+      map.addControl(new mapboxgl.ScaleControl({ unit: 'metric' }), 'bottom-right')
 
     // Surface any Mapbox error in the browser console (token, style, tiles…).
     map.on('error', (e) => {
@@ -239,7 +241,72 @@ export default function GeoSICMap({
     }
   }, [selectedId, parcelas])
 
-  return <div ref={containerRef} className="absolute inset-0" />
+  function zoomBy(delta: number) {
+    const map = mapRef.current
+    if (!map) return
+    map.zoomTo(map.getZoom() + delta, { duration: 200 })
+  }
+
+  function recentrar() {
+    const map = mapRef.current
+    if (!map) return
+    fitToData(map, polygons, buildPins())
+  }
+
+  const estados = Object.keys(ESTADO_COLOR) as EstadoValidacion[]
+
+  return (
+    <>
+      <div ref={containerRef} className="absolute inset-0" />
+
+      {/* Controles flotantes de cristal: zoom +/- y recentrar. */}
+      <div className="absolute right-3 top-3 z-10 flex flex-col gap-1 rounded-full border border-white/10 bg-black/40 p-1 backdrop-blur-md">
+        <button
+          onClick={() => zoomBy(1)}
+          aria-label="Acercar"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M12 5v14M5 12h14" /></svg>
+        </button>
+        <button
+          onClick={() => zoomBy(-1)}
+          aria-label="Alejar"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14" /></svg>
+        </button>
+        <div className="h-px bg-white/10" />
+        <button
+          onClick={recentrar}
+          aria-label="Centrar en los datos"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v3m0 12v3m9-9h-3M6 12H3" /><circle cx="12" cy="12" r="3.5" /></svg>
+        </button>
+      </div>
+
+      {/* Leyenda flotante de cristal: colores de estado_validacion. */}
+      <div className="absolute bottom-3 left-3 z-10 rounded-xl border border-white/10 bg-black/40 backdrop-blur-md">
+        <button
+          onClick={() => setLegendOpen((o) => !o)}
+          className="flex w-full items-center gap-2 px-3 py-2 font-mono text-[11px] tracking-wide text-silver"
+        >
+          Estados
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${legendOpen ? 'rotate-180' : ''}`}><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+        {legendOpen && (
+          <div className="flex flex-col gap-1.5 border-t border-white/10 px-3 py-2">
+            {estados.map((e) => (
+              <div key={e} className="flex items-center gap-2 text-xs text-white">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: ESTADO_COLOR[e] }} />
+                {ESTADO_LABEL[e]}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  )
 }
 
 // Fit the viewport to whatever geometry exists (polygons first, else pins).
