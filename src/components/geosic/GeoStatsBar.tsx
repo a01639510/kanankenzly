@@ -15,22 +15,10 @@ export default function GeoStatsBar({ stats }: { stats: GeoStats }) {
   return (
     <div className="flex gap-1.5 overflow-x-auto">
       <Stat label="Parcelas" value={stats.total} />
-      <Stat
-        label="Con polígono"
-        value={`${stats.con_poligono} · ${pctConPoligono}%`}
-        accent="#38bdf8"
-      />
-      <Stat
-        label="Validadas"
-        value={`${stats.validadas} · ${pctValidadas}%`}
-        accent="#4ade80"
-      />
-      <Stat
-        label="Diferencia crítica"
-        value={stats.diferencia_critica}
-        accent="#f87171"
-      />
-      <Stat label="Sin polígono" value={stats.sin_poligono} accent="#8E939D" />
+      <Stat label="Con polígono" value={`${stats.con_poligono} · ${pctConPoligono}%`} />
+      <Stat label="Validadas" value={`${stats.validadas} · ${pctValidadas}%`} accent="#34d399" />
+      <Stat label="Diferencia crítica" value={stats.diferencia_critica} accent={stats.diferencia_critica > 0 ? '#f87171' : undefined} />
+      <Stat label="Sin polígono" value={stats.sin_poligono} />
     </div>
   )
 }

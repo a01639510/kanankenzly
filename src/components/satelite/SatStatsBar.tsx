@@ -12,11 +12,7 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
 
   return (
     <div className="flex gap-1.5 overflow-x-auto">
-      <Stat
-        label="Monitoreadas"
-        value={`${stats.monitoreadas} · ${pctMonitoreadas}%`}
-        accent="#0ea5e9"
-      />
+      <Stat label="Monitoreadas" value={`${stats.monitoreadas} · ${pctMonitoreadas}%`} />
       <Stat
         label="NDVI promedio"
         value={fmtNdvi(stats.ndvi_promedio)}
@@ -25,10 +21,10 @@ export default function SatStatsBar({ stats }: { stats: SatStats }) {
       <Stat
         label="Alertas activas"
         value={stats.alertas_activas}
-        accent={ALERTA_COLOR.estres_hidrico}
+        accent={stats.alertas_activas > 0 ? ALERTA_COLOR.estres_hidrico : undefined}
       />
-      <Stat label="Críticas" value={stats.criticas} accent={ALERTA_COLOR.critico} />
-      <Stat label="Sin medición" value={stats.sin_datos} accent="#8E939D" />
+      <Stat label="Críticas" value={stats.criticas} accent={stats.criticas > 0 ? ALERTA_COLOR.critico : undefined} />
+      <Stat label="Sin medición" value={stats.sin_datos} />
       <Stat
         label="Última imagen"
         value={stats.ultima_actualizacion ?? '—'}
